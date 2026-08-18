@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "575dfed5f48db0ca",
+    "type": "split",
+    "children": [
+      {
+        "id": "6163ae93a4cc21ff",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5ac378f3f4c301fa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "NtpDrawer/NtpDrawer.md",
+                "mode": "preview",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "NtpDrawer"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5563d670b63681f8",
+    "type": "split",
+    "children": [
+      {
+        "id": "989126aa992d9982",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b2062c26b8c28c8d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "40495a0432149942",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "1c9e10ae3193b126",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "21454c4e741a95bd",
+    "type": "split",
+    "children": [
+      {
+        "id": "f6333aee74cb3ee1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "90c3f0aa05b6e296",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "c6a352146566838d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "d24cb07a08545a48",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ebe6513ed41a3de9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "7de42345d7c012c2",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "5ac378f3f4c301fa",
+  "lastOpenFiles": [
+    "NtpDrawer/NtpDrawer.md",
+    "NtpDrawer",
+    "NtpBreadcrumb.md",
+    "NtpSpinner.md",
+    "NtpTable.md",
+    "NtpConfirmationDialog.md",
+    "NtpDialog/NtpDialog.md",
+    "NtpDialog/NtpDialogHeader.md",
+    "NtpCard/index.md",
+    "NtpDialog",
+    "NtpCard/NtpCard.md",
+    "NtpCard/NtpCardHeader.md",
+    "NtpMedia.md",
+    "NtpActionMenu.md",
+    "NtpMenu.md",
+    "NtpButton.md",
+    "NtpChip.md",
+    "patterns/data-fetching.md",
+    "conventions/data-fetching-responsibilities.md",
+    "conventions",
+    "tokens.md",
+    "NtpPagination.md",
+    "README.md",
+    "NtpInputs/NtpSelect.md",
+    "NtpInputs/NtpMultiSelect.md",
+    "NtpCard",
+    "NtpTable",
+    "NtpInputs/NtpDateInput.md",
+    "NtpInputs/NtpDateTimeInput.md",
+    "NtpInputs/NtpToggle.md",
+    "NtpInputs/NtpRadioGroup.md",
+    "components/wrappers",
+    "components/layout",
+    "components/feedback",
+    "components/data display",
+    "components/Untitled"
+  ]
+}

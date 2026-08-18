@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "1570bf083c32e322",
+    "type": "split",
+    "children": [
+      {
+        "id": "cfaaea5a769169e0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cae9acf441f82758",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Untitled.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Untitled"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "2b6b81ef00a0e839",
+    "type": "split",
+    "children": [
+      {
+        "id": "4df31a32630f854c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0b4d09b8726e76e8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "3444fcb56a075389",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "fadf1348171702ad",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "6a5046fe550d38b8",
+    "type": "split",
+    "children": [
+      {
+        "id": "e15a4ad54138fb7b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "50061d82ff1b1756",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "2af3314b766bccfe",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "9f139a1514371ccc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "b8308c3d7f3acd20",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "1f95e71139da2f70",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "cae9acf441f82758",
+  "lastOpenFiles": [
+    "components/NtpDrawer/NtpDrawerItem.md",
+    "Untitled.md",
+    "components/NtpDrawer/NtpDrawer.md",
+    "components/NtpDrawer",
+    "components/NtpBreadcrumb.md",
+    "components/NtpSpinner.md",
+    "components/NtpTable.md",
+    "decisions/ADR-006-drag-and-drop-reorder-strategy.md",
+    "components/NtpConfirmationDialog.md",
+    "components/NtpDialog/NtpDialog.md",
+    "components/NtpDialog/NtpDialogHeader.md",
+    "components/NtpAppBar.md",
+    "components/NtpDialog",
+    "components/NtpCard/NtpCard.md",
+    "components/NtpCard/NtpCardHeader.md",
+    "components/NtpCard",
+    "components/NtpMedia.md",
+    "components/NtpActionMenu.md",
+    "components/NtpMenu.md",
+    "conventions.md",
+    "components/NtpButton.md",
+    "components/NtpChip.md",
+    "Untitled 1.md",
+    "conventioins/data-fetching-responsibilities.md",
+    "data-fetching.md",
+    "conventioins",
+    "patterns",
+    "components/NtpPagination.md",
+    "components/NtpInputs/NtpMultiSelect.md",
+    "components/NtpInputs/NtpSelect.md",
+    "components/NtpInputs/NtpNumberInput.md",
+    "components/buttons",
+    "components/NtpInputs",
+    "decisions"
+  ]
+}
