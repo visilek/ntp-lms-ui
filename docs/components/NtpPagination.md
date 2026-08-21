@@ -10,7 +10,7 @@ import { NtpPagination } from 'ntp-lms-ui'
 
 ## Data Fetching Pattern
 
-This component is **dumb** — it receives state via props and emits change events. The parent page/widget owns server state and fetching logic. See [Data Fetching Pattern](./patterns/data-fetching.md).
+This component is **dumb** — it receives state via props and emits change events. The parent page/widget owns server state and fetching logic. See [Data Fetching Pattern](data-fetching.md).
 
 ## API
 

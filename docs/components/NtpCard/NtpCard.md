@@ -39,7 +39,7 @@ import { NtpCard } from 'ntp-lms-ui'
 
 ## Usage
 
-See [NtpCard Family](./index.md) for composition patterns.
+See [NtpCard Family](components/NtpCard/index.md) for composition patterns.
 
 ## Accessibility
 

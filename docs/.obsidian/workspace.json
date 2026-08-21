@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6163ae93a4cc21ff",
+        "id": "1cbd67deea4bbeb8",
         "type": "tabs",
         "children": [
           {
-            "id": "5ac378f3f4c301fa",
+            "id": "0a6ed0755149e094",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "NtpDrawer/NtpDrawer.md",
+                "file": "components/NtpRichTextEditor/NtpRichTextEditor.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "NtpDrawer"
+              "title": "NtpRichTextEditor"
             }
           }
         ]
@@ -185,43 +185,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "5ac378f3f4c301fa",
+  "active": "0a6ed0755149e094",
   "lastOpenFiles": [
-    "NtpDrawer/NtpDrawer.md",
-    "NtpDrawer",
-    "NtpBreadcrumb.md",
-    "NtpSpinner.md",
-    "NtpTable.md",
-    "NtpConfirmationDialog.md",
-    "NtpDialog/NtpDialog.md",
-    "NtpDialog/NtpDialogHeader.md",
-    "NtpCard/index.md",
-    "NtpDialog",
-    "NtpCard/NtpCard.md",
-    "NtpCard/NtpCardHeader.md",
-    "NtpMedia.md",
-    "NtpActionMenu.md",
-    "NtpMenu.md",
-    "NtpButton.md",
-    "NtpChip.md",
+    "components/NtpRichTextEditor/index.md",
+    "components/NtpRichTextEditor/NtpRichTextEditor.md",
+    "components/NtpRichTextEditor",
+    "components/NtpCarousel/NtpCarousel.md",
+    "components/NtpCarousel/index.md",
+    "components/NtpActionMenu.md",
+    "components/NtpCarousel",
+    "lib/latex/renderLatex.md",
+    "components",
+    "lib/latex/v-latex.md",
+    "components/NtpRichText/undex.md",
+    "components/NtpRichText/NtpRichTextFigure.md",
+    "components/NtpRichText/NtpRichText.md",
+    "components/NtpRichText",
+    "components/NtpDrawer/NtpDrawer.md",
+    "lib/latex",
+    "lib",
+    "components/NtpDrawer",
+    "components/NtpBreadcrumb.md",
+    "components/NtpSpinner.md",
+    "components/NtpTable.md",
+    "components/NtpConfirmationDialog.md",
+    "components/NtpDialog/NtpDialog.md",
+    "components/NtpDialog/NtpDialogHeader.md",
+    "components/NtpCard/index.md",
+    "components/NtpDialog",
+    "components/NtpCard/NtpCard.md",
+    "components/NtpCard/NtpCardHeader.md",
+    "components/NtpMedia.md",
+    "components/NtpMenu.md",
+    "components/NtpButton.md",
+    "components/NtpChip.md",
     "patterns/data-fetching.md",
     "conventions/data-fetching-responsibilities.md",
     "conventions",
-    "tokens.md",
-    "NtpPagination.md",
-    "README.md",
-    "NtpInputs/NtpSelect.md",
-    "NtpInputs/NtpMultiSelect.md",
-    "NtpCard",
-    "NtpTable",
-    "NtpInputs/NtpDateInput.md",
-    "NtpInputs/NtpDateTimeInput.md",
-    "NtpInputs/NtpToggle.md",
-    "NtpInputs/NtpRadioGroup.md",
-    "components/wrappers",
-    "components/layout",
-    "components/feedback",
-    "components/data display",
-    "components/Untitled"
+    "components/NtpCard"
   ]
 }

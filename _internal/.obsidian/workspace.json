@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "cfaaea5a769169e0",
+        "id": "e5e99c9963dacbc9",
         "type": "tabs",
         "children": [
           {
-            "id": "cae9acf441f82758",
+            "id": "f9a83de55f485d24",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Untitled.md",
-                "mode": "source",
+                "file": "conventions.md",
+                "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Untitled"
+              "title": "conventions"
             }
           }
         ]
@@ -185,10 +185,28 @@
       "bases:Create new base": false
     }
   },
-  "active": "cae9acf441f82758",
+  "active": "f9a83de55f485d24",
   "lastOpenFiles": [
-    "components/NtpDrawer/NtpDrawerItem.md",
+    "Implementation plan.md",
+    "components/NtpChip.md",
     "Untitled.md",
+    "conventions.md",
+    "MD references.md",
+    "components/NtpRichTextEditor/NtpRichTextEditorToolbar.md",
+    "README.md",
+    "components/NtpRichTextEditor/NtpRichTextEditor.md",
+    "components/NtpRichTextEditor",
+    "components/NtpCarousel/useCarousel.md",
+    "components/NtpCarousel/NtpCarousel.md",
+    "components/NtpCarousel",
+    "lib/latex/renderLatex.md",
+    "lib/latex/v-latex.md",
+    "components/NtpRichText/NtpRichText.md",
+    "components/NtpRichText/NtpRichTextFigure.md",
+    "lib/latex",
+    "lib",
+    "components/NtpRichText",
+    "components/NtpDrawer/NtpDrawerItem.md",
     "components/NtpDrawer/NtpDrawer.md",
     "components/NtpDrawer",
     "components/NtpBreadcrumb.md",
@@ -203,23 +221,7 @@
     "components/NtpCard/NtpCard.md",
     "components/NtpCard/NtpCardHeader.md",
     "components/NtpCard",
-    "components/NtpMedia.md",
-    "components/NtpActionMenu.md",
-    "components/NtpMenu.md",
-    "conventions.md",
-    "components/NtpButton.md",
-    "components/NtpChip.md",
-    "Untitled 1.md",
-    "conventioins/data-fetching-responsibilities.md",
-    "data-fetching.md",
     "conventioins",
-    "patterns",
-    "components/NtpPagination.md",
-    "components/NtpInputs/NtpMultiSelect.md",
-    "components/NtpInputs/NtpSelect.md",
-    "components/NtpInputs/NtpNumberInput.md",
-    "components/buttons",
-    "components/NtpInputs",
-    "decisions"
+    "patterns"
   ]
 }
