@@ -1,0 +1,38 @@
+:root {
+  /* Primary */
+  --ntp-color-primary: hsl(193, 44%, 40%);
+  --ntp-color-on-primary: white;
+  --ntp-color-primary-container: color-mix(in srgb, var(--ntp-color-primary) 12%, white);
+  --ntp-color-on-primary-container: hsl(193, 44%, 20%);
+
+  /* Secondary */
+  --ntp-color-secondary: hsl(48, 11%, 40%);
+  --ntp-color-on-secondary: white;
+  --ntp-color-secondary-container: color-mix(in srgb, var(--ntp-color-secondary) 12%, white);
+  --ntp-color-on-secondary-container: hsl(48, 11%, 20%);
+
+  /* Tertiary */
+  --ntp-color-tertiary: hsl(345, 44%, 40%);
+  --ntp-color-on-tertiary: white;
+  --ntp-color-tertiary-container: color-mix(in srgb, var(--ntp-color-tertiary) 12%, white);
+  --ntp-color-on-tertiary-container: hsl(345, 44%, 20%);
+
+  /* Error */
+  --ntp-color-error: hsl(0, 66%, 40%);
+  --ntp-color-on-error: white;
+  --ntp-color-error-container: color-mix(in srgb, var(--ntp-color-error) 12%, white);
+  --ntp-color-on-error-container: hsl(0, 66%, 20%);
+
+  /* Surface */
+  --ntp-color-surface: hsl(48, 10%, 90%);
+  --ntp-color-on-surface: hsl(48, 10%, 12%);
+  --ntp-color-on-surface-variant: hsl(48, 8%, 40%);
+  --ntp-color-outline: hsl(48, 8%, 75%);
+
+  /* Surface containers */
+  --ntp-color-surface-container-lowest: hsl(48, 10%, 95%);
+  --ntp-color-surface-container-low: hsl(48, 10%, 92%);
+  --ntp-color-surface-container: hsl(48, 10%, 90%);
+  --ntp-color-surface-container-high: hsl(48, 10%, 87%);
+  --ntp-color-surface-container-highest: hsl(48, 10%, 84%);
+}

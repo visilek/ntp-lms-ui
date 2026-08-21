@@ -1,0 +1,14 @@
+:root {
+  /* Spacing scale — base 4dp */
+  --ntp-spacing-0: 0px;
+  --ntp-spacing-1: 4px;
+  --ntp-spacing-2: 8px;
+  --ntp-spacing-3: 12px;
+  --ntp-spacing-4: 16px;
+  --ntp-spacing-5: 20px;
+  --ntp-spacing-6: 24px;
+  --ntp-spacing-8: 32px;
+  --ntp-spacing-10: 40px;
+  --ntp-spacing-12: 48px;
+  --ntp-spacing-16: 64px;
+}

@@ -1,0 +1,30 @@
+body {
+  font: var(--ntp-type-body-medium);
+  color: var(--ntp-color-on-surface);
+  background-color: var(--ntp-color-surface);
+}
+
+h1 {
+  font: var(--ntp-type-headline-large);
+  color: var(--ntp-color-on-surface);
+}
+
+h2 {
+  font: var(--ntp-type-headline-medium);
+  color: var(--ntp-color-on-surface);
+}
+
+h3 {
+  font: var(--ntp-type-headline-small);
+  color: var(--ntp-color-on-surface);
+}
+
+h4 {
+  font: var(--ntp-type-title-large);
+  color: var(--ntp-color-on-surface);
+}
+
+p {
+  font: var(--ntp-type-body-medium);
+  color: var(--ntp-color-on-surface);
+}

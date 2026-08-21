@@ -1,1 +1,32 @@
 docs/.trash/Untitled.md
+
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test coverage
+coverage/
+
+# Storybook build
+storybook-static/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# TypeScript cache
+*.tsbuildinfo

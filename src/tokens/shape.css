@@ -1,0 +1,10 @@
+:root {
+  /* Shape */
+  --ntp-shape-none: 0px;
+  --ntp-shape-extra-small: 4px;
+  --ntp-shape-small: 8px;
+  --ntp-shape-medium: 12px;
+  --ntp-shape-large: 16px;
+  --ntp-shape-extra-large: 28px;
+  --ntp-shape-full: 9999px;
+}
