@@ -1,44 +1,47 @@
 # NtpChip — Implementation Notes
 
+## Structure
+
+```
+NtpChip/
+├── NtpChip.vue
+└── NtpChip.css
+```
+
 ## Render Element
 
-- `clickable: true` → `<button type="button">`
-- `clickable: false` → `<span>`
+- `clickable: true` → `<button type="button">`.
+- `clickable: false` → `<span>`.
 
-## Visual Approach (MD3 Tonal Surface)
+## Local Variables Pattern
 
-### Filled Variant
+CSS uses local variables for background/border/color.
 
-```scss
-background: color-mix(in srgb, var(--ntp-color-{color}) 10%, transparent);
-color: color-mix(in srgb, var(--ntp-color-{color}) 70%, black);
-```
+## Color Palette
 
-### Outlined Variant
+| Color | Filled Background | Filled Text |
+|---|---|---|
+| `neutral` (default) | `color-mix(secondary 12%, white)` | `color-mix(secondary 70%, black)` |
+| `primary` | `--ntp-color-primary-container` | `--ntp-color-on-primary-container` |
+| `secondary` | `--ntp-color-secondary-container` | `--ntp-color-on-secondary-container` |
+| `tertiary` | `--ntp-color-tertiary-container` | `--ntp-color-on-tertiary-container` |
+| `error` | `--ntp-color-error-container` | `--ntp-color-on-error-container` |
 
-```scss
-background: transparent;
-border: 1px solid color-mix(in srgb, var(--ntp-color-{color}) 50%, transparent);
-color: color-mix(in srgb, var(--ntp-color-{color}) 70%, black);
-```
+## Dismiss Button
 
-Exact token values resolved in `tokens/`. The `color-mix()` approach avoids pre-computing tinted tokens for every color variant.
+- Rendered when `dismissible: true`.
+- `aria-label`: `Remove {label}` or `Remove` when label empty.
+- Click emits `dismiss` — does not emit `click`.
+- `@click.stop` prevents parent chip click.
 
-## Dismissible Button
+## Slots
 
-- × button rendered as `<button type="button" class="ntp-chip-dismiss">`.
-- `aria-label`: `Remove {label}` or `Remove` when label is empty.
-- Clicking × emits `dismiss`. Does not emit `click`.
-- × button has `disabled` state when chip is `disabled`.
-
-## Slots Composition
-
-```
-[leading] [default content | label] [trailing] [× if dismissible]
-```
+- `default`: chip content. Overrides `label` prop.
+- `leading`: content before label.
+- `trailing`: content after label. Hidden when `dismissible` also present? No — trailing renders, dismiss button after.
 
 ## Edge Cases
 
-- `label` empty and no default slot → render nothing? Or empty chip? For v1: render empty chip (consumers shouldn't do this, but don't crash).
-- `dismissible` + `clickable` both true → × click must not trigger `click`. Stop propagation.
-- `disabled` + `clickable` → no hover/focus, no `click`.
+- `label` empty and no slot → empty chip. Consumer error, no crash.
+- `dismissible` + `clickable` → dismiss click stops propagation.
+- `disabled` → all interactions blocked.

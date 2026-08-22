@@ -31,7 +31,7 @@ import { NtpSpinner } from 'ntp-lms-ui'
 <NtpSpinner size="small" />
 ```
 
-### Custom Color
+### Muted Color
 
 ```html
 <NtpSpinner color="on-surface-variant" />
@@ -41,3 +41,4 @@ import { NtpSpinner } from 'ntp-lms-ui'
 
 - Renders with `role="progressbar"` and `aria-busy="true"`.
 - Indeterminate — no `aria-valuenow`.
+- SVG is `aria-hidden="true"`.

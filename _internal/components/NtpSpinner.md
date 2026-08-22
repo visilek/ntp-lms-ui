@@ -1,36 +1,43 @@
 # NtpSpinner — Implementation Notes
 
+## Structure
+
+```
+NtpSpinner/
+├── NtpSpinner.vue
+└── NtpSpinner.css
+```
+
 ## Rendering
 
-- MD3 circular progress indicator (indeterminate).
-- SVG or CSS-based. MD3 uses SVG with animated stroke-dasharray.
+- SVG-based circular indicator.
+- Two circles: track (background) + head (animated arc).
+- Animations: rotation + stroke-dasharray.
 
 ## Sizes
 
-| Size | Diameter |
+| Size | Dimensions |
 |---|---|
-| `small` | 24dp |
-| `medium` | 40dp |
-| `large` | 56dp |
-
-Exact values resolved in `tokens/`.
+| `small` | 24px |
+| `medium` | 40px |
+| `large` | 56px |
 
 ## Colors
 
-| Color | Stroke |
+| Color | Head Stroke |
 |---|---|
-| `primary` | `$color-primary` |
-| `on-surface-variant` | `$color-on-surface-variant` |
+| `primary` | `--ntp-color-primary` |
+| `on-surface-variant` | `--ntp-color-on-surface-variant` |
 | `surface` | white |
 
-## Animation
+Track stroke: `--ntp-color-surface-container-high`.
 
-- Continuous rotation + stroke-dasharray expansion/contraction.
-- Duration: ~1.5s per full cycle.
-- `prefers-reduced-motion` media query should pause or slow animation.
+## Accessibility
 
-## Usage in Loading States
+- `role="progressbar"`.
+- `aria-busy="true"`.
+- SVG is `aria-hidden="true"` — the role communicates state.
 
-- `NtpTable` loading overlay.
-- `NtpButton` loading (replaces content).
-- `NtpSelect` / `NtpMultiSelect` loading overlay.
+## Future
+
+- `prefers-reduced-motion` handling.

@@ -1,0 +1,190 @@
+.ntp-button {
+  /* Local state variables */
+  --_btn-bg: transparent;
+  --_btn-border: transparent;
+  --_btn-color: var(--ntp-color-on-surface);
+  --_btn-hover-bg: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ntp-spacing-2);
+  background-color: var(--_btn-bg);
+  border: 1px solid var(--_btn-border);
+  color: var(--_btn-color);
+  border-radius: var(--ntp-shape-full);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  font: var(--ntp-type-label-large);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Sizes */
+.ntp-button--small {
+  height: 32px;
+  padding: 0 var(--ntp-spacing-3);
+  font: var(--ntp-type-label-medium);
+}
+
+.ntp-button--medium {
+  height: 40px;
+  padding: 0 var(--ntp-spacing-4);
+}
+
+.ntp-button--large {
+  height: 48px;
+  padding: 0 var(--ntp-spacing-5);
+}
+
+/* Block */
+.ntp-button--block {
+  width: 100%;
+}
+
+/* Icon-only */
+.ntp-button--icon-only {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.ntp-button--icon-only.ntp-button--small {
+  width: 32px;
+  height: 32px;
+}
+
+.ntp-button--icon-only.ntp-button--large {
+  width: 48px;
+  height: 48px;
+}
+
+/* ============================================
+   Color → local variable mapping
+   ============================================ */
+
+/* Primary */
+.ntp-button--primary {
+  --_btn-bg: var(--ntp-color-primary);
+  --_btn-color: var(--ntp-color-on-primary);
+  --_btn-hover-bg: var(--ntp-color-primary-container);
+}
+
+/* Secondary */
+.ntp-button--secondary {
+  --_btn-bg: var(--ntp-color-secondary);
+  --_btn-color: var(--ntp-color-on-secondary);
+  --_btn-hover-bg: var(--ntp-color-secondary-container);
+}
+
+/* Tertiary */
+.ntp-button--tertiary {
+  --_btn-bg: var(--ntp-color-tertiary);
+  --_btn-color: var(--ntp-color-on-tertiary);
+  --_btn-hover-bg: var(--ntp-color-tertiary-container);
+}
+
+/* Error */
+.ntp-button--error {
+  --_btn-bg: var(--ntp-color-error);
+  --_btn-color: var(--ntp-color-on-error);
+  --_btn-hover-bg: var(--ntp-color-error-container);
+}
+
+/* On-surface-variant */
+.ntp-button--on-surface-variant {
+  --_btn-bg: var(--ntp-color-on-surface-variant);
+  --_btn-color: var(--ntp-color-surface);
+  --_btn-hover-bg: color-mix(in srgb, var(--ntp-color-on-surface-variant) 15%, transparent);
+}
+
+/* Surface */
+.ntp-button--surface {
+  --_btn-bg: rgba(255, 255, 255, 0.9);
+  --_btn-color: var(--ntp-color-on-surface);
+  --_btn-hover-bg: rgba(255, 255, 255, 1);
+}
+
+/* ============================================
+   Variant behavior — how bg/border/color are used
+   ============================================ */
+
+/* Filled: uses bg + color */
+.ntp-button--filled {
+  /* Already uses --_btn-bg and --_btn-color */
+}
+
+/* Outlined: transparent bg, colored border + text */
+.ntp-button--outlined {
+  --_btn-border: var(--_btn-color);
+  background-color: transparent;
+}
+
+/* Text: transparent bg, colored text only */
+.ntp-button--text {
+  background-color: transparent;
+}
+
+/* ============================================
+   Hover states
+   ============================================ */
+
+/* Filled hover: slight brightness */
+.ntp-button--filled:hover:not(.ntp-button--disabled):not(.ntp-button--loading) {
+  filter: brightness(1.08);
+}
+
+/* Outlined + Text hover: tinted background */
+.ntp-button--outlined:hover:not(.ntp-button--disabled):not(.ntp-button--loading),
+.ntp-button--text:hover:not(.ntp-button--disabled):not(.ntp-button--loading) {
+  background-color: var(--_btn-hover-bg);
+}
+
+/* ============================================
+   Focus
+   ============================================ */
+
+.ntp-button:focus-visible {
+  outline: 2px solid var(--_btn-color);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Disabled + Loading
+   ============================================ */
+
+.ntp-button--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ntp-button--loading {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ============================================
+   Spinner
+   ============================================ */
+
+.ntp-button__spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ntp-button__spinner-default {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ntp-button-spin 0.8s linear infinite;
+}
+
+@keyframes ntp-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

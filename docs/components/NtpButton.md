@@ -1,6 +1,6 @@
 # NtpButton
 
-A button component following Material Design principles. Supports filled, outlined, and text variants across three sizes and five color schemes.
+A button component following Material Design principles. Supports filled, outlined, and text variants across three sizes and six color schemes.
 
 ## Import
 
@@ -15,7 +15,7 @@ import { NtpButton } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `variant` | `'filled' \| 'outlined' \| 'text'` | `'filled'` | Visual style |
-| `color` | `'primary' \| 'secondary' \| 'error' \| 'on-surface-variant' \| 'surface'` | `'primary'` | Color scheme |
+| `color` | `'primary' \| 'secondary' \| 'tertiary' \| 'error' \| 'on-surface-variant' \| 'surface'` | `'primary'` | Color scheme |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Size preset |
 | `disabled` | `boolean` | `false` | Prevents interaction. Muted styling. |
 | `loading` | `boolean` | `false` | Shows spinner. Not clickable. Width preserved. |
@@ -51,27 +51,14 @@ import { NtpButton } from 'ntp-lms-ui'
 |---|---|
 | `primary` | Main CTA. Default for most buttons. |
 | `secondary` | Secondary actions. |
-| `error` | Destructive actions: delete, remove, cancel. |
-| `on-surface-variant` | Neutral icon buttons: ellipsis, settings, overflow. Muted gray. |
-| `surface` | White icon over media or color fill. Use for actions on image backgrounds. |
-
-## States
-
-### Disabled
-
-Add `disabled` prop. Muted styling across all variants. Cursor changes to `not-allowed`.
-
-### Loading
-
-Add `loading` prop. Replaces content with a spinner. Width preserved to prevent layout shift.
-
-### Icon Only
-
-Add `iconOnly` for circular icon buttons. Content should be a single icon. `ariaLabel` or `ariaLabelledby` is required.
+| `tertiary` | Accent actions. |
+| `error` | Destructive actions. |
+| `on-surface-variant` | Neutral icon buttons. Muted gray. |
+| `surface` | White icon over media or color fill. |
 
 ## Usage Examples
 
-### Basic Button
+### Basic
 
 ```html
 <NtpButton>Save</NtpButton>
@@ -87,39 +74,16 @@ Add `iconOnly` for circular icon buttons. Content should be a single icon. `aria
 </NtpButton>
 ```
 
-### Icon Over Media
-
-```html
-<NtpButton icon-only color="surface" aria-label="Close">
-  <span class="material-symbols">close</span>
-</NtpButton>
-```
-
-### Sizes
-
-```html
-<NtpButton size="small">Small</NtpButton>
-<NtpButton size="medium">Medium</NtpButton>
-<NtpButton size="large">Large</NtpButton>
-```
-
-### Block (Full Width)
-
-```html
-<NtpButton block>Submit</NtpButton>
-```
-
 ### Loading
 
 ```html
 <NtpButton :loading="isSaving">Save</NtpButton>
+```
 
-<NtpButton :loading="isSaving">
-  Save
-  <template #loading>
-    <MyCustomSpinner />
-  </template>
-</NtpButton>
+### Block
+
+```html
+<NtpButton block>Submit</NtpButton>
 ```
 
 ### Disabled
@@ -132,4 +96,4 @@ Add `iconOnly` for circular icon buttons. Content should be a single icon. `aria
 
 - Icon-only buttons **must** provide `ariaLabel` or `ariaLabelledby`.
 - Disabled and loading buttons are removed from tab order.
-- Button always renders `<button type="button">` — does not submit forms.
+- Button always renders `<button type="button">`.

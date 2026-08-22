@@ -4,3 +4,4 @@ import './base/index.css'
 
 // Library exports
 export * from './lib'
+export * from './components'

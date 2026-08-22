@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "conventions.md",
+                "file": "components/NtpButton.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "conventions"
+              "title": "NtpButton"
             }
           }
         ]
@@ -187,13 +187,25 @@
   },
   "active": "f9a83de55f485d24",
   "lastOpenFiles": [
-    "Implementation plan.md",
     "components/NtpChip.md",
-    "Untitled.md",
+    "components/NtpButton.md",
+    "components/NtpSpinner.md",
+    "README.md",
+    "conventions/README.md",
+    "conventions/component-api.md",
+    "conventions/dependencies.md",
+    "conventions/naming.md",
+    "conventions/Untitled",
+    "conventions/file-structure.md",
+    "conventions/composables.md",
+    "conventions/styling.md",
+    "conventions/data-fetching.md",
     "conventions.md",
+    "conventions",
+    "Implementation plan.md",
+    "Untitled.md",
     "MD references.md",
     "components/NtpRichTextEditor/NtpRichTextEditorToolbar.md",
-    "README.md",
     "components/NtpRichTextEditor/NtpRichTextEditor.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel/useCarousel.md",
@@ -209,19 +221,7 @@
     "components/NtpDrawer/NtpDrawerItem.md",
     "components/NtpDrawer/NtpDrawer.md",
     "components/NtpDrawer",
-    "components/NtpBreadcrumb.md",
-    "components/NtpSpinner.md",
-    "components/NtpTable.md",
-    "decisions/ADR-006-drag-and-drop-reorder-strategy.md",
-    "components/NtpConfirmationDialog.md",
-    "components/NtpDialog/NtpDialog.md",
-    "components/NtpDialog/NtpDialogHeader.md",
-    "components/NtpAppBar.md",
     "components/NtpDialog",
-    "components/NtpCard/NtpCard.md",
-    "components/NtpCard/NtpCardHeader.md",
-    "components/NtpCard",
-    "conventioins",
-    "patterns"
+    "components/NtpCard"
   ]
 }

@@ -1,40 +1,65 @@
 # NtpButton — Implementation Notes
 
+## Structure
+
+```
+NtpButton/
+├── NtpButton.vue
+└── NtpButton.css
+```
+
+## Local Variables Pattern
+
+CSS uses local variables per the styling convention:
+
+```css
+.ntp-button {
+  --_btn-bg: transparent;
+  --_btn-border: transparent;
+  --_btn-color: var(--ntp-color-on-surface);
+  --_btn-hover-bg: transparent;
+  /* ... */
+}
+```
+
+Color classes set the variables. Variant classes define how they're used.
+
 ## Color Palette
 
-| Color | Background (filled) | Text (filled) | Border (outlined) | Text (outlined/text) |
-|---|---|---|---|---|
-| `primary` | `$color-primary` | `$color-on-primary` | `$color-primary` | `$color-primary` |
-| `secondary` | `$color-secondary` | `$color-on-secondary` | `$color-secondary` | `$color-secondary` |
-| `error` | `$color-error` | `$color-on-error` | `$color-error` | `$color-error` |
-| `on-surface-variant` | `$color-on-surface-variant` | `$color-surface` | `$color-on-surface-variant` | `$color-on-surface-variant` |
-| `surface` | `rgba(255,255,255,0.9)` | `$color-on-surface` | `rgba(255,255,255,0.7)` | `white` |
+| Color | Background (filled) | Text (filled) | Text (outlined/text) |
+|---|---|---|---|
+| `primary` | `--ntp-color-primary` | `--ntp-color-on-primary` | `--ntp-color-primary` |
+| `secondary` | `--ntp-color-secondary` | `--ntp-color-on-secondary` | `--ntp-color-secondary` |
+| `tertiary` | `--ntp-color-tertiary` | `--ntp-color-on-tertiary` | `--ntp-color-tertiary` |
+| `error` | `--ntp-color-error` | `--ntp-color-on-error` | `--ntp-color-error` |
+| `on-surface-variant` | `--ntp-color-on-surface-variant` | `--ntp-color-surface` | `--ntp-color-on-surface-variant` |
+| `surface` | `rgba(255,255,255,0.9)` | `--ntp-color-on-surface` | white |
 
-Exact token values resolved in `tokens/`.
+## Variant Behavior
+
+| Variant | Background | Border | Text |
+|---|---|---|---|
+| `filled` | `--_btn-bg` | transparent | `--_btn-color` |
+| `outlined` | transparent | `--_btn-color` | `--_btn-color` |
+| `text` | transparent | transparent | `--_btn-color` |
+
+## Hover
+
+- `filled`: `filter: brightness(1.08)`.
+- `outlined` / `text`: `background-color: var(--_btn-hover-bg)`.
+
+## Focus
+
+`outline: 2px solid var(--_btn-color)` — adapts to the button's color.
+
+## Loading State
+
+- Replaces content with spinner.
+- `aria-busy="true"`.
+- `pointer-events: none`.
+- Width preserved — spinner is centered in the same button box.
 
 ## Edge Cases
 
-### Loading state preserves width
-On `loading` transition to `true`, measure button width before swapping content to spinner. Apply `min-width` and `min-height` inline.
-
-### iconOnly without ariaLabel
-Dev-mode `console.warn` if `iconOnly` is `true` and both `ariaLabel` and `ariaLabelledby` are empty.
-
-### `surface` color
-- Designed for use over images or color fills.
-- White icon/text with subtle dark scrim background (semi-transparent) for contrast.
-- Not intended for use on plain light surfaces — contrast is insufficient.
-
-## Variant Implementation
-
-All variants share padding, font, border-radius. Differ in:
-- `background-color`
-- `border-color`
-- `color`
-
-Hover/focus: semi-transparent overlay via `::after` with current color at 8-12% opacity.
-
-## Future Considerations
-
-- `href` prop: render `<a>` for link buttons.
-- Button group component: horizontal grouping with connected borders.
+- `iconOnly` + no `ariaLabel`/`ariaLabelledby` → accessibility gap. Consumer responsibility. Dev warning if needed later.
+- `disabled` + `loading` both true → loading visual wins (spinner shown, muted).
