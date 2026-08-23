@@ -15,7 +15,15 @@ NtpChip/
 
 ## Local Variables Pattern
 
-CSS uses local variables for background/border/color.
+CSS uses local variables:
+
+| Variable | Purpose |
+|---|---|
+| `--_chip-bg` | Background (tonal surface for filled, transparent for outlined) |
+| `--_chip-border` | Border color (outlined only) |
+| `--_chip-color` | Text color |
+| `--_chip-base` | Solid base color — used by dismiss button hover |
+| `--_chip-on` | On-color — text on solid base |
 
 ## Color Palette
 
@@ -34,11 +42,24 @@ CSS uses local variables for background/border/color.
 - Click emits `dismiss` — does not emit `click`.
 - `@click.stop` prevents parent chip click.
 
+### Dismiss Button Hover
+
+- Transparent at rest — merges with chip background.
+- On hover: solid circle in `--_chip-base` color, `--_chip-on` text, `brightness(1.16)`.
+- Matches the regular filled button hover appearance.
+
+## Clickable Hover
+
+| Variant | Hover Effect |
+|---|---|
+| `filled` | `background-color: color-mix(in srgb, var(--_chip-base) 25%, white)` — more pronounced than resting |
+| `outlined` | `background-color: color-mix(in srgb, var(--_chip-base) 15%, transparent)` — semi-transparent tint |
+
 ## Slots
 
 - `default`: chip content. Overrides `label` prop.
 - `leading`: content before label.
-- `trailing`: content after label. Hidden when `dismissible` also present? No — trailing renders, dismiss button after.
+- `trailing`: content after label. Dismiss button renders after.
 
 ## Edge Cases
 
