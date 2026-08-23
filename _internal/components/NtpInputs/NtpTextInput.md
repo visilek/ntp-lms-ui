@@ -1,52 +1,50 @@
 # NtpTextInput — Implementation Notes
 
-## Native Element
-Uses native `<input>`. No custom element. `type` limited to `'text' | 'password' | 'email'`.
+## Structure
 
-## Input Base Composable
-Shares visual shell with `NtpNumberInput` (and future select/autosuggest/date inputs) via a `useInputBase` composable:
-- Wrapper structure: leading slot + input + trailing slot
-- Floating label logic (focused / has-value / placeholder)
-- Hint/error display
-- State class computation (disabled, readonly, error)
+```
+NtpInputs/
+├── NtpTextInput.vue
+└── NtpTextInput.css
+```
 
-## Variants
+## Shared Composable
 
-### Filled
-- Background: `$color-surface-container-highest` or similar token
-- Border: bottom only, 1px. 2px on focus.
-- Label floated: above input, within field padding.
-- Padding: larger top padding to accommodate floated label.
-
-### Outlined
-- Background: transparent
-- Border: full outline, 1px. 2px on focus.
-- Label floated: on the top border with a notch.
-- Implementation: `<fieldset>` + `<legend>`. The floating label is the `<legend>`. Browser cuts the border around the legend automatically.
-- Notch background: the `<legend>` has a background color matching the container surface. Exposed via CSS variable `--ntp-input-notch-bg`. Consumer can override if the input sits on a non-default surface.
-- Limitation: notch is not truly transparent. Acceptable for v1 — LMS inputs sit on solid surfaces (cards, paper). If true transparency becomes necessary, migrate to split-border approach with measured label width.
-
-## Autocomplete
-- When `readonly` is `true`, force `autocomplete="off"` regardless of prop.
-- Autofill styling must be neutralized (Chrome yellow/blue background) via CSS:
-  ```scss
-  input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px transparent inset;
-    transition: background-color 9999s ease-out;
-  }
-  ```
+Uses `useInputBase` for:
+- ID generation
+- Floating label state
+- Wrapper classes
+- Error/hint support text
 
 ## Floating Label
-- Label sits inside field when empty and unfocused.
-- Shrinks and moves to top border on focus or when value is non-empty.
-- Error state: label changes to error color.
-- Empty `label` prop → no label rendered. Placeholder only.
 
-## Error vs Hint
-- `error` non-empty → show error message, hide hint.
-- Error message and label use error color.
-- Input border changes to error color.
+- CSS-only transitions.
+- `--label-floating` class from composable drives the state.
+- Filled: label floats to top inside field.
+- Outlined: label floats onto the border with notch background.
 
-## State Precedence
-- `disabled` > `readonly` > default.
-- Error styling applies on top of any state.
+## Leading Slot
+
+- Fixed 24px width.
+- `:has()` selector adjusts label offset when leading present.
+- Prevents label misalignment with arbitrary icon sizes.
+
+## Context Colors
+
+Three contexts: surface, primary, secondary.
+
+| Context | Filled Label | Outlined Label | Border |
+|---|---|---|---|
+| surface | primary when floating | primary when floating | outline → primary focused |
+| primary | primary when floating | on-primary | on-primary |
+| secondary | secondary when floating | on-secondary | on-secondary |
+
+## Error State
+
+Error always overrides context colors — uses `!important` for label and border.
+
+## Readonly
+
+- No border.
+- `cursor: default`.
+- Still focusable for selection.

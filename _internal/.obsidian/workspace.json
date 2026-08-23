@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "d00a9f711c65e649",
+        "id": "96893390a8680db2",
         "type": "tabs",
         "children": [
           {
-            "id": "742ccfe9f6d26999",
+            "id": "8c78662343c42dd3",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,9 +181,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "742ccfe9f6d26999",
+  "active": "0b4d09b8726e76e8",
   "lastOpenFiles": [
+    "components/NtpInputs/NtpTextInput.md",
     "Untitled.md",
+    "conventions/file-structure.md",
     "conventions/implementation-patterns.md",
     "conventions/styling.md",
     "conventions/component-api.md",
@@ -196,7 +198,6 @@
     "README.md",
     "conventions/dependencies.md",
     "conventions/Untitled",
-    "conventions/file-structure.md",
     "conventions/composables.md",
     "conventions/data-fetching.md",
     "conventions.md",
@@ -212,7 +213,6 @@
     "lib/latex/renderLatex.md",
     "lib/latex/v-latex.md",
     "components/NtpRichText/NtpRichText.md",
-    "components/NtpRichText/NtpRichTextFigure.md",
     "lib/latex",
     "lib",
     "components/NtpRichText",

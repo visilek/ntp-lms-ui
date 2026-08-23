@@ -1,0 +1,1 @@
+export { default as NtpTextInput } from './NtpTextInput.vue'
