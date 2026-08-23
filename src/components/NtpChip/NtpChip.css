@@ -1,8 +1,17 @@
 .ntp-chip {
+  /* Local state variables */
+  --_chip-bg: transparent;
+  --_chip-border: transparent;
+  --_chip-color: var(--ntp-color-on-surface);
+  --_chip-base: var(--ntp-color-secondary);
+  --_chip-on: var(--ntp-color-on-secondary);
+
   display: inline-flex;
   align-items: center;
   gap: var(--ntp-spacing-2);
-  border: 1px solid transparent;
+  background-color: var(--_chip-bg);
+  border: 1px solid var(--_chip-border);
+  color: var(--_chip-color);
   border-radius: var(--ntp-shape-small);
   transition: background-color 0.2s, border-color 0.2s;
   white-space: nowrap;
@@ -22,59 +31,83 @@
   font: var(--ntp-type-label-medium);
 }
 
-/* Filled variant — tonal surface */
+/* Filled — neutral default */
 .ntp-chip--filled {
-  background-color: color-mix(in srgb, var(--ntp-color-secondary) 12%, white);
-  color: color-mix(in srgb, var(--ntp-color-secondary) 70%, black);
+  --_chip-bg: color-mix(in srgb, var(--ntp-color-secondary) 12%, white);
+  --_chip-color: color-mix(in srgb, var(--ntp-color-secondary) 70%, black);
 }
 
-/* Outlined variant */
+/* Outlined — neutral default */
 .ntp-chip--outlined {
-  background-color: transparent;
-  border-color: var(--ntp-color-outline);
-  color: var(--ntp-color-on-surface);
+  --_chip-border: var(--ntp-color-outline);
 }
 
-/* Colors — filled */
+/* Color mappings — filled */
 .ntp-chip--primary.ntp-chip--filled {
-  background-color: var(--ntp-color-primary-container);
-  color: var(--ntp-color-on-primary-container);
+  --_chip-bg: var(--ntp-color-primary-container);
+  --_chip-color: var(--ntp-color-on-primary-container);
 }
 
 .ntp-chip--secondary.ntp-chip--filled {
-  background-color: var(--ntp-color-secondary-container);
-  color: var(--ntp-color-on-secondary-container);
+  --_chip-bg: var(--ntp-color-secondary-container);
+  --_chip-color: var(--ntp-color-on-secondary-container);
 }
 
 .ntp-chip--tertiary.ntp-chip--filled {
-  background-color: var(--ntp-color-tertiary-container);
-  color: var(--ntp-color-on-tertiary-container);
+  --_chip-bg: var(--ntp-color-tertiary-container);
+  --_chip-color: var(--ntp-color-on-tertiary-container);
 }
 
 .ntp-chip--error.ntp-chip--filled {
-  background-color: var(--ntp-color-error-container);
-  color: var(--ntp-color-on-error-container);
+  --_chip-bg: var(--ntp-color-error-container);
+  --_chip-color: var(--ntp-color-on-error-container);
 }
 
-/* Colors — outlined */
+/* Color mappings — outlined */
 .ntp-chip--primary.ntp-chip--outlined {
-  border-color: var(--ntp-color-primary);
-  color: var(--ntp-color-primary);
+  --_chip-border: var(--ntp-color-primary);
+  --_chip-color: var(--ntp-color-primary);
 }
 
 .ntp-chip--secondary.ntp-chip--outlined {
-  border-color: var(--ntp-color-secondary);
-  color: var(--ntp-color-secondary);
+  --_chip-border: var(--ntp-color-secondary);
+  --_chip-color: var(--ntp-color-secondary);
 }
 
 .ntp-chip--tertiary.ntp-chip--outlined {
-  border-color: var(--ntp-color-tertiary);
-  color: var(--ntp-color-tertiary);
+  --_chip-border: var(--ntp-color-tertiary);
+  --_chip-color: var(--ntp-color-tertiary);
 }
 
 .ntp-chip--error.ntp-chip--outlined {
-  border-color: var(--ntp-color-error);
-  color: var(--ntp-color-error);
+  --_chip-border: var(--ntp-color-error);
+  --_chip-color: var(--ntp-color-error);
+}
+
+/* Solid base + on colors for dismiss button hover */
+.ntp-chip--primary {
+  --_chip-base: var(--ntp-color-primary);
+  --_chip-on: var(--ntp-color-on-primary);
+}
+
+.ntp-chip--secondary {
+  --_chip-base: var(--ntp-color-secondary);
+  --_chip-on: var(--ntp-color-on-secondary);
+}
+
+.ntp-chip--tertiary {
+  --_chip-base: var(--ntp-color-tertiary);
+  --_chip-on: var(--ntp-color-on-tertiary);
+}
+
+.ntp-chip--error {
+  --_chip-base: var(--ntp-color-error);
+  --_chip-on: var(--ntp-color-on-error);
+}
+
+.ntp-chip--neutral {
+  --_chip-base: var(--ntp-color-secondary);
+  --_chip-on: var(--ntp-color-on-secondary);
 }
 
 /* Clickable */
@@ -82,8 +115,15 @@
   cursor: pointer;
 }
 
-.ntp-chip--clickable:hover:not(.ntp-chip--disabled) {
-  filter: brightness(0.95);
+/* Filled clickable hover — more pronounced color */
+.ntp-chip--clickable.ntp-chip--filled:hover:not(.ntp-chip--disabled) {
+  background-color: color-mix(in srgb, var(--_chip-base) 25%, white);
+  filter: none;
+}
+
+/* Outlined clickable hover — semi-transparent tint */
+.ntp-chip--clickable.ntp-chip--outlined:hover:not(.ntp-chip--disabled) {
+  background-color: color-mix(in srgb, var(--_chip-base) 15%, transparent);
 }
 
 .ntp-chip--clickable:focus-visible {
@@ -111,10 +151,15 @@
   font-size: 16px;
   line-height: 1;
   color: inherit;
+  transition: background-color var(--ntp-duration-short) var(--ntp-easing-standard),
+              color var(--ntp-duration-short) var(--ntp-easing-standard),
+              filter var(--ntp-duration-short) var(--ntp-easing-standard);
 }
 
 .ntp-chip__dismiss:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: var(--_chip-base);
+  color: var(--_chip-on);
+  filter: brightness(1.16);
 }
 
 .ntp-chip__dismiss:disabled {
