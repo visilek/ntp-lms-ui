@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { ButtonVariant, ButtonColor, ButtonSize } from '@ntp-lms-ui/lib/types/button'
 
-// 1. Type aliases
-type ButtonVariant = 'filled' | 'outlined' | 'text'
-type ButtonColor = 'primary' | 'secondary' | 'tertiary' | 'error' | 'on-surface-variant' | 'surface'
-type ButtonSize = 'small' | 'medium' | 'large'
-
-// 2. Default constants
+// Default constants
 const defaultVariant: ButtonVariant = 'filled'
 const defaultColor: ButtonColor = 'primary'
 const defaultSize: ButtonSize = 'medium'
 
-// 3. Props interface
+// Props interface
 interface Props {
   variant?: ButtonVariant
   color?: ButtonColor
@@ -24,7 +20,6 @@ interface Props {
   ariaLabelledby?: string
 }
 
-// 4. Destructured props
 const {
   variant = defaultVariant,
   color = defaultColor,
@@ -61,19 +56,9 @@ function onClick(event: MouseEvent): void {
 </script>
 
 <template>
-  <button
-    type="button"
-    :class="buttonClasses"
-    :disabled="disabled || loading"
-    :aria-label="ariaLabel || undefined"
-    :aria-labelledby="ariaLabelledby || undefined"
-    :aria-busy="loading || undefined"
-    @click="onClick"
-  >
-    <span
-      class="ntp-button__content"
-      :class="{ 'ntp-button__content--hidden': loading }"
-    >
+  <button type="button" :class="buttonClasses" :disabled="disabled || loading" :aria-label="ariaLabel || undefined"
+    :aria-labelledby="ariaLabelledby || undefined" :aria-busy="loading || undefined" @click="onClick">
+    <span class="ntp-button__content" :class="{ 'ntp-button__content--hidden': loading }">
       <slot />
     </span>
 

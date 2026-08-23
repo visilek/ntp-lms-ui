@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import NtpSpinner from '../../src/components/NtpSpinner/NtpSpinner.vue'
+import { SPINNER_SIZES, SPINNER_COLORS } from '../../src/lib/types/spinner'
 
 const meta: Meta<typeof NtpSpinner> = {
   title: 'Components/NtpSpinner',
@@ -7,11 +8,11 @@ const meta: Meta<typeof NtpSpinner> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: [...SPINNER_SIZES],
     },
     color: {
       control: 'select',
-      options: ['primary', 'on-surface-variant', 'surface'],
+      options: [...SPINNER_COLORS],
     },
   },
 }

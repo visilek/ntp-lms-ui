@@ -58,29 +58,52 @@ const classes = computed(() => [
 
 **Rule:** Always apply `|| defaultConstant` for enum props in class computations.
 
+## Shared Type Constants
+
+For enum props used by 2+ components or fundamental patterns:
+
+- Runtime array: `UPPER_SNAKE_CASE` — `BUTTON_VARIANTS`
+- Type: PascalCase — `ButtonVariant`
+
+```ts
+export const BUTTON_VARIANTS = ['filled', 'outlined', 'text'] as const
+export type ButtonVariant = (typeof BUTTON_VARIANTS)[number]
+```
+
+Location: `src/lib/types/<domain>.ts`
+
+Component-specific types used by one component only → local to `.vue` file.
+
 ## Prop Declaration Order
 
 In `<script setup>`, declare props in this order:
 
-1. Type aliases
-2. Default constants
-3. Props interface
-4. Destructured props
+1. Imports (type aliases from `lib/types/`)
+2. Local type aliases (component-specific)
+3. Default constants
+4. Props interface
+5. Destructured props
 
 ```ts
-// 1. Type aliases
-type ButtonVariant = 'filled' | 'outlined' | 'text'
+// 1. Imports
+import type { ButtonVariant } from '@ntp-lms-ui/lib/types/button'
 
-// 2. Default constants
+// 2. Local type aliases
+type ButtonColor = 'primary' | 'secondary' | 'error'
+
+// 3. Default constants
 const defaultVariant: ButtonVariant = 'filled'
+const defaultColor: ButtonColor = 'primary'
 
-// 3. Props interface
+// 4. Props interface
 interface Props {
   variant?: ButtonVariant
+  color?: ButtonColor
 }
 
-// 4. Destructured props
+// 5. Destructured props
 const {
   variant = defaultVariant,
+  color = defaultColor,
 } = defineProps<Props>()
-```
+

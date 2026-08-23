@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import NtpChip from '../../src/components/NtpChip/NtpChip.vue'
+import { CHIP_VARIANTS, CHIP_COLORS, CHIP_SIZES } from '../../src/lib/types/chip'
 
 const meta: Meta<typeof NtpChip> = {
   title: 'Components/NtpChip',
@@ -7,15 +8,15 @@ const meta: Meta<typeof NtpChip> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['filled', 'outlined'],
+      options: [...CHIP_VARIANTS],
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'error', 'neutral'],
+      options: [...CHIP_COLORS],
     },
     size: {
       control: 'select',
-      options: ['small', 'medium'],
+      options: [...CHIP_SIZES],
     },
   },
 }

@@ -24,15 +24,15 @@
   --ntp-color-on-error-container: hsl(0, 66%, 20%);
 
   /* Surface */
-  --ntp-color-surface: hsl(48, 10%, 90%);
+  --ntp-color-surface: hsl(48, 10%, 96%);
   --ntp-color-on-surface: hsl(48, 10%, 12%);
   --ntp-color-on-surface-variant: hsl(48, 8%, 40%);
   --ntp-color-outline: hsl(48, 8%, 75%);
 
   /* Surface containers */
   --ntp-color-surface-container-lowest: hsl(48, 10%, 95%);
-  --ntp-color-surface-container-low: hsl(48, 10%, 92%);
-  --ntp-color-surface-container: hsl(48, 10%, 90%);
-  --ntp-color-surface-container-high: hsl(48, 10%, 87%);
-  --ntp-color-surface-container-highest: hsl(48, 10%, 84%);
+  --ntp-color-surface-container-low: hsl(48, 10%, 94%);
+  --ntp-color-surface-container: hsl(48, 10%, 92%);
+  --ntp-color-surface-container-high: hsl(48, 10%, 90%);
+  --ntp-color-surface-container-highest: hsl(48, 10%, 88%);
 }

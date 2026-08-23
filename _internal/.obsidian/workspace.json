@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e9fa96dca24a7ce7",
+        "id": "d00a9f711c65e649",
         "type": "tabs",
         "children": [
           {
-            "id": "fb698115578db45b",
+            "id": "742ccfe9f6d26999",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,22 +181,23 @@
       "bases:Create new base": false
     }
   },
-  "active": "fb698115578db45b",
+  "active": "742ccfe9f6d26999",
   "lastOpenFiles": [
+    "Untitled.md",
+    "conventions/implementation-patterns.md",
+    "conventions/styling.md",
+    "conventions/component-api.md",
+    "conventions/commit-messages.md",
+    "conventions/naming.md",
+    "conventions/README.md",
     "components/NtpChip.md",
     "components/NtpButton.md",
-    "conventions/README.md",
-    "conventions/implementation-patterns.md",
-    "conventions/component-api.md",
-    "Untitled.md",
     "components/NtpSpinner.md",
     "README.md",
     "conventions/dependencies.md",
-    "conventions/naming.md",
     "conventions/Untitled",
     "conventions/file-structure.md",
     "conventions/composables.md",
-    "conventions/styling.md",
     "conventions/data-fetching.md",
     "conventions.md",
     "conventions",
@@ -215,7 +216,6 @@
     "lib/latex",
     "lib",
     "components/NtpRichText",
-    "components/NtpDrawer/NtpDrawerItem.md",
     "components/NtpDrawer",
     "components/NtpDialog",
     "components/NtpCard"

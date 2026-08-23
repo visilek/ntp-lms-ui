@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { ChipVariant, ChipColor, ChipSize } from '@ntp-lms-ui/lib/types/chip'
 
-// 1. Type aliases
-type ChipVariant = 'filled' | 'outlined'
-type ChipColor = 'primary' | 'secondary' | 'tertiary' | 'error' | 'neutral'
-type ChipSize = 'small' | 'medium'
-
-// 2. Default constants
 const defaultVariant: ChipVariant = 'filled'
 const defaultColor: ChipColor = 'neutral'
 const defaultSize: ChipSize = 'medium'
 
-// 3. Props interface
 interface Props {
   label?: string
   variant?: ChipVariant
@@ -22,7 +16,6 @@ interface Props {
   clickable?: boolean
 }
 
-// 4. Destructured props
 const {
   label = '',
   variant = defaultVariant,
@@ -62,13 +55,8 @@ function onDismiss(): void {
 </script>
 
 <template>
-  <component
-    :is="clickable ? 'button' : 'span'"
-    :class="chipClasses"
-    :disabled="clickable && disabled ? true : undefined"
-    :type="clickable ? 'button' : undefined"
-    @click="onClick"
-  >
+  <component :is="clickable ? 'button' : 'span'" :class="chipClasses"
+    :disabled="clickable && disabled ? true : undefined" :type="clickable ? 'button' : undefined" @click="onClick">
     <span v-if="$slots.leading" class="ntp-chip__leading">
       <slot name="leading" />
     </span>
@@ -81,14 +69,8 @@ function onDismiss(): void {
       <slot name="trailing" />
     </span>
 
-    <button
-      v-if="dismissible"
-      type="button"
-      class="ntp-chip__dismiss"
-      :aria-label="label ? `Remove ${label}` : 'Remove'"
-      :disabled="disabled"
-      @click.stop="onDismiss"
-    >
+    <button v-if="dismissible" type="button" class="ntp-chip__dismiss"
+      :aria-label="label ? `Remove ${label}` : 'Remove'" :disabled="disabled" @click.stop="onDismiss">
       <span aria-hidden="true">×</span>
     </button>
   </component>

@@ -2,9 +2,10 @@
 
 ## Tokens
 
-- All values reference tokens from `tokens/` via CSS custom properties.
-- No magic numbers (`padding: 12px` → `padding: var(--ntp-spacing-4)`).
-- Elevation, spacing, typography follow Material Design 3 scale.
+- All spacing/sizing/typography values reference tokens from `tokens/`.
+- No magic numbers for spacing (`padding: 12px` → `padding: var(--ntp-spacing-4)`).
+- Percentages in `color-mix()` are acceptable as color state definitions.
+- Elevation, spacing, typography follow MD3 scale.
 
 ## Component CSS Files
 
@@ -37,23 +38,73 @@ When drafting component CSS, evaluate the use of local variables (`--_component-
 
 ### Pattern
 
+Base class defines **how** styles are applied (reads variables). Modifier classes define **what** values to use (sets variables).
+
 ```css
 .component {
   /* Local state variables */
-  --_comp-bg: transparent;
-  --_comp-border: transparent;
-  --_comp-color: var(--ntp-color-on-surface);
+  --_comp-base: var(--ntp-color-on-surface);
+  --_comp-on: var(--ntp-color-surface);
+  --_comp-hover-bg: transparent;
+  --_comp-hover-stroke: transparent;
 
-  background-color: var(--_comp-bg);
-  border: 1px solid var(--_comp-border);
-  color: var(--_comp-color);
+  background-color: transparent;
+  border: 1px solid var(--_comp-hover-stroke);
+  color: var(--_comp-base);
 }
 
-/* Modifier classes set the variables */
 .component--primary {
-  --_comp-bg: var(--ntp-color-primary);
-  --_comp-color: var(--ntp-color-on-primary);
+  --_comp-base: var(--ntp-color-primary);
+  --_comp-on: var(--ntp-color-on-primary);
+  --_comp-hover-bg: var(--ntp-color-primary-container);
 }
 ```
 
-Base class defines **how** styles are applied. Modifier classes define **what** values to use.
+### Color Pattern
+
+For color variants, two core variables:
+
+- `--_comp-base` — the color itself.
+- `--_comp-on` — text on that color.
+
+Filled uses `base` for background, `on` for text.
+Outlined/text use `base` for text and border.
+
+## color-mix() Derivation
+
+Derive tints and transparent variants from base colors:
+
+```css
+/* Container tint — color + white */
+background-color: color-mix(in srgb, var(--ntp-color-primary) 12%, white);
+
+/* Translucent hover — color + transparent */
+background-color: color-mix(in srgb, var(--_comp-base) 75%, transparent);
+
+/* Dynamic tint — follows current text color */
+background-color: color-mix(in srgb, currentColor 12%, transparent);
+```
+
+Always derive from a variable or `currentColor` — never hardcode derived colors.
+
+## Specificity and Overrides
+
+When a variant needs different hover/pressed behavior:
+
+- Use higher specificity (two classes) for the override.
+- Exclude the special variant from the generic rule with `:not()`.
+- Use `var(--fallback)` for optional variables.
+
+## Motion
+
+Use motion tokens from `tokens/motion.css`:
+
+- `--ntp-duration-short` (150ms), `--ntp-duration-medium` (250ms), `--ntp-duration-long` (400ms)
+- `--ntp-easing-standard`, `--ntp-easing-decelerated`, `--ntp-easing-accelerated`
+
+### Pressed State
+
+- Regular buttons: border-radius full → medium.
+- Icon-only buttons: `transform: scale(0.92)`.
+- Surface buttons: transparency increase.
+- Uses `decelerated` easing.

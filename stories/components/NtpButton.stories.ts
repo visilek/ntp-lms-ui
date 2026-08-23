@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
+import { BUTTON_VARIANTS, BUTTON_COLORS, BUTTON_SIZES } from '../../src/lib/types/button'
 
 const meta: Meta<typeof NtpButton> = {
   title: 'Components/NtpButton',
@@ -7,15 +8,15 @@ const meta: Meta<typeof NtpButton> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['filled', 'outlined', 'text'],
+      options: [...BUTTON_VARIANTS],
     },
     color: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'error', 'on-surface-variant', 'surface'],
+      options: [...BUTTON_COLORS],
     },
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: [...BUTTON_SIZES],
     },
   },
 }

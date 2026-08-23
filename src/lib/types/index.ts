@@ -1,3 +1,7 @@
+export * from './button'
+export * from './chip'
 export * from './dropdown'
 export * from './figure'
+export * from './input'
+export * from './spinner'
 export * from './table'
