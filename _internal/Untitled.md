@@ -1,34 +1,203 @@
-| Token | Value |
-|---|---|
-| Primary | `hsl(193, 44%, 40%)` |
-| Secondary | `hsl(48, 11%, 40%)` |
-| Tertiary | `hsl(345, 44%, 40%)` |
-| Error | `hsl(0, 66%, 40%)` |
-
-
-| Token | Derivation | Verdict |
-|---|---|
-| `on-primary`, `on-secondary`, `on-tertiary`, `on-error` | White | Agreed |
-| `primary-container`, etc. | `color-mix()` — 10-12% of base + surface | We shouldn't use surface for mixing, since it has it's own hue. Mix with white |
-| `on-*-container` | Dark text or darkened base | Darkened Base |
-| `surface` | Your `hsl(47, 10%, 90%)`? | `hsl(48, 10%, 90%)` for consistency with secondary |
-| `on-surface` | Dark text — what value? | Choose the optimal color preserving hue=48 (make sure it can be displayed correctly in the browser.) |
-| `on-surface-variant` | Muted text | Choose the optimal color preserving hue=48 (make sure it can be displayed correctly in the browser.) |
-| `outline` | Border color | I need 
-| `surface-container-*` | Elevated surface variants |
+`_internal/conventions/component-api.md` — Update
 
 ---
 
-## Questions
+`_internal/conventions/styling.md` — Update
 
-1. **Surface** — keep your `hsl(47, 10%, 90%)` as the base surface? Or adjust?
+## Local Variable Color Pattern
 
-2. **On-surface (body text)** — dark warm gray? Something like `hsl(47, 10%, 15%)`? Or pure near-black?
+When a component has color variants, use two variables:
 
-3. **On-surface-variant (muted text)** — lighter gray, like `hsl(47, 8%, 40%)`?
+```css
+.component {
+  --_comp-base: var(--ntp-color-on-surface);  /* the color itself */
+  --_comp-on: var(--ntp-color-surface);       /* text on that color */
+}
 
-4. **Outline** — `hsl(47, 8%, 75%)`?
+.component--primary {
+  --_comp-base: var(--ntp-color-primary);
+  --_comp-on: var(--ntp-color-on-primary);
+}
 
-5. **Container tints** — use `color-mix()` dynamically, or hardcode values?
+/* Filled: bg = base, text = on */
+.component--filled {
+  background-color: var(--_comp-base);
+  color: var(--_comp-on);
+}
 
-What are your preferences?
+/* Outlined/text: text = base */
+.component--outlined {
+  border-color: var(--_comp-base);
+  color: var(--_comp-base);
+}
+```
+
+## Motion
+
+Use motion tokens from `tokens/motion.css`:
+
+- `--ntp-duration-short` (150ms), `--ntp-duration-medium` (250ms), `--ntp-duration-long` (400ms)
+- `--ntp-easing-standard`, `--ntp-easing-decelerated` (fast start, slow end), `--ntp-easing-accelerated`
+
+Pressed state uses `decelerated` easing.
+
+---
+
+`_internal/conventions/component-api.md` — Add Loading Pattern
+
+## Loading State Width Preservation
+
+When a component shows a loading state replacing content:
+
+- Keep content in DOM with `visibility: hidden`.
+- Overlay spinner absolutely positioned and centered.
+- Component width/height remains stable — no layout shift.
+
+---
+
+`_internal/conventions/styling.md` — Add Pressed State
+
+## Pressed State
+
+`:active` changes border-radius from full to medium.
+
+```css
+.component:active {
+  border-radius: var(--ntp-shape-medium);
+}
+```
+
+Transition: `--ntp-duration-short` + `--ntp-easing-decelerated`.
+
+---
+
+`docs/tokens.md` — Update
+
+Add motion tokens section.
+
+---
+
+`_internal/conventions/component-api.md`
+
+## Vue 3.5 Destructured Props with Default Constants
+
+Use destructured props. For enum string props with defaults used more than once, define local camelCase constants.
+
+```ts
+const defaultVariant = 'filled'
+const defaultColor = 'primary'
+
+const {
+  variant = defaultVariant,
+  color = defaultColor,
+} = defineProps<Props>()
+
+const classes = computed(() => [
+  `component--${variant || defaultVariant}`,
+  `component--${color || defaultColor}`,
+])
+```
+
+Rationale:
+- Destructured defaults handle `undefined` but not `''`.
+- The `||` fallback catches empty strings.
+- Named constants avoid duplicating magic strings.
+- Boolean defaults (`false`) don't need constants.
+
+## Loading State Width Preservation
+
+When a loading state replaces content:
+
+- Keep content in DOM with `visibility: hidden`.
+- Overlay spinner absolutely positioned and centered.
+- Component width remains stable — no layout shift.
+
+---
+
+`_internal/conventions/styling.md`
+
+## Local Variable Color Pattern
+
+When a component has color variants, use two variables:
+
+```css
+.component {
+  --_comp-base: var(--ntp-color-on-surface);  /* the color itself */
+  --_comp-on: var(--ntp-color-surface);       /* text on that color */
+}
+
+.component--primary {
+  --_comp-base: var(--ntp-color-primary);
+  --_comp-on: var(--ntp-color-on-primary);
+}
+
+/* Filled: bg = base, text = on */
+.component--filled {
+  background-color: var(--_comp-base);
+  color: var(--_comp-on);
+}
+
+/* Outlined/text: text = base */
+.component--outlined {
+  border-color: var(--_comp-base);
+  color: var(--_comp-base);
+}
+```
+
+## Motion Tokens
+
+Use tokens from `tokens/motion.css`:
+
+- `--ntp-duration-short` (150ms), `--ntp-duration-medium` (250ms), `--ntp-duration-long` (400ms)
+- `--ntp-easing-standard`
+- `--ntp-easing-decelerated` (fast start, slow end)
+- `--ntp-easing-accelerated`
+
+## Pressed State
+
+`:active` changes border-radius from full to medium.
+
+```css
+.component:active {
+  border-radius: var(--ntp-shape-medium);
+}
+```
+
+Transition: `--ntp-duration-short` + `--ntp-easing-decelerated`.
+```
+
+---
+
+## 3. Update `docs/tokens.md`
+
+Add motion tokens section:
+
+```md
+## Motion
+
+| Token | Value |
+|---|---|
+| `--ntp-duration-short` | 150ms |
+| `--ntp-duration-medium` | 250ms |
+| `--ntp-duration-long` | 400ms |
+| `--ntp-easing-standard` | cubic-bezier(0.2, 0, 0, 1) |
+| `--ntp-easing-decelerated` | cubic-bezier(0, 0, 0.2, 1) |
+| `--ntp-easing-accelerated` | cubic-bezier(0.3, 0, 1, 1) |
+```
+
+---
+
+## 4. Verify Tests Still Pass
+
+```bash
+npm run test:run
+```
+
+---
+
+## 5. Commit
+
+```bash
+git add .
+git commit -m "feat: NtpButton, NtpSpinner, NtpChip + Storybook setup + motion tokens"
+```

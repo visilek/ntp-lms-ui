@@ -56,6 +56,20 @@ import { NtpButton } from 'ntp-lms-ui'
 | `on-surface-variant` | Neutral icon buttons. Muted gray. |
 | `surface` | White icon over media or color fill. |
 
+## States
+
+### Pressed
+
+- Regular buttons: border radius flattens from full to medium on press.
+- Icon-only buttons: scale down slightly (0.92) on press.
+- Quick transition (150ms, decelerated easing).
+
+### Loading
+
+- Content stays in DOM, hidden with `visibility: hidden`.
+- Spinner overlays centered.
+- Button width preserved — no layout shift.
+
 ## Usage Examples
 
 ### Basic

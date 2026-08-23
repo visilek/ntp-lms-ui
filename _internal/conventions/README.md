@@ -4,7 +4,8 @@ Coding and design conventions for the UI kit.
 
 | File | Concern |
 |---|---|
-| `component-api.md` | Props, events, slots design |
+| `component-api.md` | Props, events, slots, Vue 3.5 destructured props |
+| `implementation-patterns.md` | Internal implementation patterns (loading states, etc.) |
 | `data-fetching.md` | Display vs interactive components |
 | `styling.md` | Tokens, CSS patterns |
 | `composables.md` | useX naming |

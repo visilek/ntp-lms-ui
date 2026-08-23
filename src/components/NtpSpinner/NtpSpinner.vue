@@ -1,20 +1,30 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+// 1. Type aliases
+type SpinnerSize = 'small' | 'medium' | 'large'
+type SpinnerColor = 'primary' | 'on-surface-variant' | 'surface'
+
+// 2. Default constants
+const defaultSize: SpinnerSize = 'medium'
+const defaultColor: SpinnerColor = 'primary'
+
+// 3. Props interface
 interface Props {
-  size?: 'small' | 'medium' | 'large'
-  color?: 'primary' | 'on-surface-variant' | 'surface'
+  size?: SpinnerSize
+  color?: SpinnerColor
 }
 
+// 4. Destructured props
 const {
-  size = 'medium',
-  color = 'primary',
+  size = defaultSize,
+  color = defaultColor,
 } = defineProps<Props>()
 
 const spinnerClasses = computed(() => [
   'ntp-spinner',
-  `ntp-spinner--${size}`,
-  `ntp-spinner--${color}`,
+  `ntp-spinner--${size || defaultSize}`,
+  `ntp-spinner--${color || defaultColor}`,
 ])
 </script>
 

@@ -1,0 +1,10 @@
+:root {
+  /* Motion durations */
+  --ntp-duration-short: 150ms;
+  --ntp-duration-medium: 250ms;
+  --ntp-duration-long: 400ms;
+
+  /* Motion easing */
+  --ntp-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ntp-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}

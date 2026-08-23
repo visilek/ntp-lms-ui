@@ -1,21 +1,33 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+// 1. Type aliases
+type ChipVariant = 'filled' | 'outlined'
+type ChipColor = 'primary' | 'secondary' | 'tertiary' | 'error' | 'neutral'
+type ChipSize = 'small' | 'medium'
+
+// 2. Default constants
+const defaultVariant: ChipVariant = 'filled'
+const defaultColor: ChipColor = 'neutral'
+const defaultSize: ChipSize = 'medium'
+
+// 3. Props interface
 interface Props {
   label?: string
-  variant?: 'filled' | 'outlined'
-  color?: 'primary' | 'secondary' | 'tertiary' | 'error' | 'neutral'
-  size?: 'small' | 'medium'
+  variant?: ChipVariant
+  color?: ChipColor
+  size?: ChipSize
   dismissible?: boolean
   disabled?: boolean
   clickable?: boolean
 }
 
+// 4. Destructured props
 const {
   label = '',
-  variant = 'filled',
-  color = 'neutral',
-  size = 'medium',
+  variant = defaultVariant,
+  color = defaultColor,
+  size = defaultSize,
   dismissible = false,
   disabled = false,
   clickable = false,
@@ -28,9 +40,9 @@ const emit = defineEmits<{
 
 const chipClasses = computed(() => [
   'ntp-chip',
-  `ntp-chip--${variant}`,
-  `ntp-chip--${color}`,
-  `ntp-chip--${size}`,
+  `ntp-chip--${variant || defaultVariant}`,
+  `ntp-chip--${color || defaultColor}`,
+  `ntp-chip--${size || defaultSize}`,
   {
     'ntp-chip--clickable': clickable,
     'ntp-chip--disabled': disabled,

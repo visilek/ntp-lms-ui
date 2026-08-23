@@ -11,10 +11,14 @@
             "id": "6e8543f7bf33053b",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "components/NtpButton.md",
+                "mode": "preview",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "NtpButton"
             }
           }
         ]

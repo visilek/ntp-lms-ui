@@ -45,8 +45,17 @@ Color classes set the variables. Variant classes define how they're used.
 
 ## Hover
 
-- `filled`: `filter: brightness(1.08)`.
-- `outlined` / `text`: `background-color: var(--_btn-hover-bg)`.
+| Variant | Styling |
+| --- | --- |
+|`filled` | `filter: brightness(1.16)` |
+| `outlined` / `text`| `background-color: var(--_btn-hover-bg)` |
+
+### Surface Hover
+
+| Variant | Styling |
+| --- | --- |
+| `filled` | background becomes more transparent (reveals underlying content) |
+| `outlined`/`text` | dark text & outline + translucent fill |
 
 ## Focus
 
@@ -58,6 +67,18 @@ Color classes set the variables. Variant classes define how they're used.
 - `aria-busy="true"`.
 - `pointer-events: none`.
 - Width preserved — spinner is centered in the same button box.
+
+## Pressed State
+
+```css
+.ntp-button:active:not(.ntp-button--disabled):not(.ntp-button--loading):not(.ntp-button--icon-only) {
+  border-radius: var(--ntp-shape-medium);
+}
+
+.ntp-button--icon-only:active:not(.ntp-button--disabled):not(.ntp-button--loading) {
+  transform: scale(0.92);
+}
+```
 
 ## Edge Cases
 

@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+// 1. Type aliases
+type ButtonVariant = 'filled' | 'outlined' | 'text'
+type ButtonColor = 'primary' | 'secondary' | 'tertiary' | 'error' | 'on-surface-variant' | 'surface'
+type ButtonSize = 'small' | 'medium' | 'large'
+
+// 2. Default constants
+const defaultVariant: ButtonVariant = 'filled'
+const defaultColor: ButtonColor = 'primary'
+const defaultSize: ButtonSize = 'medium'
+
+// 3. Props interface
 interface Props {
-  variant?: 'filled' | 'outlined' | 'text'
-  color?: 'primary' | 'secondary' | 'tertiary' | 'error' | 'on-surface-variant' | 'surface'
-  size?: 'small' | 'medium' | 'large'
+  variant?: ButtonVariant
+  color?: ButtonColor
+  size?: ButtonSize
   disabled?: boolean
   loading?: boolean
   block?: boolean
@@ -13,10 +24,11 @@ interface Props {
   ariaLabelledby?: string
 }
 
+// 4. Destructured props
 const {
-  variant = 'filled',
-  color = 'primary',
-  size = 'medium',
+  variant = defaultVariant,
+  color = defaultColor,
+  size = defaultSize,
   disabled = false,
   loading = false,
   block = false,
@@ -31,9 +43,9 @@ const emit = defineEmits<{
 
 const buttonClasses = computed(() => [
   'ntp-button',
-  `ntp-button--${variant}`,
-  `ntp-button--${color}`,
-  `ntp-button--${size}`,
+  `ntp-button--${variant || defaultVariant}`,
+  `ntp-button--${color || defaultColor}`,
+  `ntp-button--${size || defaultSize}`,
   {
     'ntp-button--block': block,
     'ntp-button--icon-only': iconOnly,
@@ -58,13 +70,17 @@ function onClick(event: MouseEvent): void {
     :aria-busy="loading || undefined"
     @click="onClick"
   >
+    <span
+      class="ntp-button__content"
+      :class="{ 'ntp-button__content--hidden': loading }"
+    >
+      <slot />
+    </span>
+
     <span v-if="loading" class="ntp-button__spinner" aria-hidden="true">
       <slot name="loading">
         <span class="ntp-button__spinner-default" />
       </slot>
-    </span>
-    <span v-else class="ntp-button__content">
-      <slot />
     </span>
   </button>
 </template>
