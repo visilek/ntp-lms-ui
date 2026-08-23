@@ -47,4 +47,4 @@ Pattern: `--ntp-{category}-{role}`
 
 ## Source
 
-Token definitions live in `src/tokens/`. The CSS files are the source of truth.
+Token definitions live in `src/_tokens/`. The CSS files are the source of truth.

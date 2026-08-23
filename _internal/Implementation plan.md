@@ -18,8 +18,8 @@ Good. Let me outline the implementation plan.
 
 | Step | Deliverable | Dependencies |
 |---|---|---|
-| 1.1 | `tokens/` — colors, typography, spacing, elevation SCSS variables | None |
-| 1.2 | `base/` — reset, global, spacing utilities | Tokens |
+| 1.1 | `_tokens/` — colors, typography, spacing, elevation SCSS variables | None |
+| 1.2 | `_base/` — reset, global, spacing utilities | Tokens |
 | 1.3 | `lib/` — shared types, dropdown strategy, constants | None |
 
 **Exit criteria:** Token values locked. Utilities usable. Storybook renders a token reference page.

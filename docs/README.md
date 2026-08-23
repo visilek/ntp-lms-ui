@@ -15,7 +15,7 @@ Custom UI component library for the NTP LMS platform. Used by both Teacher and S
 // main.ts
 import { createApp } from 'vue'
 import uiKit from '@/shared/ui'
-import '@/shared/ui/base/index.scss'
+import '@/shared/ui/_base/index.scss'
 
 const app = createApp(App)
 app.use(uiKit)

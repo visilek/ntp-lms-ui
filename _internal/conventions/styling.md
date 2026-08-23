@@ -2,7 +2,7 @@
 
 ## Tokens
 
-- All spacing/sizing/typography values reference tokens from `tokens/`.
+- All spacing/sizing/typography values reference tokens from `_tokens/`.
 - No magic numbers for spacing (`padding: 12px` → `padding: var(--ntp-spacing-4)`).
 - Percentages in `color-mix()` are acceptable as color state definitions.
 - Elevation, spacing, typography follow MD3 scale.
@@ -17,7 +17,7 @@ Separate CSS files in the component folder, imported scoped via `src`.
 
 ## Global Styles
 
-No global styles except in `base/`.
+No global styles except in `_base/`.
 
 ## CSS Local Variables
 
@@ -97,7 +97,7 @@ When a variant needs different hover/pressed behavior:
 
 ## Motion
 
-Use motion tokens from `tokens/motion.css`:
+Use motion tokens from `_tokens/motion.css`:
 
 - `--ntp-duration-short` (150ms), `--ntp-duration-medium` (250ms), `--ntp-duration-long` (400ms)
 - `--ntp-easing-standard`, `--ntp-easing-decelerated`, `--ntp-easing-accelerated`

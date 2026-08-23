@@ -1,6 +1,6 @@
 // Styles
-import './tokens/index.css'
-import './base/index.css'
+import './_tokens/index.css'
+import './_base/index.css'
 
 // Library exports
 export * from './lib'

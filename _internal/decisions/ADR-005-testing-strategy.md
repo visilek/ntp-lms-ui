@@ -32,7 +32,7 @@ Automated accessibility scanning via the Storybook axe addon. Catches missing ar
 
 ### Layer 4: Token consistency
 
-Enforce via linting rules and code review. No magic numbers in component CSS. All values reference tokens from `src/tokens/`.
+Enforce via linting rules and code review. No magic numbers in component CSS. All values reference tokens from `src/_tokens/`.
 
 ## Rationale
 
