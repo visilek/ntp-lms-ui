@@ -1,19 +1,40 @@
 # NtpToggle — Implementation Notes
 
-## Native Element
-Uses `<input type="checkbox" role="switch">`. The `role="switch"` is critical for screen reader semantics — it communicates on/off state rather than checked/unchecked.
+## Structure
 
-## readonly
-Same as checkbox: no native readonly. Intercept interaction when readonly is true.
+```
+NtpInputs/
+├── NtpToggle.vue
+└── NtpToggle.css
+```
 
-## Styling
-- Visually hides the native checkbox.
-- Renders a track (rounded rectangle) and a thumb (circle).
-- Track color changes based on checked state.
-- Thumb translates horizontally on state change.
-- Transition: `transform $duration-short $easing-standard` on thumb, `background-color` on track.
+## Rendering
 
-## Accessibility
-- `aria-checked` is handled natively by the checkbox.
-- Ensure the thumb has sufficient contrast against the track in both states.
-- Focus ring visible via `:focus-visible`.
+- Hidden native input (`position: absolute; opacity: 0`).
+- Visual track + thumb as separate spans.
+- Transitions on track and thumb.
+
+## MD3 Dimensions
+
+| Element | Value |
+|---|---|
+| Track | 52×32px |
+| Thumb (unselected) | 16×16px, left 6px |
+| Thumb (selected) | 24×24px, left 20px |
+
+## Label Position
+
+| Position | Layout |
+|---|---|
+| left (default) | `Label [switch]` |
+| right | `[switch] Label` — full-width |
+
+## Readonly
+
+No native readonly on checkboxes. Intercept click with `preventDefault`.
+
+## Transitions
+
+- Track: background-color, border-color.
+- Thumb: left, width, height, background-color.
+- Uses decelerated easing for thumb movement.

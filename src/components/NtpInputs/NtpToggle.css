@@ -1,0 +1,91 @@
+.ntp-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ntp-spacing-2);
+  cursor: pointer;
+}
+
+.ntp-toggle--label-right {
+  flex-direction: row-reverse;
+}
+
+.ntp-toggle--label-right .ntp-toggle__label {
+  flex-grow: 1;
+}
+
+.ntp-toggle__label {
+  color: var(--ntp-color-on-surface);
+  font: var(--ntp-type-body-medium);
+}
+
+/* Hidden native input */
+.ntp-toggle__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Track */
+.ntp-toggle__track {
+  width: 52px;
+  height: 32px;
+  border-radius: var(--ntp-shape-full);
+  background-color: var(--ntp-color-surface-container-high);
+  border: 2px solid var(--ntp-color-outline);
+  box-sizing: border-box;
+  position: relative;
+  flex-shrink: 0;
+  transition: background-color var(--ntp-duration-short) var(--ntp-easing-standard),
+              border-color var(--ntp-duration-short) var(--ntp-easing-standard);
+}
+
+/* Thumb */
+.ntp-toggle__thumb {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ntp-shape-full);
+  background-color: var(--ntp-color-outline);
+  transition: left var(--ntp-duration-short) var(--ntp-easing-decelerated),
+              width var(--ntp-duration-short) var(--ntp-easing-decelerated),
+              height var(--ntp-duration-short) var(--ntp-easing-decelerated),
+              background-color var(--ntp-duration-short) var(--ntp-easing-standard);
+}
+
+/* Checked */
+.ntp-toggle__input:checked + .ntp-toggle__track {
+  background-color: var(--ntp-color-primary);
+  border-color: var(--ntp-color-primary);
+}
+
+.ntp-toggle__input:checked + .ntp-toggle__track .ntp-toggle__thumb {
+  left: 20px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--ntp-color-on-primary);
+}
+
+/* Focus */
+.ntp-toggle__input:focus-visible + .ntp-toggle__track {
+  outline: 2px solid var(--ntp-color-primary);
+  outline-offset: 2px;
+}
+
+/* States */
+.ntp-toggle--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.ntp-toggle--disabled .ntp-toggle__track {
+  cursor: not-allowed;
+}
+
+.ntp-toggle--readonly .ntp-toggle__track {
+  cursor: default;
+}
