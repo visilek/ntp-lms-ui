@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e20c30eac26ecab5",
+        "id": "ea34c058fbcb734a",
         "type": "tabs",
         "children": [
           {
-            "id": "277cd6d0f63452f0",
+            "id": "7da4f947bc8dfe0a",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "277cd6d0f63452f0",
+  "active": "7da4f947bc8dfe0a",
   "lastOpenFiles": [
+    "components/NtpInputs/NtpCheckbox.md",
     "components/NtpInputs/NtpNumberInput.md",
     "components/NtpInputs/NtpTextInput.md",
     "Untitled.md",
@@ -212,7 +213,6 @@
     "components/NtpCarousel/NtpCarousel.md",
     "components/NtpCarousel",
     "lib/latex/renderLatex.md",
-    "lib/latex/v-latex.md",
     "lib/latex",
     "lib",
     "components/NtpRichText",

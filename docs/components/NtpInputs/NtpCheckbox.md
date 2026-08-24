@@ -1,6 +1,6 @@
 # NtpCheckbox
 
-A standalone checkbox for boolean selection. Use inside forms for toggling a single value on/off.
+A standalone checkbox for boolean selection. Supports indeterminate state and label positioning.
 
 ## Import
 
@@ -15,66 +15,34 @@ import { NtpCheckbox } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `modelValue` | `boolean` | `false` | v-model binding |
-| `label` | `string` | `''` | Text label next to the control |
-| `labelPosition` | `'left' \| 'right'` | `'right'` | Position of label relative to the checkbox |
-| `indeterminate` | `boolean` | `false` | Shows a dash instead of a check. Use for "partially selected" states (e.g., parent checkbox with some children checked). Does not affect `modelValue`. |
-| `disabled` | `boolean` | `false` | Prevents interaction. Muted styling. |
-| `readonly` | `boolean` | `false` | Visible and focusable, but not toggleable. Use for immutable fields per ADR-0004. |
+| `label` | `string` | `''` | Text label |
+| `labelPosition` | `'left' \| 'right'` | `'right'` | Label position. `left` creates full-width two-column layout. |
+| `indeterminate` | `boolean` | `false` | Visual dash state. Does not affect `modelValue`. |
+| `disabled` | `boolean` | `false` | Native disabled |
+| `readonly` | `boolean` | `false` | Not toggleable. Still focusable. |
 
 ### Slots
 
-| Slot | Scope | Description |
-|---|---|---|
-| `default` | — | Custom label content. Overrides `label` prop. |
+| Slot | Description |
+|---|---|
+| `default` | Custom label content. Overrides `label` prop. |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `boolean` | v-model binding contract |
-| `change` | `boolean` | Fires on user interaction only. Not emitted on programmatic changes. |
+| `update:modelValue` | `boolean` | v-model update |
+| `change` | `boolean` | User interaction only |
 
-## Usage Examples
-
-### Basic
+## Usage
 
 ```html
-<NtpCheckbox v-model="agreed" label="I agree to the terms" />
-```
-
-### Custom Label via Slot
-
-```html
-<NtpCheckbox v-model="accepted">
-  I have read the <a href="/policy">privacy policy</a>
-</NtpCheckbox>
-```
-
-### Indeterminate
-
-```html
-<NtpCheckbox
-  :model-value="allSelected"
-  :indeterminate="someSelected"
-  label="Select all"
-  @update:model-value="toggleAll"
-/>
-```
-
-### Disabled
-
-```html
-<NtpCheckbox v-model="checked" label="Unavailable" disabled />
-```
-
-### Readonly
-
-```html
-<NtpCheckbox :model-value="true" label="Permanent setting" readonly />
+<NtpCheckbox v-model="agreed" label="I agree" />
+<NtpCheckbox v-model="accepted" label="Accept" label-position="left" />
+<NtpCheckbox :model-value="true" indeterminate label="Some selected" />
 ```
 
 ## Accessibility
 
-- Renders a native `<input type="checkbox">`.
-- Label is associated via `for`/`id` or wrapping `<label>`.
-- `indeterminate` sets the native `indeterminate` DOM property for screen readers.
+- Renders native `<input type="checkbox">`.
+- `indeterminate` set via DOM property.
