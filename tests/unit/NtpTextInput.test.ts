@@ -44,18 +44,27 @@ describe('NtpTextInput', () => {
     expect(wrapper.text()).toContain('Helper text')
   })
 
-  it('shows error instead of hint when error set', () => {
+  it('shows errors instead of hint when errors set', () => {
     const wrapper = mount(NtpTextInput, {
-      props: { error: 'Wrong value', hint: 'Helper text' },
+      props: { errors: ['Wrong value'], hint: 'Helper text' },
     })
 
     expect(wrapper.text()).toContain('Wrong value')
     expect(wrapper.text()).not.toContain('Helper text')
   })
 
+  it('shows multiple errors', () => {
+    const wrapper = mount(NtpTextInput, {
+      props: { errors: ['First error', 'Second error'] },
+    })
+
+    expect(wrapper.text()).toContain('First error')
+    expect(wrapper.text()).toContain('Second error')
+  })
+
   it('applies error class', () => {
     const wrapper = mount(NtpTextInput, {
-      props: { error: 'Wrong value' },
+      props: { errors: ['Wrong value'] },
     })
 
     expect(wrapper.classes()).toContain('ntp-input--error')
@@ -111,9 +120,9 @@ describe('NtpTextInput', () => {
     expect(wrapper.find('.ntp-input__trailing').exists()).toBe(true)
   })
 
-  it('sets aria-invalid when error', () => {
+  it('sets aria-invalid when errors present', () => {
     const wrapper = mount(NtpTextInput, {
-      props: { error: 'Wrong value' },
+      props: { errors: ['Wrong value'] },
     })
 
     expect(wrapper.find('input').attributes('aria-invalid')).toBe('true')

@@ -18,7 +18,7 @@ interface Props {
   type?: TextInputType
   disabled?: boolean
   readonly?: boolean
-  error?: string
+  errors?: string[]
   hint?: string
   required?: boolean
   autocomplete?: string
@@ -32,7 +32,7 @@ const {
   type = defaultType,
   disabled = false,
   readonly = false,
-  error = '',
+  errors = [],
   hint = '',
   required = false,
   autocomplete = defaultAutocomplete,
@@ -60,7 +60,7 @@ const {
   contextColor: contextColor || defaultContextColor,
   disabled,
   readonly,
-  error,
+  errors,
   hint,
   required,
   hasValue,
@@ -89,26 +89,12 @@ function handleBlur(event: FocusEvent) {
         <slot name="leading" />
       </span>
 
-      <input
-        :id="inputId"
-        :type="type"
-        :value="modelValue"
-        :disabled="disabled"
-        :readonly="readonly"
-        :autocomplete="readonly ? 'off' : autocomplete"
-        :aria-invalid="hasError || undefined"
-        :aria-required="required || undefined"
-        class="ntp-input__control"
-        @input="onInput"
-        @focus="handleFocus"
-        @blur="handleBlur"
-      />
+      <input :id="inputId" :type="type" :value="modelValue" :disabled="disabled" :readonly="readonly"
+        :autocomplete="readonly ? 'off' : autocomplete" :aria-invalid="hasError || undefined"
+        :aria-required="required || undefined" class="ntp-input__control" @input="onInput" @focus="handleFocus"
+        @blur="handleBlur" />
 
-      <label
-        :for="inputId"
-        class="ntp-input__label"
-        :class="{ 'ntp-input__label--floating': isLabelFloating }"
-      >
+      <label :for="inputId" class="ntp-input__label" :class="{ 'ntp-input__label--floating': isLabelFloating }">
         {{ label }}
       </label>
 
@@ -117,12 +103,11 @@ function handleBlur(event: FocusEvent) {
       </span>
     </div>
 
-    <div
-      v-if="supportText"
-      class="ntp-input__support-text"
-      :class="{ 'ntp-input__support-text--error': hasError }"
-    >
-      {{ supportText }}
+    <div v-if="supportText.length" class="ntp-input__support-text"
+      :class="{ 'ntp-input__support-text--error': hasError }">
+      <div v-for="(msg, i) in supportText" :key="i" class="ntp-input__error-line">
+        {{ msg }}
+      </div>
     </div>
   </div>
 </template>
