@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpToggle from '@ntp-lms-ui/components/NtpInputs/NtpToggle.vue'
+import { NtpToggle } from '@ntp-lms-ui/components'
 
 describe('NtpToggle', () => {
   it('renders with label', () => {

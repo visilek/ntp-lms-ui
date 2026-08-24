@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpCheckbox from '../../src/components/NtpInputs/NtpCheckbox.vue'
+import { NtpCheckbox } from '@ntp-lms-ui/components'
 
 const meta: Meta<typeof NtpCheckbox> = {
   title: 'Components/NtpCheckbox',

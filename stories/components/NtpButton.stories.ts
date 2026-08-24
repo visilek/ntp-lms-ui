@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
-import { BUTTON_VARIANTS, BUTTON_COLORS, BUTTON_SIZES } from '../../src/lib/types/button'
+import { NtpButton } from '@ntp-lms-ui/components'
+import { BUTTON_VARIANTS, BUTTON_COLORS, BUTTON_SIZES } from '@ntp-lms-ui/lib'
 
 const meta: Meta<typeof NtpButton> = {
   title: 'Components/NtpButton',

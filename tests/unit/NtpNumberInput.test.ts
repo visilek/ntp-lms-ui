@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpNumberInput from '@ntp-lms-ui/components/NtpInputs/NtpNumberInput.vue'
+import { NtpNumberInput } from '@ntp-lms-ui/components'
 
 describe('NtpNumberInput', () => {
   it('renders with label', () => {
@@ -38,43 +38,43 @@ describe('NtpNumberInput', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null])
   })
 
-//   it('shows internal error for below min', async () => {
-//     const wrapper = mount(NtpNumberInput, {
-//       props: { min: 1, max: 10 },
-//     })
+  //   it('shows internal error for below min', async () => {
+  //     const wrapper = mount(NtpNumberInput, {
+  //       props: { min: 1, max: 10 },
+  //     })
 
-//     await wrapper.find('input').setValue('0')
-//     await wrapper.find('input').trigger('blur')
+  //     await wrapper.find('input').setValue('0')
+  //     await wrapper.find('input').trigger('blur')
 
-//     expect(wrapper.text()).toContain('Must be at least 1')
-//   })
+  //     expect(wrapper.text()).toContain('Must be at least 1')
+  //   })
 
-//   it('shows internal error for above max', async () => {
-//     const wrapper = mount(NtpNumberInput, {
-//       props: { min: 1, max: 10 },
-//     })
+  //   it('shows internal error for above max', async () => {
+  //     const wrapper = mount(NtpNumberInput, {
+  //       props: { min: 1, max: 10 },
+  //     })
 
-//     await wrapper.find('input').setValue('11')
-//     await wrapper.find('input').trigger('blur')
+  //     await wrapper.find('input').setValue('11')
+  //     await wrapper.find('input').trigger('blur')
 
-//     expect(wrapper.text()).toContain('Must be at most 10')
-//   })
+  //     expect(wrapper.text()).toContain('Must be at most 10')
+  //   })
 
-//   it('merges consumer errors with internal errors', async () => {
-//     const wrapper = mount(NtpNumberInput, {
-//       props: {
-//         min: 1,
-//         max: 10,
-//         errors: ['Must be a prime number'],
-//       },
-//     })
+  //   it('merges consumer errors with internal errors', async () => {
+  //     const wrapper = mount(NtpNumberInput, {
+  //       props: {
+  //         min: 1,
+  //         max: 10,
+  //         errors: ['Must be a prime number'],
+  //       },
+  //     })
 
-//     await wrapper.find('input').setValue('0')
-//     await wrapper.find('input').trigger('blur')
+  //     await wrapper.find('input').setValue('0')
+  //     await wrapper.find('input').trigger('blur')
 
-//     expect(wrapper.text()).toContain('Must be a prime number')
-//     expect(wrapper.text()).toContain('Must be at least 1')
-//   })
+  //     expect(wrapper.text()).toContain('Must be a prime number')
+  //     expect(wrapper.text()).toContain('Must be at least 1')
+  //   })
 
   it('increments value when + clicked', async () => {
     const wrapper = mount(NtpNumberInput, {

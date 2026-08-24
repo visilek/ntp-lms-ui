@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "83769351d8afff14",
+        "id": "5d40ead1b5af39dd",
         "type": "tabs",
         "children": [
           {
-            "id": "f1b8d6481853eae3",
+            "id": "785cd90c46b27b55",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -183,12 +183,14 @@
   },
   "active": "0b4d09b8726e76e8",
   "lastOpenFiles": [
+    "conventions/file-structure.md",
+    "conventions/implementation-patterns.md",
+    "components/NtpInputs/NtpCheckboxGroup.md",
+    "components/NtpInputs/NtpToggle.md",
     "components/NtpInputs/NtpCheckbox.md",
     "components/NtpInputs/NtpNumberInput.md",
     "components/NtpInputs/NtpTextInput.md",
     "Untitled.md",
-    "conventions/file-structure.md",
-    "conventions/implementation-patterns.md",
     "conventions/styling.md",
     "conventions/component-api.md",
     "conventions/commit-messages.md",
@@ -210,9 +212,7 @@
     "components/NtpRichTextEditor/NtpRichTextEditor.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel/useCarousel.md",
-    "components/NtpCarousel/NtpCarousel.md",
     "components/NtpCarousel",
-    "lib/latex/renderLatex.md",
     "lib/latex",
     "lib",
     "components/NtpRichText",

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpToggle from '../../src/components/NtpInputs/NtpToggle.vue'
+import { NtpToggle } from '@ntp-lms-ui/components'
 
 const meta: Meta<typeof NtpToggle> = {
   title: 'Components/NtpToggle',

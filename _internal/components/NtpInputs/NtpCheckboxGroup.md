@@ -1,16 +1,34 @@
 # NtpCheckboxGroup — Implementation Notes
 
 ## Structure
-Renders `<fieldset>` + `<legend>` for group label. Each option renders an internal `NtpCheckbox` with `value` prop.
 
-## v-model Logic
-- Group maintains `T[]` of checked values.
-- Each child checkbox's `modelValue` is computed as `modelValue.includes(option.value)`.
-- On child toggle: add or remove from the array, emit new array.
+```
+NtpInputs/
+├── NtpCheckboxGroup.vue
+└── NtpCheckboxGroup.css
+```
 
-## Scoped Slot
-The `option` slot only customizes label content. The checkbox input is always rendered by the group. This ensures accessibility and consistent behavior.
+## Composition
+
+- Renders `NtpCheckbox` per option.
+- Group owns selection state via `modelValue` array.
+- Toggle: add/remove value from array.
+
+## Slot
+
+- `option` slot customizes label content only.
+- Checkbox input always rendered by group.
 
 ## Direction
-- `'vertical'`: `display: flex; flex-direction: column; gap: $spacing-sm`
-- `'horizontal'`: `display: flex; flex-wrap: wrap; gap: $spacing-md`
+
+- `vertical`: flex column.
+- `horizontal`: flex row with wrap.
+
+## Types
+
+Uses shared `SelectionLabelPosition` and `SelectionGroupDirection` from `lib/types/input.ts`.
+
+## Disabled / Readonly
+
+- Group-level props propagate to all child checkboxes.
+- Individual options can be disabled via `option.disabled`.

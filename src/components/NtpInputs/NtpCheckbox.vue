@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types/input'
 
-type CheckboxLabelPosition = 'left' | 'right'
 
-const defaultLabelPosition: CheckboxLabelPosition = 'right'
+const defaultLabelPosition: SelectionLabelPosition = 'right'
 
 interface Props {
   modelValue?: boolean
   label?: string
-  labelPosition?: CheckboxLabelPosition
+  labelPosition?: SelectionLabelPosition
   indeterminate?: boolean
   disabled?: boolean
   readonly?: boolean

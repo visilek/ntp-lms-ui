@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpSpinner from '../../src/components/NtpSpinner/NtpSpinner.vue'
-import { SPINNER_SIZES, SPINNER_COLORS } from '../../src/lib/types/spinner'
+import { NtpSpinner } from '@ntp-lms-ui/components'
+import { SPINNER_SIZES, SPINNER_COLORS } from '@ntp-lms-ui/lib'
 
 const meta: Meta<typeof NtpSpinner> = {
   title: 'Components/NtpSpinner',

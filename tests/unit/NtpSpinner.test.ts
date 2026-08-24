@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpSpinner from '@ntp-lms-ui/components/NtpSpinner/NtpSpinner.vue'
+import { NtpSpinner } from '@ntp-lms-ui/components'
 
 describe('NtpSpinner', () => {
   it('renders with default props', () => {

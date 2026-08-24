@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpTextInput from '../../src/components/NtpInputs/NtpTextInput.vue'
-import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '../../src/lib/types/input'
+import { NtpTextInput } from '@ntp-lms-ui/components'
+import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '@ntp-lms-ui/lib'
 
 const meta: Meta<typeof NtpTextInput> = {
   title: 'Components/NtpTextInput',

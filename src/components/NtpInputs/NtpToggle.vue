@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types/input'
 
-type ToggleLabelPosition = 'left' | 'right'
-
-const defaultLabelPosition: ToggleLabelPosition = 'left'
+const defaultLabelPosition: SelectionLabelPosition = 'left'
 
 interface Props {
   modelValue?: boolean
   label?: string
-  labelPosition?: ToggleLabelPosition
+  labelPosition?: SelectionLabelPosition
   disabled?: boolean
   readonly?: boolean
 }

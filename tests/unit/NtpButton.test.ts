@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpButton from '@ntp-lms-ui/components/NtpButton/NtpButton.vue'
+import { NtpButton } from '@ntp-lms-ui/components'
 
 describe('NtpButton', () => {
   it('renders default slot content', () => {

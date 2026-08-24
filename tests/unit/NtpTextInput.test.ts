@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpTextInput from '@ntp-lms-ui/components/NtpInputs/NtpTextInput.vue'
+import { NtpTextInput } from '@ntp-lms-ui/components'
 
 describe('NtpTextInput', () => {
   it('renders with label', () => {

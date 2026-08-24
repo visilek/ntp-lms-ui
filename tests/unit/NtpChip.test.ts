@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpChip from '@ntp-lms-ui/components/NtpChip/NtpChip.vue'
+import { NtpChip } from '@ntp-lms-ui/components'
 
 describe('NtpChip', () => {
   it('renders label prop', () => {

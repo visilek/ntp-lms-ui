@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpCheckbox from '@ntp-lms-ui/components/NtpInputs/NtpCheckbox.vue'
+import { NtpCheckbox } from '@ntp-lms-ui/components'
 
 describe('NtpCheckbox', () => {
   it('renders with label', () => {
