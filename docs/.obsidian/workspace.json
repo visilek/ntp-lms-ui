@@ -11,10 +11,14 @@
             "id": "4240771e322673c6",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "components/NtpInputs/NtpDateInput.md",
+                "mode": "preview",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "NtpDateInput"
             }
           }
         ]

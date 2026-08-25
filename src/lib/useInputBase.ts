@@ -43,6 +43,7 @@ export function useInputBase(options: UseInputBaseOptions) {
       'ntp-input--readonly': options.readonly,
       'ntp-input--error': hasError.value,
       'ntp-input--required': options.required,
+      'ntp-input--has-value': unref(options.hasValue),
     },
   ])
 

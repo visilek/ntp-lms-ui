@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "d76abb7483a62512",
+        "id": "85f4a54fd4035a20",
         "type": "tabs",
         "children": [
           {
-            "id": "80f951b23bbe497d",
+            "id": "1073451b9d96a7bc",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "0b4d09b8726e76e8",
+  "active": "1073451b9d96a7bc",
   "lastOpenFiles": [
+    "components/NtpInputs/NtpDateInput.md",
     "components/NtpInputs/NtpRadioGroup.md",
     "components/NtpInputs/NtpCheckboxGroup.md",
     "components/NtpInputs/NtpCheckbox.md",
@@ -210,7 +211,6 @@
     "Implementation plan.md",
     "MD references.md",
     "components/NtpRichTextEditor/NtpRichTextEditorToolbar.md",
-    "components/NtpRichTextEditor/NtpRichTextEditor.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel",
     "lib/latex",

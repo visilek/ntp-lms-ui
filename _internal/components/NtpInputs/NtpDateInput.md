@@ -1,27 +1,34 @@
 # NtpDateInput — Implementation Notes
 
-## Native Element
-Uses native `<input type="date">`. No custom picker.
+## Structure
 
-## Shared Shell
-Uses `useInputBase` composable. See `NtpTextInput` internal notes for variant, label, and error details.
+```
+NtpInputs/
+├── NtpDateInput.vue
+└── NtpDateInput.css
+```
 
-## v-model Type
-Emits `string | null`. ISO format (`YYYY-MM-DD`). No `Date` object conversion.
+## Rendering
 
-## Clearing
-Native date input has no built-in clear. Consumer provides clear button via `trailing` slot. On clear, parent sets `modelValue` to `null`.
+- Native `<input type="date">`.
+- Shares input shell via `useInputBase`.
 
-## Browser Quirks
-- Chrome: empty input shows `dd.mm.yyyy` format placeholder. Not controllable.
-- Safari: date input may render as text with no picker on older versions.
-- Firefox: full native picker support.
+## Native Format Hiding
 
-## Styling
-- Container styled to match kit. Internal date segments remain native.
-- Calendar icon is browser-specific and not controllable via CSS in Chrome.
-- Consider hiding the native icon via `::-webkit-calendar-picker-indicator` and providing a custom `leading` icon if design requires consistency.
+- Input `opacity: 0` when empty and unfocused.
+- Visible on focus or when `--has-value` class present.
+- Show transition delayed — input appears after label floats.
+- Hide transition immediate.
 
-## Future Considerations
-- If locale-specific formatting becomes necessary, add a formatting layer that displays a custom format while storing ISO.
-- If browser inconsistency becomes a problem, evaluate a custom calendar picker (out of scope for v1).
+## Firefox Notes
+
+- `::-webkit-datetime-edit` pseudo doesn't work.
+- `opacity` on the whole input is the cross-browser solution.
+
+## Required
+
+- `ntp-input--required` class + asterisk on label + `aria-required`.
+
+## Context Colors
+
+Same as `NtpTextInput`.

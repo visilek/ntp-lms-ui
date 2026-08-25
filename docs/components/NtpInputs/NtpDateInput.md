@@ -1,6 +1,6 @@
 # NtpDateInput
 
-A date input field using the native `<input type="date">`. Available in filled and outlined variants.
+A date input field using native `<input type="date">`. Emits ISO date string or `null`.
 
 ## Import
 
@@ -14,115 +14,46 @@ import { NtpDateInput } from 'ntp-lms-ui'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `modelValue` | `string \| null` | `null` | v-model binding. ISO date string (`YYYY-MM-DD`), or `null` when empty. |
+| `modelValue` | `string \| null` | `null` | ISO date (`YYYY-MM-DD`) |
 | `label` | `string` | `''` | Floating label |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` | Visual container style |
-| `min` | `string` | `undefined` | Minimum selectable date. ISO format (`YYYY-MM-DD`). |
-| `max` | `string` | `undefined` | Maximum selectable date. ISO format. |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` | Visual style |
+| `contextColor` | `'primary' \| 'secondary' \| 'surface'` | `'surface'` | Background context |
+| `min` | `string` | — | Minimum date |
+| `max` | `string` | — | Maximum date |
 | `disabled` | `boolean` | `false` | Native disabled |
-| `readonly` | `boolean` | `false` | Native readonly. Prefilled, visible, not editable. |
-| `error` | `string` | `''` | Error message. Replaces hint. |
-| `hint` | `string` | `''` | Supporting text below input. Hidden when `error` is set. |
-| `required` | `boolean` | `false` | Appends asterisk to label |
+| `readonly` | `boolean` | `false` | Native readonly |
+| `errors` | `string[]` | `[]` | Error messages |
+| `hint` | `string` | `''` | Supporting text |
+| `required` | `boolean` | `false` | Visual asterisk + `aria-required` |
 
 ### Slots
 
-| Slot | Scope | Description |
-|---|---|---|
-| `leading` | — | Content before input (e.g., calendar icon) |
-| `trailing` | — | Content after input (e.g., clear button) |
+| Slot | Description |
+|---|---|
+| `leading` | Content before input. Fixed 24px. |
+| `trailing` | Content after input |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `string \| null` | Emits ISO date string, or `null` when cleared |
+| `update:modelValue` | `string \| null` | Date string or null |
 | `blur` | `FocusEvent` | Native blur |
 | `focus` | `FocusEvent` | Native focus |
 
-## Variants
+## Behavior
 
-### Filled (Default)
+- Empty input hides native date format — label acts as placeholder.
+- On focus or value: label floats, input appears with delay.
+
+## Usage
 
 ```html
 <NtpDateInput v-model="dueDate" label="Due date" />
+<NtpDateInput v-model="startDate" label="Start" :min="today" :max="endOfYear" />
 ```
-
-### Outlined
-
-```html
-<NtpDateInput v-model="dueDate" label="Due date" variant="outlined" />
-```
-
-## Usage Examples
-
-### With Min/Max
-
-```html
-<NtpDateInput
-  v-model="startDate"
-  label="Start date"
-  :min="today"
-  :max="semesterEnd"
-/>
-```
-
-### With Error
-
-```html
-<NtpDateInput
-  v-model="dueDate"
-  label="Due date"
-  error="Due date cannot be in the past"
-/>
-```
-
-### Readonly (Immutable Field)
-
-```html
-<NtpDateInput
-  :model-value="assignment.publishedAt"
-  label="Published"
-  readonly
-/>
-```
-
-### With Calendar Icon
-
-```html
-<NtpDateInput v-model="dueDate" label="Due date">
-  <template #leading>
-    <span class="material-symbols">calendar_today</span>
-  </template>
-</NtpDateInput>
-```
-
-### Clearable
-
-```html
-<NtpDateInput v-model="dueDate" label="Due date">
-  <template #trailing>
-    <NtpButton
-      v-if="dueDate"
-      icon-only
-      aria-label="Clear date"
-      @click="dueDate = null"
-    >
-      <span class="material-symbols">close</span>
-    </NtpButton>
-  </template>
-</NtpDateInput>
-```
-
-## Behavior Notes
-
-- v-model is a **string** in ISO format (`YYYY-MM-DD`), not a JavaScript `Date` object.
-- Display format follows the user's browser locale. Not customizable.
-- The native date picker UI is browser-specific. Styling applies to the container, not the picker popup.
 
 ## Accessibility
 
-- Renders a native `<input type="date">`.
-- Floating label associated via `for`/`id`.
-- Error message linked via `aria-describedby`.
-- `min`/`max` are enforced by the browser's native picker.
+- Native `<input type="date">`.
+- Label associated via `for`/`id`.
