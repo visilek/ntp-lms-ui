@@ -1,0 +1,320 @@
+.ntp-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ntp-spacing-1);
+}
+
+.ntp-input__field {
+  --_leading-offset: 0px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ntp-spacing-2);
+  height: 56px;
+  padding: 0 var(--ntp-spacing-4);
+}
+
+.ntp-input__field:has(.ntp-input__leading) {
+  --_leading-offset: calc(24px + var(--ntp-spacing-2));
+}
+
+.ntp-input__control {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ntp-color-on-surface);
+  font: var(--ntp-type-body-large);
+  padding: 0;
+}
+
+/* Date-specific — hide native format when empty and unfocused */
+.ntp-input__control[type='datetime-local'] {
+  opacity: 0;
+  transition: opacity var(--ntp-duration-short) var(--ntp-easing-standard);
+}
+
+.ntp-input__control[type='datetime-local']:focus,
+.ntp-input--has-value .ntp-input__control[type='datetime-local'] {
+  opacity: 1;
+  transition-delay: var(--ntp-duration-short);
+}
+
+.ntp-input__label {
+  position: absolute;
+  left: calc(var(--ntp-spacing-4) + var(--_leading-offset));
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ntp-color-on-surface-variant);
+  font: var(--ntp-type-body-large);
+  pointer-events: none;
+  transition: all var(--ntp-duration-short) var(--ntp-easing-standard);
+  transform-origin: left top;
+}
+
+.ntp-input__label--floating {
+  transform: translateY(-50%) scale(0.75);
+}
+
+.ntp-input__support-text {
+  font: var(--ntp-type-body-small);
+  color: var(--ntp-color-on-surface-variant);
+  padding: 0 var(--ntp-spacing-4);
+}
+
+.ntp-input__support-text--error {
+  color: var(--ntp-color-error);
+}
+
+.ntp-input__leading {
+  width: 24px;
+  justify-content: center;
+}
+
+.ntp-input__leading,
+.ntp-input__trailing {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--ntp-color-on-surface-variant);
+}
+
+/* States */
+.ntp-input--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.ntp-input--disabled .ntp-input__control {
+  cursor: not-allowed;
+}
+
+.ntp-input--readonly .ntp-input__field {
+  border: none;
+}
+
+.ntp-input--readonly .ntp-input__control {
+  cursor: default;
+}
+
+/* Filled */
+.ntp-input--filled .ntp-input__field {
+  background-color: var(--ntp-color-surface-container-high);
+  border-radius: var(--ntp-shape-extra-small) var(--ntp-shape-extra-small) 0 0;
+  border-bottom: 1px solid var(--ntp-color-outline);
+}
+
+.ntp-input--filled .ntp-input__label--floating {
+  left: calc(var(--ntp-spacing-4) + var(--_leading-offset));
+  top: var(--ntp-spacing-1);
+  transform: scale(0.75);
+}
+
+.ntp-input--filled.ntp-input--label-floating .ntp-input__control {
+  padding-top: var(--ntp-spacing-2);
+}
+
+/* Outlined */
+.ntp-input--outlined .ntp-input__field {
+  border: 1px solid var(--ntp-color-outline);
+  border-radius: var(--ntp-shape-extra-small);
+}
+
+.ntp-input--outlined .ntp-input__label--floating {
+  left: calc(var(--ntp-spacing-4) + var(--_leading-offset) - var(--ntp-spacing-1));
+  top: 0;
+  transform: translateY(-50%) scale(0.75);
+  transform-origin: left center;
+}
+
+/* ============================================
+   Context colors — Surface (default)
+   ============================================ */
+
+/* Filled */
+.ntp-input--filled.ntp-input--context-surface .ntp-input__label {
+  color: var(--ntp-color-on-surface-variant);
+}
+
+.ntp-input--filled.ntp-input--context-surface .ntp-input__label--floating {
+  color: var(--ntp-color-primary);
+}
+
+.ntp-input--filled.ntp-input--context-surface .ntp-input__field {
+  border-bottom-color: var(--ntp-color-outline);
+}
+
+.ntp-input--filled.ntp-input--context-surface.ntp-input--focused .ntp-input__field {
+  border-bottom-color: var(--ntp-color-primary);
+}
+
+/* Outlined */
+.ntp-input--outlined.ntp-input--context-surface .ntp-input__label {
+  color: var(--ntp-color-on-surface-variant);
+}
+
+.ntp-input--outlined.ntp-input--context-surface .ntp-input__label--floating {
+  color: var(--ntp-color-primary);
+  background-color: var(--ntp-color-surface);
+  padding: 0 var(--ntp-spacing-1);
+}
+
+.ntp-input--outlined.ntp-input--context-surface .ntp-input__field {
+  border-color: var(--ntp-color-outline);
+}
+
+.ntp-input--outlined.ntp-input--context-surface.ntp-input--focused .ntp-input__field {
+  border-color: var(--ntp-color-primary);
+}
+
+/* ============================================
+   Context colors — Primary
+   ============================================ */
+
+/* Filled */
+.ntp-input--filled.ntp-input--context-primary .ntp-input__label {
+  color: var(--ntp-color-on-surface-variant);
+}
+
+.ntp-input--filled.ntp-input--context-primary .ntp-input__label--floating {
+  color: var(--ntp-color-primary);
+}
+
+.ntp-input--filled.ntp-input--context-primary .ntp-input__field {
+  border-bottom-color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--filled.ntp-input--context-primary.ntp-input--focused .ntp-input__field {
+  border-bottom-color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--filled.ntp-input--context-primary .ntp-input__support-text {
+  color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--filled.ntp-input--context-primary .ntp-input__leading,
+.ntp-input--filled.ntp-input--context-primary .ntp-input__trailing {
+  color: var(--ntp-color-on-primary);
+}
+
+/* Outlined */
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__label {
+  color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__label--floating {
+  color: var(--ntp-color-on-primary);
+  background-color: var(--ntp-color-primary);
+  padding: 0 var(--ntp-spacing-1);
+}
+
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__field {
+  border-color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--outlined.ntp-input--context-primary.ntp-input--focused .ntp-input__field {
+  border-color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__control {
+  color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__support-text {
+  color: var(--ntp-color-on-primary);
+}
+
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__leading,
+.ntp-input--outlined.ntp-input--context-primary .ntp-input__trailing {
+  color: var(--ntp-color-on-primary);
+}
+
+/* ============================================
+   Context colors — Secondary
+   ============================================ */
+
+/* Filled */
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__label {
+  color: var(--ntp-color-on-surface-variant);
+}
+
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__label--floating {
+  color: var(--ntp-color-secondary);
+}
+
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__field {
+  border-bottom-color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--filled.ntp-input--context-secondary.ntp-input--focused .ntp-input__field {
+  border-bottom-color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__support-text {
+  color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__leading,
+.ntp-input--filled.ntp-input--context-secondary .ntp-input__trailing {
+  color: var(--ntp-color-on-secondary);
+}
+
+/* Outlined */
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__label {
+  color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__label--floating {
+  color: var(--ntp-color-on-secondary);
+  background-color: var(--ntp-color-secondary);
+  padding: 0 var(--ntp-spacing-1);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__field {
+  border-color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary.ntp-input--focused .ntp-input__field {
+  border-color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__control {
+  color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__support-text {
+  color: var(--ntp-color-on-secondary);
+}
+
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__leading,
+.ntp-input--outlined.ntp-input--context-secondary .ntp-input__trailing {
+  color: var(--ntp-color-on-secondary);
+}
+
+/* ============================================
+   Error — always overrides
+   ============================================ */
+
+.ntp-input--error .ntp-input__label,
+.ntp-input--error .ntp-input__label--floating {
+  color: var(--ntp-color-error) !important;
+}
+
+.ntp-input--filled.ntp-input--error .ntp-input__field {
+  border-bottom-color: var(--ntp-color-error) !important;
+}
+
+.ntp-input--outlined.ntp-input--error .ntp-input__field {
+  border-color: var(--ntp-color-error) !important;
+}
+
+.ntp-input--error .ntp-input__support-text {
+  color: var(--ntp-color-error) !important;
+}
+
+/* Required */
+.ntp-input--required .ntp-input__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
+}

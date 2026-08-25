@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpDateInput from '../../src/components/NtpInputs/NtpDateInput.vue'
-import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '../../src/lib/types/input'
+import { NtpDateInput } from '@ntp-lms-ui/components'
+import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '@ntp-lms-ui/lib'
 
 const meta = {
   title: 'Components/NtpDateInput',

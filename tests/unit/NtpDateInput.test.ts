@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpDateInput from '@ntp-lms-ui/components/NtpInputs/NtpDateInput.vue'
+import { NtpDateInput } from '@ntp-lms-ui/components'
 
 describe('NtpDateInput', () => {
   it('renders with label', () => {

@@ -1,5 +1,7 @@
 export { default as NtpCheckbox } from './NtpCheckbox.vue'
 export { default as NtpCheckboxGroup } from './NtpCheckboxGroup.vue'
+export { default as NtpDateInput } from './NtpDateInput.vue'
+export { default as NtpDateTimeInput } from './NtpDateTimeInput.vue'
 export { default as NtpNumberInput } from './NtpNumberInput.vue'
 export { default as NtpRadioGroup } from './NtpRadioGroup.vue'
 export { default as NtpTextInput } from './NtpTextInput.vue'

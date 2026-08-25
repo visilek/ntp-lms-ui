@@ -1,27 +1,34 @@
 # NtpDateTimeInput — Implementation Notes
 
-## Native Element
-Uses native `<input type="datetime-local">`. No custom picker.
+## Structure
 
-## Shared Shell
-Uses `useInputBase` composable.
+```
+NtpInputs/
+├── NtpDateTimeInput.vue
+└── NtpDateTimeInput.css
+```
 
-## v-model Type
-Emits `string | null`. ISO format (`YYYY-MM-DDTHH:mm`). No time zone — local browser time.
+## Rendering
+
+- Native `<input type="datetime-local">`.
+- Shares input shell via `useInputBase`.
+
+## Native Format Hiding
+
+Same pattern as `NtpDateInput`:
+- Input `opacity: 0` when empty and unfocused.
+- Visible on focus or `--has-value`.
+- Show delayed, hide immediate.
 
 ## Step
-- `step` prop controls time increment in seconds.
-- Default `60` (1 minute).
-- Passed to native `step` attribute. Browser picker respects it for time selection.
 
-## Browser Quirks
-- Chrome: full datetime-local picker.
-- Safari: partial support, may fall back to text input.
-- Firefox: full support.
+- Default 60 seconds (1 minute).
+- Passed to native `step` attribute.
 
-## Styling
-Same as `NtpDateInput`. Native segments not stylable.
+## Context Colors
 
-## Future Considerations
-- Time zone support if cross-timezone use cases emerge.
-- Custom datetime picker if native becomes insufficient.
+Same as `NtpTextInput`.
+
+## Required
+
+Same pattern — class + asterisk + `aria-required`.
