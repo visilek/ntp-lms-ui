@@ -18,8 +18,8 @@
     border-color var(--ntp-duration-short) var(--ntp-easing-decelerated),
     color var(--ntp-duration-short) var(--ntp-easing-decelerated),
     box-shadow var(--ntp-duration-short) var(--ntp-easing-decelerated),
-    border-radius var(--ntp-duration-short) var(--ntp-easing-decelerated),
-    transform var(--ntp-duration-short) var(--ntp-easing-decelerated);
+    border-radius var(--ntp-duration-medium) var(--ntp-easing-accelerated),
+    transform var(--ntp-duration-short) var(--ntp-easing-accelerated);
   font: var(--ntp-type-label-large);
   white-space: nowrap;
   user-select: none;
@@ -52,6 +52,7 @@
   width: 40px;
   height: 40px;
   padding: 0;
+  transform: scale(1);
 }
 
 .ntp-button--icon-only.ntp-button--small {
@@ -147,7 +148,7 @@
 
 .ntp-button--outlined:hover:not(.ntp-button--disabled):not(.ntp-button--loading),
 .ntp-button--text:hover:not(.ntp-button--disabled):not(.ntp-button--loading) {
-  background-color: var(--_btn-hover-bg);;
+  background-color: var(--_btn-hover-bg);
 }
 
 .ntp-button--surface.ntp-button--outlined:hover:not(.ntp-button--disabled):not(.ntp-button--loading) {
@@ -191,10 +192,12 @@
 
 .ntp-button:not(.ntp-button--icon-only):active:not(.ntp-button--disabled):not(.ntp-button--loading) {
   border-radius: var(--ntp-shape-medium);
+  transition-duration: var(--ntp-duration-rapid);
 }
 
 .ntp-button--icon-only:active:not(.ntp-button--disabled):not(.ntp-button--loading) {
-  transform: scale(0.92);
+  transform: scale(0.9);
+  transition-duration: var(--ntp-duration-rapid);
 }
 
 /* ============================================
