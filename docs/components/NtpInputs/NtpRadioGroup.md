@@ -1,6 +1,6 @@
 # NtpRadioGroup
 
-A group of radio buttons for mutually exclusive selection. Renders options from a data array.
+A group of radio buttons for mutually exclusive selection. Data-driven via `options` prop.
 
 ## Import
 
@@ -14,35 +14,35 @@ import { NtpRadioGroup } from 'ntp-lms-ui'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `modelValue` | `T \| null` | `null` | Selected value (generic `T extends string \| number`) |
-| `options` | `Array<{ value: T, label: string, disabled?: boolean }>` | **required** | Options to render |
-| `label` | `string` | `''` | Group label above the options |
-| `labelPosition` | `'left' \| 'right'` | `'right'` | Label position for all radios |
-| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout. Horizontal wraps if needed. |
-| `disabled` | `boolean` | `false` | Disables all radios |
-| `readonly` | `boolean` | `false` | Makes all radios readonly |
-| `error` | `string` | `''` | Error message below the group |
-| `hint` | `string` | `''` | Supporting text below the group. Hidden when `error` is set. |
+| `modelValue` | `string \| number \| null` | `null` | Selected value |
+| `options` | `Array<{ value, label, disabled? }>` | required | Options |
+| `label` | `string` | `''` | Group label |
+| `labelPosition` | `'left' \| 'right'` | `'right'` | Label position for radios |
+| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout. Horizontal wraps. |
+| `disabled` | `boolean` | `false` | Disables all options |
+| `readonly` | `boolean` | `false` | Readonly all options |
+| `errors` | `string[]` | `[]` | Error messages |
+| `hint` | `string` | `''` | Supporting text |
+| `required` | `boolean` | `false` | Visual asterisk + `aria-required`. No validation. |
 
 ### Slots
 
 | Slot | Scope | Description |
 |---|---|---|
-| `option` | `{ option, checked }` | Custom label content. Radio input is rendered by the group. |
+| `option` | `{ option, checked }` | Custom option content. Radio input rendered by group. |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `T \| null` | Emitted with the newly selected value |
+| `update:modelValue` | `string \| number` | New selected value |
 
-## Usage Examples
-
-### Basic
+## Usage
 
 ```html
 <NtpRadioGroup
   v-model="difficulty"
+  label="Difficulty"
   :options="[
     { value: 'easy', label: 'Easy' },
     { value: 'medium', label: 'Medium' },
@@ -51,46 +51,7 @@ import { NtpRadioGroup } from 'ntp-lms-ui'
 />
 ```
 
-### Horizontal Layout
-
-```html
-<NtpRadioGroup
-  v-model="mode"
-  :options="[
-    { value: 'light', label: 'Light' },
-    { value: 'dark', label: 'Dark' },
-  ]"
-  direction="horizontal"
-/>
-```
-
-### Custom Option Rendering
-
-```html
-<NtpRadioGroup v-model="selected" :options="options">
-  <template #option="{ option, checked }">
-    <span class="custom-label">
-      <Icon :name="option.icon" />
-      {{ option.label }}
-    </span>
-  </template>
-</NtpRadioGroup>
-```
-
-### Disabled Option
-
-```html
-<NtpRadioGroup
-  v-model="selected"
-  :options="[
-    { value: 'a', label: 'Available' },
-    { value: 'b', label: 'Coming soon', disabled: true },
-  ]"
-/>
-```
-
 ## Accessibility
 
-- Renders a `<fieldset>` with a `<legend>` for the group label.
-- Each option renders a native `<input type="radio">` with a shared `name` attribute.
-- Arrow keys navigate between options. Standard radio behavior.
+- Renders `<fieldset role="radiogroup">` + `<legend>`.
+- Each option is a native radio with shared `name`.

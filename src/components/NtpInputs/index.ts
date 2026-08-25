@@ -1,5 +1,6 @@
 export { default as NtpCheckbox } from './NtpCheckbox.vue'
 export { default as NtpCheckboxGroup } from './NtpCheckboxGroup.vue'
 export { default as NtpNumberInput } from './NtpNumberInput.vue'
+export { default as NtpRadioGroup } from './NtpRadioGroup.vue'
 export { default as NtpTextInput } from './NtpTextInput.vue'
 export { default as NtpToggle } from './NtpToggle.vue'
