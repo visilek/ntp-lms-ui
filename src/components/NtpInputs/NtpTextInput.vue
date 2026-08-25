@@ -3,13 +3,16 @@ import { computed } from 'vue'
 import type { InputVariant, InputContextColor } from '@ntp-lms-ui/lib/types/input'
 import { useInputBase } from '@ntp-lms-ui/lib/useInputBase'
 
+// 1. Type aliases
 type TextInputType = 'text' | 'password' | 'email'
 
+// 2. Default constants
 const defaultVariant: InputVariant = 'filled'
 const defaultContextColor: InputContextColor = 'surface'
 const defaultType: TextInputType = 'text'
 const defaultAutocomplete = 'off'
 
+// 3. Props interface
 interface Props {
   modelValue?: string
   label?: string
@@ -24,6 +27,7 @@ interface Props {
   autocomplete?: string
 }
 
+// 4. Destructured props
 const {
   modelValue = '',
   label = '',
@@ -89,12 +93,26 @@ function handleBlur(event: FocusEvent) {
         <slot name="leading" />
       </span>
 
-      <input :id="inputId" :type="type" :value="modelValue" :disabled="disabled" :readonly="readonly"
-        :autocomplete="readonly ? 'off' : autocomplete" :aria-invalid="hasError || undefined"
-        :aria-required="required || undefined" class="ntp-input__control" @input="onInput" @focus="handleFocus"
-        @blur="handleBlur" />
+      <input
+        :id="inputId"
+        :type="type"
+        :value="modelValue"
+        :disabled="disabled"
+        :readonly="readonly"
+        :autocomplete="readonly ? 'off' : autocomplete"
+        :aria-invalid="hasError || undefined"
+        :aria-required="required || undefined"
+        class="ntp-input__control"
+        @input="onInput"
+        @focus="handleFocus"
+        @blur="handleBlur"
+      />
 
-      <label :for="inputId" class="ntp-input__label" :class="{ 'ntp-input__label--floating': isLabelFloating }">
+      <label
+        :for="inputId"
+        class="ntp-input__label"
+        :class="{ 'ntp-input__label--floating': isLabelFloating }"
+      >
         {{ label }}
       </label>
 
@@ -103,8 +121,11 @@ function handleBlur(event: FocusEvent) {
       </span>
     </div>
 
-    <div v-if="supportText.length" class="ntp-input__support-text"
-      :class="{ 'ntp-input__support-text--error': hasError }">
+    <div
+      v-if="supportText.length"
+      class="ntp-input__support-text"
+      :class="{ 'ntp-input__support-text--error': hasError }"
+    >
       <div v-for="(msg, i) in supportText" :key="i" class="ntp-input__error-line">
         {{ msg }}
       </div>

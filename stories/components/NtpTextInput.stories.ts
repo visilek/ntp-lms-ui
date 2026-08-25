@@ -42,46 +42,46 @@ export const AllVariants: Story = {
     template: `
       <H1>Surface Context / Filled</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Filled input" variant="filled"/>
-        <NtpTextInput label="Filled input" variant="filled" context-color="surface" model-value="Some text" />
+        <NtpTextInput required label="Filled input" variant="filled"/>
+        <NtpTextInput required label="Filled input" variant="filled" context-color="surface" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here" />
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text" />
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here" />
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" />
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" model-value="Some text" />
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" />
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="filled" disabled />
-        <NtpTextInput label="Disabled" variant="filled" disabled model-value="Some text" />
+        <NtpTextInput required label="Disabled" variant="filled" disabled />
+        <NtpTextInput required label="Disabled" variant="filled" disabled model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="" />
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="Readonly value" />
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="" />
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="Readonly value" />
       </div>
 
       <H1>Surface Context / Outlined</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Outlined input" variant="outlined"/>
-        <NtpTextInput label="Outlined input" variant="outlined" context-color="surface" model-value="Some text" />
+        <NtpTextInput required label="Outlined input" variant="outlined"/>
+        <NtpTextInput required label="Outlined input" variant="outlined" context-color="surface" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here" />
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text" />
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here" />
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong" />
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong" model-value="Some text" />
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong" />
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong" model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="outlined" disabled />
-        <NtpTextInput label="Disabled" variant="outlined" disabled model-value="Some text" />
+        <NtpTextInput required label="Disabled" variant="outlined" disabled />
+        <NtpTextInput required label="Disabled" variant="outlined" disabled model-value="Some text" />
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="" />
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="Readonly value" />
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="" />
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="Readonly value" />
       </div>
 
       <H1>Slots</H1>
@@ -107,52 +107,52 @@ export const LeadingIcon: Story = {
     template: `
       <H1>Surface Context / Filled</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Filled input" variant="filled">
+        <NtpTextInput required label="Filled input" variant="filled">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Filled input" variant="filled" context-color="surface" model-value="Some text">
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here">
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text">
+        <NtpTextInput required label="Filled input" variant="filled" context-color="surface" model-value="Some text">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" >
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" model-value="Some text" >
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="filled" disabled />
-        <NtpTextInput label="Disabled" variant="filled" disabled model-value="Some text" >
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="" />
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="Readonly value" >
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" >
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" model-value="Some text" >
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Disabled" variant="filled" disabled />
+        <NtpTextInput required label="Disabled" variant="filled" disabled model-value="Some text" >
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="" />
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="Readonly value" >
         <template #leading>
             <span>🔍</span>
           </template>
@@ -161,60 +161,60 @@ export const LeadingIcon: Story = {
 
       <H1>Surface Context / Outlined</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Outlined input" variant="outlined">
+        <NtpTextInput required label="Outlined input" variant="outlined">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Outlined input" variant="outlined" context-color="surface" model-value="Some text">
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here">
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text">
+        <NtpTextInput required label="Outlined input" variant="outlined" context-color="surface" model-value="Some text">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong">
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong" model-value="Some text">
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="outlined" disabled>
-        <template #leading>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="Disabled" variant="outlined" disabled model-value="Some text">
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="">
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong">
         <template #leading>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="Readonly value">
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong" model-value="Some text">
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Disabled" variant="outlined" disabled>
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="Disabled" variant="outlined" disabled model-value="Some text">
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="">
+        <template #leading>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="Readonly value">
         <template #leading>
             <span>🔍</span>
           </template>
@@ -230,52 +230,52 @@ export const TrailingIcon: Story = {
     template: `
       <H1>Surface Context / Filled</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Filled input" variant="filled">
+        <NtpTextInput required label="Filled input" variant="filled">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Filled input" variant="filled" context-color="surface" model-value="Some text">
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here">
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text">
+        <NtpTextInput required label="Filled input" variant="filled" context-color="surface" model-value="Some text">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" >
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="With error" variant="filled" error="Something went wrong" model-value="Some text" >
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="filled" disabled />
-        <NtpTextInput label="Disabled" variant="filled" disabled model-value="Some text" >
+        <NtpTextInput required label="With hint" variant="filled" hint="Supporting text goes here" model-value="Some text">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="" />
-        <NtpTextInput label="Readonly" variant="filled" readonly model-value="Readonly value" >
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" >
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="With error" variant="filled" error="Something went wrong" model-value="Some text" >
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Disabled" variant="filled" disabled />
+        <NtpTextInput required label="Disabled" variant="filled" disabled model-value="Some text" >
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="" />
+        <NtpTextInput required label="Readonly" variant="filled" readonly model-value="Readonly value" >
         <template #trailing>
             <span>🔍</span>
           </template>
@@ -284,60 +284,60 @@ export const TrailingIcon: Story = {
 
       <H1>Surface Context / Outlined</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Outlined input" variant="outlined">
+        <NtpTextInput required label="Outlined input" variant="outlined">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Outlined input" variant="outlined" context-color="surface" model-value="Some text">
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here">
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text">
+        <NtpTextInput required label="Outlined input" variant="outlined" context-color="surface" model-value="Some text">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong">
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="With error" variant="outlined" error="Something went wrong" model-value="Some text">
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-      </div>
-      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Disabled" variant="outlined" disabled>
-        <template #trailing>
-            <span>🔍</span>
-          </template>
-        </NtpTextInput>
-        <NtpTextInput label="Disabled" variant="outlined" disabled model-value="Some text">
+        <NtpTextInput required label="With hint" variant="outlined" hint="Supporting text goes here" model-value="Some text">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
       </div>
       <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="">
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong">
         <template #trailing>
             <span>🔍</span>
           </template>
         </NtpTextInput>
-        <NtpTextInput label="Readonly" variant="outlined" readonly model-value="Readonly value">
+        <NtpTextInput required label="With error" variant="outlined" error="Something went wrong" model-value="Some text">
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Disabled" variant="outlined" disabled>
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="Disabled" variant="outlined" disabled model-value="Some text">
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+      </div>
+      <div class="ntp-my-2" style="display: flex; flex-direction: row; gap: 24px; max-width: 400px;">
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="">
+        <template #trailing>
+            <span>🔍</span>
+          </template>
+        </NtpTextInput>
+        <NtpTextInput required label="Readonly" variant="outlined" readonly model-value="Readonly value">
         <template #trailing>
             <span>🔍</span>
           </template>

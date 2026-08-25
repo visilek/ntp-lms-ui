@@ -10,6 +10,7 @@ interface Props {
   label?: string
   labelPosition?: SelectionLabelPosition
   indeterminate?: boolean
+  required?: boolean
   disabled?: boolean
   readonly?: boolean
 }
@@ -19,6 +20,7 @@ const {
   label = '',
   labelPosition = defaultLabelPosition,
   indeterminate = false,
+  required = false,
   disabled = false,
   readonly = false,
 } = defineProps<Props>()
@@ -40,6 +42,7 @@ const checkboxClasses = computed(() => [
   'ntp-checkbox',
   `ntp-checkbox--label-${labelPosition || defaultLabelPosition}`,
   {
+    'ntp-checkbox--required': required,
     'ntp-checkbox--disabled': disabled,
     'ntp-checkbox--readonly': readonly,
   },
@@ -61,14 +64,8 @@ function onClick(event: MouseEvent) {
 
 <template>
   <label :class="checkboxClasses">
-    <input
-      ref="inputRef"
-      type="checkbox"
-      :checked="modelValue"
-      :disabled="disabled"
-      @change="onChange"
-      @click="onClick"
-    />
+    <input ref="inputRef" type="checkbox" :checked="modelValue" :aria-required="required || undefined" :disabled="disabled" @change="onChange"
+      @click="onClick" />
 
     <span v-if="label || $slots.default" class="ntp-checkbox__label">
       <slot>{{ label }}</slot>

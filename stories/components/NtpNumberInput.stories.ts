@@ -38,6 +38,7 @@ export const AllVariants: Story = {
     components: { NtpNumberInput },
     setup() {
       const plain = ref<number | null>(null)
+      const required = ref<number | null>(0)
       const withMinMax = ref<number | null>(5)
       const atMax = ref<number | null>(10)
       const atMin = ref<number | null>(0)
@@ -50,6 +51,7 @@ export const AllVariants: Story = {
       <H1>Surface Context</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: column; gap: 24px; max-width: 400px;">
         <NtpNumberInput v-model="plain" label="Integer (step=1)" :step="1" />
+        <NtpNumberInput v-model="plain" label="Required" :step="1" required/>
         <NtpNumberInput v-model="decimal" label="Decimal (step=0.01)" :step="0.01" />
         <NtpNumberInput v-model="withMinMax" label="With min/max" :min="1" :max="100" hint="Between 1 and 100" />
         <NtpNumberInput v-model="atMax" label="At max" :min="0" :max="10" />

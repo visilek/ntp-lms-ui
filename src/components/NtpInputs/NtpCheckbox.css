@@ -15,6 +15,11 @@
   order: -1;
 }
 
+.ntp-checkbox--required .ntp-checkbox__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
+}
+
 /* Native input hidden — custom box */
 .ntp-checkbox input[type='checkbox'] {
   appearance: none;

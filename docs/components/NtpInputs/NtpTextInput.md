@@ -19,6 +19,7 @@ import { NtpTextInput } from 'ntp-lms-ui'
 | `variant` | `'filled' \| 'outlined'` | `'filled'` | Visual container style |
 | `contextColor` | `'primary' \| 'secondary' \| 'surface'` | `'surface'` | Background context behind the input |
 | `type` | `'text' \| 'password' \| 'email'` | `'text'` | Native input type |
+|`required`|`boolean`|`false`| visual asterisk + `aria-required`. No validation — consumer handles via `errors`. |
 | `disabled` | `boolean` | `false` | Native disabled |
 | `readonly` | `boolean` | `false` | Native readonly |
 | `error` | `string` | `''` | Error message. Replaces hint. |

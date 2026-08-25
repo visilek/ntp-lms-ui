@@ -28,6 +28,7 @@ export const AllVariants: Story = {
     setup() {
       const on = ref(true)
       const off = ref(false)
+      const required = ref(false)
       const disabledOn = ref(true)
       const disabledOff = ref(false)
       const readonlyOn = ref(true)
@@ -39,6 +40,7 @@ export const AllVariants: Story = {
       <div class="ntp-my-2" style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <NtpToggle v-model="on" label="On" />
         <NtpToggle v-model="off" label="Off" />
+        <NtpToggle v-model="off" label="Required" required/>
         <NtpToggle v-model="disabledOn" label="Disabled on" disabled />
         <NtpToggle v-model="disabledOff" label="Disabled off" disabled />
         <NtpToggle v-model="readonlyOn" label="Readonly" readonly />

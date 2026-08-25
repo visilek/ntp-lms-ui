@@ -20,6 +20,7 @@ interface Props {
     label?: string
     labelPosition?: SelectionLabelPosition
     direction?: SelectionGroupDirection
+    required?: boolean
     disabled?: boolean
     readonly?: boolean
     errors?: string[]
@@ -32,6 +33,7 @@ const {
     label = '',
     labelPosition = defaultLabelPosition,
     direction = defaultDirection,
+    required = false,
     disabled = false,
     readonly = false,
     errors = [],
@@ -46,6 +48,7 @@ const groupClasses = computed(() => [
     'ntp-checkbox-group',
     `ntp-checkbox-group--${direction || defaultDirection}`,
     {
+        'ntp-checkbox-group--required': required,
         'ntp-checkbox-group--disabled': disabled,
         'ntp-checkbox-group--readonly': readonly,
     },
@@ -68,7 +71,7 @@ function toggleOption(value: string | number): void {
 </script>
 
 <template>
-    <fieldset :class="groupClasses" :disabled="disabled">
+    <fieldset :class="groupClasses" :disabled="disabled" :aria-required="required || undefined" role="group">
         <legend v-if="label" class="ntp-checkbox-group__label">{{ label }}</legend>
 
         <div class="ntp-checkbox-group__options">

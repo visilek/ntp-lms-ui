@@ -44,7 +44,8 @@ export const AllVariants: Story = {
   render: () => ({
     components: { NtpCheckboxGroup },
     setup() {
-      const vertical = ref<string[]>(['b'])
+      const vertical = ref<string[]>(['create'])
+      const required = ref<string[]>([])
       const horizontal = ref<string[]>(['a'])
       const withErrors = ref<string[]>([])
       const withDisabledOption = ref<string[]>([])
@@ -70,6 +71,19 @@ export const AllVariants: Story = {
             { value: 'create', label: 'Create' },
             { value: 'edit', label: 'Edit' },
             { value: 'delete', label: 'Delete' },
+          ]"
+        />
+      </div>
+
+      <H1>Required</H1>
+      <div class="ntp-my-2" style="max-width: 400px;">
+        <NtpCheckboxGroup
+          v-model="required"
+          label="Выбрать"
+          required
+          :options="[
+            { value: 'a', label: 'Стул №1' },
+            { value: 'b', label: 'Стул №2' },
           ]"
         />
       </div>

@@ -39,6 +39,13 @@ Three contexts: surface, primary, secondary.
 | primary | primary when floating | on-primary | on-primary |
 | secondary | secondary when floating | on-secondary | on-secondary |
 
+## Required
+
+- Prop adds `ntp-input--required` class (via `useInputBase`).
+- CSS appends red asterisk to floating label.
+- Sets `aria-required="true"` on the native input.
+- Visual + semantic. No validation — consumer handles via `errors`.
+
 ## Error State
 
 Error always overrides context colors — uses `!important` for label and border.

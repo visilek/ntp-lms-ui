@@ -27,6 +27,7 @@ export const AllVariants: Story = {
     components: { NtpCheckbox },
     setup() {
       const checked = ref(true)
+      const required = ref(false)
       const unchecked = ref(false)
       const disabledChecked = ref(true)
       const disabledUnchecked = ref(false)
@@ -46,6 +47,7 @@ export const AllVariants: Story = {
       <H1>States</H1>
       <div class="ntp-my-2" style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <NtpCheckbox v-model="checked" label="Checked" />
+        <NtpCheckbox v-model="required" required label="Required" />
         <NtpCheckbox v-model="unchecked" label="Unchecked" />
         <NtpCheckbox :model-value="true" indeterminate label="Indeterminate" />
         <NtpCheckbox v-model="disabledChecked" label="Disabled checked" disabled />

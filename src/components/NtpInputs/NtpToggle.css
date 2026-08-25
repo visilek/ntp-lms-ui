@@ -18,6 +18,11 @@
   font: var(--ntp-type-body-medium);
 }
 
+.ntp-toggle--required .ntp-toggle__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
+}
+
 /* Hidden native input */
 .ntp-toggle__input {
   position: absolute;
@@ -38,7 +43,7 @@
   position: relative;
   flex-shrink: 0;
   transition: background-color var(--ntp-duration-short) var(--ntp-easing-standard),
-              border-color var(--ntp-duration-short) var(--ntp-easing-standard);
+    border-color var(--ntp-duration-short) var(--ntp-easing-standard);
 }
 
 /* Thumb */
@@ -52,18 +57,18 @@
   border-radius: var(--ntp-shape-full);
   background-color: var(--ntp-color-outline);
   transition: left var(--ntp-duration-short) var(--ntp-easing-decelerated),
-              width var(--ntp-duration-short) var(--ntp-easing-decelerated),
-              height var(--ntp-duration-short) var(--ntp-easing-decelerated),
-              background-color var(--ntp-duration-short) var(--ntp-easing-standard);
+    width var(--ntp-duration-short) var(--ntp-easing-decelerated),
+    height var(--ntp-duration-short) var(--ntp-easing-decelerated),
+    background-color var(--ntp-duration-short) var(--ntp-easing-standard);
 }
 
 /* Checked */
-.ntp-toggle__input:checked + .ntp-toggle__track {
+.ntp-toggle__input:checked+.ntp-toggle__track {
   background-color: var(--ntp-color-primary);
   border-color: var(--ntp-color-primary);
 }
 
-.ntp-toggle__input:checked + .ntp-toggle__track .ntp-toggle__thumb {
+.ntp-toggle__input:checked+.ntp-toggle__track .ntp-toggle__thumb {
   left: 20px;
   width: 24px;
   height: 24px;
@@ -71,7 +76,7 @@
 }
 
 /* Focus */
-.ntp-toggle__input:focus-visible + .ntp-toggle__track {
+.ntp-toggle__input:focus-visible+.ntp-toggle__track {
   outline: 2px solid var(--ntp-color-primary);
   outline-offset: 2px;
 }

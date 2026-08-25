@@ -4,18 +4,20 @@ import type { InputVariant, InputContextColor } from '@ntp-lms-ui/lib/types/inpu
 import { useInputBase } from '@ntp-lms-ui/lib/useInputBase'
 import { useNumberInput } from './useNumberInput'
 
-type NumberInputPrecision = number
+// 1. Type aliases
+// (none — using shared types)
 
+// 2. Default constants
 const defaultVariant: InputVariant = 'filled'
 const defaultContextColor: InputContextColor = 'surface'
 const defaultStep = 1
 
+// 3. Props interface
 interface Props {
   modelValue?: number | null
   label?: string
   variant?: InputVariant
   contextColor?: InputContextColor
-  precision?: NumberInputPrecision
   min?: number
   max?: number
   step?: number
@@ -26,6 +28,7 @@ interface Props {
   required?: boolean
 }
 
+// 4. Destructured props
 const {
   modelValue = null,
   label = '',
@@ -49,11 +52,6 @@ const emit = defineEmits<{
 
 const internalErrors = ref<string[]>([])
 
-const mergedErrors = computed(() => [
-  ...internalErrors.value,
-  ...errors,
-])
-
 const numberInput = useNumberInput({
   modelValue: computed(() => modelValue ?? null),
   min,
@@ -61,10 +59,13 @@ const numberInput = useNumberInput({
   step: step || defaultStep,
 })
 
+const mergedErrors = computed(() =>
+  errors.concat(internalErrors.value)
+)
+
 const {
   inputId,
   isLabelFloating,
-  isFocused,
   wrapperClasses,
   supportText,
   hasError,
@@ -122,10 +123,9 @@ function onDecrement() {
         <slot name="leading" />
       </span>
 
-      <input :ref="numberInput.inputRef" :id="inputId" type="number" :value="modelValue ?? ''" :disabled="disabled"
-        :readonly="readonly" :min="min" :max="max" :step="step" :aria-invalid="hasError || undefined"
-        :aria-required="required || undefined" class="ntp-input__control" @input="onInput" @focus="handleFocus"
-        @blur="handleBlur" />
+      <input :id="inputId" type="number" :value="modelValue ?? ''" :disabled="disabled" :readonly="readonly" :min="min"
+        :max="max" :step="step" :aria-invalid="hasError || undefined" :aria-required="required || undefined"
+        class="ntp-input__control" @input="onInput" @focus="handleFocus" @blur="handleBlur" />
 
       <label :for="inputId" class="ntp-input__label" :class="{ 'ntp-input__label--floating': isLabelFloating }">
         {{ label }}
@@ -147,7 +147,8 @@ function onDecrement() {
       </span>
     </div>
 
-    <div v-if="supportText" class="ntp-input__support-text" :class="{ 'ntp-input__support-text--error': hasError }">
+    <div v-if="supportText.length" class="ntp-input__support-text"
+      :class="{ 'ntp-input__support-text--error': hasError }">
       <div v-for="(msg, i) in supportText" :key="i" class="ntp-input__error-line">
         {{ msg }}
       </div>

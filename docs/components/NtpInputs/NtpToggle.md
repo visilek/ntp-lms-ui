@@ -17,6 +17,7 @@ import { NtpToggle } from 'ntp-lms-ui'
 | `modelValue` | `boolean` | `false` | v-model binding |
 | `label` | `string` | `''` | Text label |
 | `labelPosition` | `'left' \| 'right'` | `'left'` | Label position. MD3 default left. |
+|`required`|`boolean`|`false`| visual asterisk + `aria-required`. No validation — consumer handles via `errors`. |
 | `disabled` | `boolean` | `false` | Native disabled |
 | `readonly` | `boolean` | `false` | Not toggleable |
 

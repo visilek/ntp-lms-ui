@@ -37,6 +37,22 @@ describe('NtpCheckbox', () => {
     expect(wrapper.text()).toContain('Custom label')
   })
 
+  it('sets aria-required when required', () => {
+    const wrapper = mount(NtpCheckbox, {
+      props: { required: true },
+    })
+
+    expect(wrapper.find('input').attributes('aria-required')).toBe('true')
+  })
+
+  it('applies required class', () => {
+    const wrapper = mount(NtpCheckbox, {
+      props: { required: true },
+    })
+
+    expect(wrapper.classes()).toContain('ntp-checkbox--required')
+  })
+
   it('applies disabled state', () => {
     const wrapper = mount(NtpCheckbox, {
       props: { disabled: true },

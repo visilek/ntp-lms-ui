@@ -59,6 +59,12 @@
   transform-origin: left top;
 }
 
+/* Required */
+.ntp-input--required .ntp-input__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
+}
+
 .ntp-input__label--floating {
   transform: translateY(-50%) scale(0.75);
 }

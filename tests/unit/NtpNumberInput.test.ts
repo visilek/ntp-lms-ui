@@ -122,6 +122,14 @@ describe('NtpNumberInput', () => {
     expect(wrapper.classes()).toContain('ntp-input--label-floating')
   })
 
+  it('sets aria-required when required', () => {
+    const wrapper = mount(NtpNumberInput, {
+      props: { required: true },
+    })
+
+    expect(wrapper.find('input').attributes('aria-required')).toBe('true')
+  })
+
   it('applies disabled state', () => {
     const wrapper = mount(NtpNumberInput, {
       props: { disabled: true },

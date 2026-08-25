@@ -28,3 +28,10 @@ Same filled/outlined implementation as `NtpTextInput`. See `NtpTextInput` intern
 
 ## Shared Shell
 Uses `useInputBase` composable. See `NtpTextInput` internal notes for details.
+
+## Required
+
+- Prop adds `ntp-input--required` class (via `useInputBase`).
+- CSS appends red asterisk to floating label.
+- Sets `aria-required="true"` on the native input.
+- Visual + semantic. No validation — consumer handles via `errors`.

@@ -19,6 +19,7 @@ import { NtpCheckboxGroup } from 'ntp-lms-ui'
 | `label` | `string` | `''` | Group label |
 | `labelPosition` | `'left' \| 'right'` | `'right'` | Label position for checkboxes |
 | `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout. Horizontal wraps. |
+|`required`|`boolean`| visual asterisk + `role="group` + `aria-required`. No validation — consumer handles via `errors`. |
 | `disabled` | `boolean` | `false` | Disables all options |
 | `readonly` | `boolean` | `false` | Readonly all options |
 | `errors` | `string[]` | `[]` | Error messages |

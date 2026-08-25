@@ -18,6 +18,7 @@ import { NtpCheckbox } from 'ntp-lms-ui'
 | `label` | `string` | `''` | Text label |
 | `labelPosition` | `'left' \| 'right'` | `'right'` | Label position. `left` creates full-width two-column layout. |
 | `indeterminate` | `boolean` | `false` | Visual dash state. Does not affect `modelValue`. |
+|`required`|`boolean`|`false`| visual asterisk + `aria-required`. No validation — consumer handles via `errors`. |
 | `disabled` | `boolean` | `false` | Native disabled |
 | `readonly` | `boolean` | `false` | Not toggleable. Still focusable. |
 

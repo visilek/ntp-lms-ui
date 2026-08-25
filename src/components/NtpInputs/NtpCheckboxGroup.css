@@ -11,6 +11,11 @@
   margin-bottom: var(--ntp-spacing-2);
 }
 
+.ntp-checkbox-group--required .ntp-checkbox-group__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
+}
+
 .ntp-checkbox-group__options {
   display: flex;
   gap: var(--ntp-spacing-2);

@@ -21,6 +21,7 @@ import { NtpNumberInput } from 'ntp-lms-ui'
 | `min` | `number` | `undefined` | Minimum value |
 | `max` | `number` | `undefined` | Maximum value |
 | `step` | `number` | `1` | Increment/decrement step. Decimal places define precision. |
+|`required`|`boolean`|`false`| visual asterisk + `aria-required`. No validation — consumer handles via `errors`. |
 | `disabled` | `boolean` | `false` | Native disabled |
 | `readonly` | `boolean` | `false` | Native readonly |
 | `errors` | `string[]` | `[]` | Consumer-provided validation errors |

@@ -8,6 +8,7 @@ interface Props {
   modelValue?: boolean
   label?: string
   labelPosition?: SelectionLabelPosition
+  required?: boolean
   disabled?: boolean
   readonly?: boolean
 }
@@ -16,6 +17,7 @@ const {
   modelValue = false,
   label = '',
   labelPosition = defaultLabelPosition,
+  required = false,
   disabled = false,
   readonly = false,
 } = defineProps<Props>()
@@ -29,6 +31,7 @@ const toggleClasses = computed(() => [
   'ntp-toggle',
   `ntp-toggle--label-${labelPosition || defaultLabelPosition}`,
   {
+    'ntp-toggle--required': required,
     'ntp-toggle--disabled': disabled,
     'ntp-toggle--readonly': readonly,
   },
@@ -50,7 +53,7 @@ function onClick(event: MouseEvent) {
 
 <template>
   <label :class="toggleClasses">
-    <input type="checkbox" role="switch" class="ntp-toggle__input" :checked="modelValue" :disabled="disabled"
+    <input type="checkbox" role="switch" class="ntp-toggle__input" :checked="modelValue" :aria-required="required || undefined" :disabled="disabled"
       @change="onChange" @click="onClick" />
 
     <span class="ntp-toggle__track" aria-hidden="true">

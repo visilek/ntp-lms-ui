@@ -19,6 +19,14 @@ NtpInputs/
 - `option` slot customizes label content only.
 - Checkbox input always rendered by group.
 
+## Required
+
+- Prop adds `ntp-checkbox-group--required` class.
+- CSS appends red asterisk to group legend.
+- Sets `aria-required="true"` on the `<fieldset>`.
+- Fieldset has `role="group"`.
+- Visual + semantic. No validation — consumer handles via `errors`.
+
 ## Direction
 
 - `vertical`: flex column.

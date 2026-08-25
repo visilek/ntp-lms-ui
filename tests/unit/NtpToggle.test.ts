@@ -43,6 +43,22 @@ describe('NtpToggle', () => {
     expect(wrapper.text()).toContain('Custom label')
   })
 
+  it('sets aria-required when required', () => {
+    const wrapper = mount(NtpToggle, {
+      props: { required: true },
+    })
+
+    expect(wrapper.find('input').attributes('aria-required')).toBe('true')
+  })
+
+  it('applies required class', () => {
+    const wrapper = mount(NtpToggle, {
+      props: { required: true },
+    })
+
+    expect(wrapper.classes()).toContain('ntp-toggle--required')
+  })
+
   it('applies disabled state', () => {
     const wrapper = mount(NtpToggle, {
       props: { disabled: true },

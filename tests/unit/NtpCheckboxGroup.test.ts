@@ -58,6 +58,22 @@ describe('NtpCheckboxGroup', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[]])
   })
 
+  it('sets aria-required when required', () => {
+    const wrapper = mount(NtpCheckboxGroup, {
+      props: { required: true, options },
+    })
+
+    expect(wrapper.find('fieldset').attributes('aria-required')).toBe('true')
+  })
+
+  it('applies required class', () => {
+    const wrapper = mount(NtpCheckboxGroup, {
+      props: { required: true, options },
+    })
+
+    expect(wrapper.classes()).toContain('ntp-checkbox-group--required')
+  })
+
   it('applies direction class', () => {
     const wrapper = mount(NtpCheckboxGroup, {
       props: { direction: 'horizontal', options },

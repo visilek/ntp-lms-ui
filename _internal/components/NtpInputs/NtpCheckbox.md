@@ -1,37 +1,47 @@
-# NtpCheckbox — Implementation Notes
+# NtpToggle — Implementation Notes
 
 ## Structure
 
 ```
 NtpInputs/
-├── NtpCheckbox.vue
-└── NtpCheckbox.css
+├── NtpToggle.vue
+└── NtpToggle.css
 ```
 
-## Native Input
+## Rendering
 
-- Uses native `<input type="checkbox">`.
-- Custom appearance via CSS `appearance: none`.
-- Checkmark via `::after` pseudo-element.
+- Hidden native input (`position: absolute; opacity: 0`).
+- Visual track + thumb as separate spans.
+- Transitions on track and thumb.
 
-## Indeterminate
+## MD3 Dimensions
 
-- Cannot be set via HTML attribute.
-- Set via DOM property in `watch` with `immediate: true`.
-
-## Readonly
-
-- No native readonly on checkboxes.
-- Intercept click with `preventDefault` when readonly.
+| Element | Value |
+|---|---|
+| Track | 52×32px |
+| Thumb (unselected) | 16×16px, left 6px |
+| Thumb (selected) | 24×24px, left 20px |
 
 ## Label Position
 
 | Position | Layout |
 |---|---|
-| right | `[checkbox] Label` — compact |
-| left | `Label [checkbox]` — full-width, label flex-grows |
+| left (default) | `Label [switch]` |
+| right | `[switch] Label` — full-width |
 
-## Edge Cases
+## Readonly
 
-- `indeterminate` + `modelValue` are independent.
-- Disabled prevents all interaction.
+No native readonly on checkboxes. Intercept click with `preventDefault`.
+
+## Required
+
+- Prop adds `ntp-toggle--required` class.
+- CSS appends red asterisk to label.
+- Sets `aria-required="true"` on the input.
+- Visual + semantic. No validation — consumer handles via `errors`.
+
+## Transitions
+
+- Track: background-color, border-color.
+- Thumb: left, width, height, background-color.
+- Uses decelerated easing for thumb movement.
