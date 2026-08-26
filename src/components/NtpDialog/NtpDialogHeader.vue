@@ -28,7 +28,14 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const injectedFullscreen = inject<Ref<boolean> | null >(fullscreenKey, null)
+const injectedFullscreen = inject<Ref<boolean> | null>(fullscreenKey, null)
+
+const headerClasses = computed(() => [
+  'ntp-dialog-header',
+  {
+    'ntp-dialog-header--with-icon': !!icon,
+  },
+])
 
 const isFullscreen = computed(() => {
   if (fullscreen !== null) return fullscreen
@@ -47,12 +54,7 @@ function onClose() {
 
 <template>
   <!-- Fullscreen: render NtpAppBar -->
-  <NtpAppBar
-    v-if="isFullscreen"
-    :title="effectiveTitle"
-    :subtitle="subtitle"
-    height="small"
-  >
+  <NtpAppBar v-if="isFullscreen" :title="effectiveTitle" :subtitle="subtitle" height="small">
     <template v-if="showClose" #leading>
       <NtpButton icon-only aria-label="Close" color="on-surface-variant" @click="onClose">
         <slot name="close">×</slot>
@@ -71,7 +73,7 @@ function onClose() {
   </NtpAppBar>
 
   <!-- Standard: centered -->
-  <div v-else class="ntp-dialog-header">
+  <div v-else :class="headerClasses">
     <span v-if="icon" class="ntp-dialog-header__icon" aria-hidden="true">{{ icon }}</span>
 
     <div class="ntp-dialog-header__text">

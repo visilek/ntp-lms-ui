@@ -1,20 +1,25 @@
 .ntp-dialog-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--ntp-spacing-2);
-  padding: var(--ntp-spacing-6) var(--ntp-spacing-6) var(--ntp-spacing-3);
+  padding: var(--ntp-spacing-4) var(--ntp-spacing-4) var(--ntp-spacing-3);
 }
 
-.ntp-dialog-header__icon {
-  font-size: 32px;
+.ntp-dialog-header--with-icon {
+  align-items: center;
 }
 
 .ntp-dialog-header__text {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--ntp-spacing-1);
+  text-align: left;
+}
+
+.ntp-dialog-header--with-icon .ntp-dialog-header__text {
+  align-items: center;
   text-align: center;
 }
 

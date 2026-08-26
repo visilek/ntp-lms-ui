@@ -1,6 +1,6 @@
 # NtpConfirmationDialog
 
-A standard confirmation dialog. Composition of `NtpDialog`, `NtpDialogHeader`, `NtpTextInput`, and `NtpButton`. Supports optional type-to-confirm.
+A standard confirmation dialog. Composition of `NtpDialog`, `NtpDialogHeader`, `NtpButton`, and optional `NtpTextInput`.
 
 ## Import
 
@@ -19,121 +19,50 @@ import { NtpConfirmationDialog } from 'ntp-lms-ui'
 | `message` | `string` | `''` | Confirmation message |
 | `confirmLabel` | `string` | `'Confirm'` | Confirm button text |
 | `cancelLabel` | `string` | `'Cancel'` | Cancel button text |
-| `icon` | `string` | `'warning'` | Decorative icon |
+| `icon` | `string` | `''` | Decorative icon. Centered header when present. |
 | `confirmColor` | `'primary' \| 'error'` | `'primary'` | Confirm button color |
 | `buttons` | `'text' \| 'filled'` | `'text'` | Button style mode |
-| `loading` | `boolean` | `false` | Loading state on confirm button |
-| `persistent` | `boolean` | `false` | Disables backdrop/Escape dismissal |
-| `confirmationPhrase` | `string` | `''` | Phrase to type to enable confirm. Empty = no typing required. |
+| `loading` | `boolean` | `false` | Loading state on confirm |
+| `persistent` | `boolean` | `false` | Disables backdrop/Escape close |
+| `confirmationPhrase` | `string` | `''` | Type-to-confirm phrase |
 
 ### Slots
 
-| Slot | Scope | Description |
-|---|---|---|
-| `default` | — | Custom message content. Overrides `message` prop. |
-| `footer` | — | Custom footer. Overrides default Cancel/Confirm buttons. |
+| Slot | Description |
+|---|---|
+| `default` | Custom message. Overrides `message` prop. |
+| `footer` | Custom footer. Overrides buttons. |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:open` | `boolean` | v-model:open contract |
-| `confirm` | — | Confirm clicked. Parent performs action, then closes. |
-| `cancel` | — | Cancel clicked or dialog dismissed |
+| `update:open` | `boolean` | v-model |
+| `confirm` | — | Confirm clicked. Consumer closes. |
+| `cancel` | — | Cancel or dismissed |
 
 ## Button Modes
 
-| Mode | Confirm Button | Cancel Button |
+| Mode | Confirm | Cancel |
 |---|---|---|
-| `text` (default) | `variant="text"` | `variant="text"` |
-| `filled` | `variant="filled"` | `variant="outlined"` |
-
-Cancel button color: `on-surface-variant` in both modes.
+| `text` | text | text |
+| `filled` | filled | outlined |
 
 ## Type-to-Confirm
 
-When `confirmationPhrase` is non-empty:
+When `confirmationPhrase` set, a text input appears. Confirm disabled until exact match.
 
-- A text input appears below the message.
-- The confirm button is disabled until the typed text matches the phrase exactly.
-- Matching is live on every keystroke.
-
-## Behavior
-
-- **Confirm:** emits `confirm`. Does not auto-close. Parent closes after the action completes.
-- **Cancel:** emits `cancel`, sets `open` to `false`.
-- **Backdrop click / Escape:** emits `cancel`, sets `open` to `false`. Ignored if `persistent` is `true`.
-
-## Usage Examples
-
-### Basic (Text Mode)
+## Usage
 
 ```html
 <NtpConfirmationDialog
-  v-model:open="isConfirmOpen"
-  title="Confirm Attendance?"
-  message="Mark this student as present for today's session."
-  confirm-label="Confirm"
-  @confirm="confirmAttendance"
-/>
-```
-
-### Destructive with Type-to-Confirm
-
-```html
-<NtpConfirmationDialog
-  v-model:open="isDeleteOpen"
+  v-model:open="isOpen"
   title="Delete Course?"
-  message="This action is irreversible. The course and all associated content will be permanently removed."
+  message="This action is irreversible."
   confirm-label="Delete"
   confirm-color="error"
   buttons="filled"
   confirmation-phrase="delete"
-  :loading="isDeleting"
-  @confirm="deleteCourse"
+  @confirm="handleDelete"
 />
 ```
-
-### Custom Message
-
-```html
-<NtpConfirmationDialog
-  v-model:open="isOpen"
-  title="Archive Items?"
-  confirm-label="Archive"
-  buttons="filled"
-  @confirm="archive"
->
-  <template #default>
-    <p>You are about to archive <strong>3 courses</strong>.</p>
-    <p>Archived courses are hidden from students but can be restored later.</p>
-  </template>
-</NtpConfirmationDialog>
-```
-
-### Custom Footer
-
-```html
-<NtpConfirmationDialog
-  v-model:open="isOpen"
-  title="Custom Action?"
-  @confirm="handleConfirm"
->
-  <template #footer>
-    <div class="ntp-d-flex ntp-justify-between">
-      <NtpButton variant="text" @click="isOpen = false">Back</NtpButton>
-      <div class="ntp-d-flex ntp-gap-2">
-        <NtpButton variant="text" @click="isOpen = false">Cancel</NtpButton>
-        <NtpButton @click="handleConfirm">Proceed</NtpButton>
-      </div>
-    </div>
-  </template>
-</NtpConfirmationDialog>
-```
-
-## Accessibility
-
-- Renders `NtpDialog` with `role="dialog"` and `aria-modal="true"`.
-- Icon is decorative (`aria-hidden="true"`).
-- Type-to-confirm input has accessible label ("Type {phrase} to confirm").
-- Escape closes unless `persistent`.

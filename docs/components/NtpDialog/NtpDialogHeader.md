@@ -1,6 +1,6 @@
 # NtpDialogHeader
 
-Header for dialogs. Centered in standard mode, app-bar in fullscreen.
+Header for dialogs. Two modes: standard and fullscreen.
 
 ## Import
 
@@ -35,10 +35,32 @@ import { NtpDialogHeader } from 'ntp-lms-ui'
 |---|---|---|
 | `close` | — | Close clicked |
 
+## Standard Mode Alignment
+
+| Icon | Alignment |
+|---|---|
+| No icon | Left-aligned — like a message |
+| With icon | Centered — branded header |
+
 ## Usage
 
 ```html
+<!-- Standard, no icon — left-aligned -->
+<NtpDialog v-model:open="isOpen">
+  <NtpDialogHeader title="Edit Course" @close="isOpen = false" />
+</NtpDialog>
+
+<!-- Standard, with icon — centered -->
+<NtpDialog v-model:open="isOpen">
+  <NtpDialogHeader title="Delete Course?" subtitle="Irreversible" icon="⚠️" @close="isOpen = false" />
+</NtpDialog>
+
+<!-- Fullscreen -->
 <NtpDialog v-model:open="isOpen" fullscreen>
-  <NtpDialogHeader title="Edit Course" fullscreen-title="Edit" @close="isOpen = false" />
+  <NtpDialogHeader title="Edit Course Details" fullscreen-title="Edit" @close="isOpen = false">
+    <template #fullscreenActions>
+      <NtpButton variant="text" @click="isOpen = false">Save</NtpButton>
+    </template>
+  </NtpDialogHeader>
 </NtpDialog>
 ```
