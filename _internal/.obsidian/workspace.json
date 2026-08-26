@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "df16ad24f75c5382",
+        "id": "12d7379b15939ae1",
         "type": "tabs",
         "children": [
           {
-            "id": "a167e55380b2ea49",
+            "id": "2acbc1766406661c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "components/NtpMenu.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "NtpMenu"
+              "title": "New tab"
             }
           }
         ]
@@ -185,12 +181,13 @@
       "bases:Create new base": false
     }
   },
-  "active": "a167e55380b2ea49",
+  "active": "2acbc1766406661c",
   "lastOpenFiles": [
+    "components/NtpActionMenu.md",
+    "components/NtpMenu.md",
     "components/NtpMedia.md",
     "Untitled.md",
     "components/NtpDialog/NtpDialog.md",
-    "components/NtpMenu.md",
     "Implementation plan.md",
     "README.md",
     "MD references.md",
@@ -212,7 +209,6 @@
     "components/NtpChip.md",
     "components/NtpButton.md",
     "components/NtpSpinner.md",
-    "conventions/dependencies.md",
     "conventions/Untitled",
     "conventions",
     "components/NtpRichTextEditor",

@@ -1,38 +1,27 @@
 # NtpActionMenu — Implementation Notes
 
+## Structure
+
+```
+NtpActionMenu/
+├── NtpActionMenu.vue
+└── NtpActionMenu.css
+```
+
 ## Composition
 
-```
-NtpActionMenu
-├── NtpButton (trigger)
-│   ├── iconOnly by default, ellipsis icon
-│   └── Custom trigger via `trigger` slot
-└── NtpMenu (popup)
-    ├── Data-driven: `items` prop
-    └── Custom: `default` slot or `item` scoped slot
-```
+- `NtpButton` (trigger, icon-only).
+- `NtpMenu` (popup).
+- Anchor: button component instance — menu resolves `$el`.
 
-## Internal State
+## Behavior
 
-- `isOpen: boolean` — managed internally.
-- On trigger click: toggle `isOpen`.
-- On `select` from menu: emit `select`, set `isOpen = false`.
-- On `close` from menu (outside click, Escape): set `isOpen = false`, emit `close`.
+- Toggle open/close on trigger click.
+- Auto-close on select.
+- Disabled: trigger disabled, menu never opens.
 
-## Trigger Button
+## Trigger
 
-- Default: `NtpButton` with `iconOnly`, `variant="text"`, `color="on-surface-variant"`, ellipsis icon (`more_vert`).
-- `aria-label`: `label` prop if non-empty, else `'More actions'`.
-- `aria-haspopup="menu"`, `aria-expanded` bound to `isOpen`.
-
-## Menu
-
-- Anchor: trigger button element (via `ref`).
-- `placement` passed through to `NtpMenu`.
-- `items` passed through.
-- `open` bound to `isOpen`.
-
-## Edge Cases
-
-- `disabled` on trigger → menu cannot open. If open and `disabled` becomes `true`, close menu.
-- `items` empty and no `default` slot → render trigger with empty menu? For v1: trigger still renders, menu opens empty. Parent should not do this.
+- Hardcoded icon-only.
+- `ariaLabel` prop or default "More actions".
+- `trigger` slot overrides content.

@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "b772ad02886675f7",
+        "id": "c3daca616ab27acd",
         "type": "tabs",
         "children": [
           {
-            "id": "a06c7dc0f8362dab",
+            "id": "66b00a1ba1283d99",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "components/NtpMenu.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "NtpMenu"
+              "title": "New tab"
             }
           }
         ]
@@ -185,8 +181,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "a06c7dc0f8362dab",
+  "active": "66b00a1ba1283d99",
   "lastOpenFiles": [
+    "components/NtpActionMenu.md",
+    "components/NtpMenu.md",
     "tokens.md",
     "components/NtpInputs/NtpDateTimeInput.md",
     "components/NtpInputs/NtpDateInput.md",
@@ -206,7 +204,6 @@
     "components/NtpRichTextEditor",
     "components/NtpCarousel/NtpCarousel.md",
     "components/NtpCarousel/index.md",
-    "components/NtpActionMenu.md",
     "components/NtpCarousel",
     "lib/latex/renderLatex.md",
     "components",
@@ -219,7 +216,6 @@
     "lib/latex",
     "lib",
     "components/NtpDrawer",
-    "components/NtpBreadcrumb.md",
     "components/NtpDialog",
     "conventions",
     "components/NtpCard"
