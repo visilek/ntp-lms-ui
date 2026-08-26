@@ -3,36 +3,28 @@
 ## Structure
 
 ```
-<header class="ntp-app-bar">
-  [leading slot — optional]
-  [default slot OR title + subtitle]
-  [actions slot — optional]
-</header>
+NtpAppBar/
+├── NtpAppBar.vue
+└── NtpAppBar.css
 ```
 
-Flex row. Leading and actions content-sized. Title area flex-grow.
+## Heights
 
-## Height Presets
+| Height | Layout |
+|---|---|
+| `small` | Single row — all regions vertically centered |
+| `medium` / `large` | Two zones — leading/actions top, title bottom |
 
-| Height | Min Height | Typography | Layout |
-|---|---|---|---|
-| `small` | 64dp | Title large | Single row. Grows with content. |
-| `medium` | 112dp | Headline small | Two zones. Title bottom-anchored. |
-| `large` | 152dp | Headline medium | Two zones. |
+## Slots
 
-Two-zone layout: leading/actions aligned top, title block aligned bottom via `align-self: flex-end`.
+- `leading`: content-sized.
+- `default`: title area, flex-grow. Overrides title/subtitle props.
+- `actions`: content-sized, right-aligned.
 
-## Title Area
+## Typography
 
-- Default: `title` prop + `subtitle` prop.
-- Default slot overrides both.
-- Subtitle rendered below title when provided.
-
-## Future
-
-- `scrollable` prop: scroll listener toggles transparent background. Deferred.
-
-## Accessibility
-
-- Renders `<header>` element.
-- Leading/actions content must provide accessible labels.
+| Height | Title |
+|---|---|
+| small | title-large |
+| medium | headline-small |
+| large | headline-medium |
