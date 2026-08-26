@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "32e826b83c50903e",
+        "id": "df16ad24f75c5382",
         "type": "tabs",
         "children": [
           {
-            "id": "6076aca1b04f6cab",
+            "id": "a167e55380b2ea49",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "components/NtpMenu.md",
+                "mode": "source",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "NtpMenu"
             }
           }
         ]
@@ -181,8 +185,15 @@
       "bases:Create new base": false
     }
   },
-  "active": "6076aca1b04f6cab",
+  "active": "a167e55380b2ea49",
   "lastOpenFiles": [
+    "components/NtpMedia.md",
+    "Untitled.md",
+    "components/NtpDialog/NtpDialog.md",
+    "components/NtpMenu.md",
+    "Implementation plan.md",
+    "README.md",
+    "MD references.md",
     "components/NtpInputs/NtpDateTimeInput.md",
     "components/NtpInputs/NtpDateInput.md",
     "components/NtpInputs/NtpRadioGroup.md",
@@ -193,7 +204,6 @@
     "conventions/file-structure.md",
     "conventions/implementation-patterns.md",
     "components/NtpInputs/NtpToggle.md",
-    "Untitled.md",
     "conventions/styling.md",
     "conventions/component-api.md",
     "conventions/commit-messages.md",
@@ -202,15 +212,9 @@
     "components/NtpChip.md",
     "components/NtpButton.md",
     "components/NtpSpinner.md",
-    "README.md",
     "conventions/dependencies.md",
     "conventions/Untitled",
-    "conventions/composables.md",
-    "conventions/data-fetching.md",
-    "conventions.md",
     "conventions",
-    "Implementation plan.md",
-    "MD references.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel",
     "lib/latex",

@@ -1,49 +1,32 @@
 # NtpMenu — Implementation Notes
 
-## Teleport
+## Structure
 
-Renders in `<Teleport to="body">`. Prevents clipping by `overflow: hidden` containers.
+```
+NtpMenu/
+├── NtpMenu.vue
+└── NtpMenu.css
+```
 
 ## Positioning
 
-- Compute position based on `anchor` bounding rect and `placement`.
-- Use `position: fixed` with calculated top/left.
-- Recompute on window resize / scroll while open.
-- For v1: no auto-flipping. Consumer chooses `placement`.
+- CSS base: `position: fixed; top: 0; left: 0; visibility: hidden`.
+- JS sets `top`/`left` after measurement.
+- `--positioned` class reveals.
+- Clamps to viewport with 8px margin.
 
-## Focus Management
+## Anchor Resolution
 
-- On open: store `document.activeElement` (the anchor). Focus first non-disabled item or header slot content.
-- On close: restore focus to stored anchor.
-- Tab: close menu, let browser handle focus naturally.
+Accepts `HTMLElement` or component instance (`$el`).
 
-## Outside Click
+## Visibility Pattern
 
-- Listen for `mousedown` on document while open.
-- If click target is outside the menu and outside the anchor → emit `close`.
-- Anchor clicks are handled by the parent (e.g., NtpActionMenu toggles).
+Hidden render → measure → position → reveal. Avoids first-open timing race.
 
-## Item Rendering
+## Scroll Handling
 
-Default item structure:
+`window.addEventListener('scroll', handler, true)` — capture catches nested scrolls.
 
-```html
-<button class="ntp-menu-item" role="menuitem">
-  [leading icon]
-  [label]
-</button>
-```
+## Focus
 
-- `danger`: adds error color class.
-- `disabled`: `disabled` attribute + `aria-disabled`.
-
-## Header Slot
-
-- Rendered above items, below the menu's top border-radius.
-- No divider by default. Consumer can add one.
-
-## Future Considerations
-
-- Auto-flipping when near viewport edges.
-- Submenus (nested menus).
-- Width constraints (`minWidth`, `maxWidth` props).
+First item focused on open. Arrow keys navigate.
