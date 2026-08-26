@@ -1,0 +1,52 @@
+.ntp-dialog {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  outline: none;
+}
+
+.ntp-dialog__surface {
+  background-color: var(--ntp-color-surface-container-high);
+  border-radius: var(--ntp-shape-extra-large);
+  box-shadow: var(--ntp-elevation-3);
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  position: relative;
+}
+
+.ntp-dialog--fullscreen {
+  align-items: stretch;
+}
+
+.ntp-dialog--fullscreen .ntp-dialog__surface {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+
+.ntp-dialog__close {
+  position: absolute;
+  top: var(--ntp-spacing-2);
+  right: var(--ntp-spacing-2);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ntp-shape-full);
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--ntp-color-on-surface-variant);
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ntp-dialog__close:hover {
+  background-color: var(--ntp-color-surface-container-high);
+}

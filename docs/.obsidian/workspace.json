@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "0209c2045d0fd124",
+        "id": "b245a617a155a5b4",
         "type": "tabs",
         "children": [
           {
-            "id": "34e393fcdb62aecf",
+            "id": "48c96a9f3893c92b",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "34e393fcdb62aecf",
+  "active": "b2062c26b8c28c8d",
   "lastOpenFiles": [
+    "components/NtpDialog/NtpDialog.md",
     "components/NtpAppBar.md",
     "components/NtpActionMenu.md",
     "components/NtpMenu.md",
@@ -211,7 +212,6 @@
     "lib/latex/v-latex.md",
     "components/NtpRichText/undex.md",
     "components/NtpRichText/NtpRichTextFigure.md",
-    "components/NtpRichText/NtpRichText.md",
     "components/NtpRichText",
     "lib/latex",
     "lib",

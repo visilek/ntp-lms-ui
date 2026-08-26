@@ -1,55 +1,52 @@
 # NtpDialog — Implementation Notes
 
-## Teleport
+## Structure
 
-Renders in `<Teleport to="body">`.
+```
+NtpDialog/
+├── NtpDialog.vue
+├── NtpDialog.css
+├── NtpDialogHeader.vue
+├── NtpDialogHeader.css
+└── index.ts
+```
+
+## Rendering
+
+- Teleports to body.
+- Backdrop = the dialog root element (full-screen div with rgba background).
+- Surface inside, centered.
+
+## Fullscreen
+
+- Prop `fullscreen` OR viewport < `width + 32px`.
+- Tracked via `isFullscreen` ref.
+- Provided to children via `inject` key (`Symbol`).
+- Re-evaluated on window resize.
 
 ## Focus Management
 
-- On open: store `document.activeElement`. Focus first focusable element in dialog.
-- Focus trap: on Tab, cycle within dialog.
-- On close: restore focus to stored element.
+- Stores `document.activeElement` on open.
+- Focuses dialog root on open.
+- Tab cycles within focusable elements.
+- Restores focus on close.
 
 ## Scroll Lock
 
-- On open: `overflow: hidden` on `document.body`.
-- On close: remove.
-
-## Responsive Fullscreen
-
-- Track `isFullscreen` ref.
-- Compute: `fullscreenProp || viewportWidth < width + 32`.
-- Listen to `window.resize` while open.
-- Provide `isFullscreen` via injection key (`Symbol`).
+- `document.body.style.overflow = 'hidden'` on open.
+- Removed on close.
 
 ## Close Button
 
-### Standard Mode
-- Rendered by dialog when `showClose` is `true` and `!isFullscreen`.
-- Positioned top-right.
+- Standard mode only — hidden in fullscreen.
+- `showClose` prop controls visibility.
 - `close` slot overrides default × button.
-- Click → emit `update:open` with `false`.
 
-### Fullscreen Mode
-- Not rendered by dialog.
-- `NtpDialogHeader` renders its own close button.
+## Persistent
 
-## Backdrop
-
-- Semi-transparent scrim.
-- Click: if not `persistent`, emit `update:open` with `false`.
-
-## Escape
-
-- Keydown listener while open.
-- Escape: if not `persistent`, emit `update:open` with `false`.
-
-## Transition
-
-- Fade + slight scale.
-- `opened` / `closed` events after transition.
+- Disables Escape + backdrop close.
+- Close button still functional (consumer controls).
 
 ## Edge Cases
 
-- Multiple dialogs: hierarchical injection ensures correct fullscreen state.
-- `persistent` + `fullscreen`: close button in header still works if consumer wires it.
+- Multiple dialogs: injection key is per-dialog — no collision.

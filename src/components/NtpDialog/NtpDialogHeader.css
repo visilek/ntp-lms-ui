@@ -1,0 +1,29 @@
+.ntp-dialog-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ntp-spacing-2);
+  padding: var(--ntp-spacing-6) var(--ntp-spacing-6) var(--ntp-spacing-3);
+}
+
+.ntp-dialog-header__icon {
+  font-size: 32px;
+}
+
+.ntp-dialog-header__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ntp-spacing-1);
+  text-align: center;
+}
+
+.ntp-dialog-header__title {
+  font: var(--ntp-type-headline-small);
+  color: var(--ntp-color-on-surface);
+}
+
+.ntp-dialog-header__subtitle {
+  font: var(--ntp-type-body-medium);
+  color: var(--ntp-color-on-surface-variant);
+}

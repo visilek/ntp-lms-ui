@@ -1,44 +1,45 @@
 # NtpDialogHeader — Implementation Notes
 
-## Layout Modes
+## Modes
 
-### Standard Mode
-- Centered column: icon (if provided), title, subtitle — OR default slot content.
-- No close button rendered.
-- Icon decorative (`aria-hidden="true"`).
+### Standard
+- Centered column: icon (optional), title, subtitle.
+- No close button — dialog owns it.
 
-### Fullscreen Mode
+### Fullscreen
 - Renders `NtpAppBar` internally.
-- Mapping:
-  - `leading` → close button (from `close` slot or default ×)
-  - `default` → consumer's default slot content, OR `fullscreenTitle`/`title` + `subtitle`
-  - `actions` → `actions` slot
-- Icon not rendered.
-
-## Main Content Override
-
-- Default slot overrides icon + title + subtitle.
-- Standard mode: slot content replaces main block.
-- Fullscreen mode: slot content passed to `NtpAppBar`'s default slot.
+- `leading`: close button (default × or `close` slot).
+- `default`: title area (slot or `fullscreenTitle`/`title`).
+- `actions`: `fullscreenActions` slot.
 
 ## Fullscreen State Resolution
 
 ```ts
-const injected = inject<Ref<boolean>>(fullscreenKey, null)
-const isFullscreen = computed(() =>
-  props.fullscreen !== null ? props.fullscreen : injected?.value ?? false
-)
+const injectedFullscreen = inject<Ref<boolean> | null>(fullscreenKey, null)
+
+const isFullscreen = computed(() => {
+  if (fullscreen !== null) return fullscreen
+  return injectedFullscreen?.value ?? false
+})
 ```
 
-## Close Button (Fullscreen Mode Only)
+Priority: prop > injected > false.
 
-- Default: `NtpButton` icon-only with × icon, `aria-label="Close"`.
-- `close` slot overrides.
-- Always rendered in fullscreen mode.
-- Emits `close` event. Parent dialog or consumer handles.
+## Icon
 
-## Edge Cases
+- Standard mode only.
+- Decorative — `aria-hidden`.
+- Dropped in fullscreen.
 
-- No props, no default slot → renders only close button (fullscreen mode).
-- Standalone use (outside `NtpDialog`) → `fullscreen` prop controls layout.
-- Icon + fullscreen → icon ignored.
+## Main Content Override
+
+- `default` slot overrides the entire title area.
+- Standard: replaces icon + title + subtitle.
+- Fullscreen: passed to `NtpAppBar` default slot.
+
+## Close Button
+
+- Fullscreen mode only (standard mode handled by dialog).
+- `showClose` prop.
+- `close` slot.
+- Emits `close` — consumer closes dialog.
