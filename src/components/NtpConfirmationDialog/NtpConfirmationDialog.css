@@ -1,0 +1,13 @@
+.ntp-confirmation-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ntp-spacing-4);
+  padding: var(--ntp-spacing-4);
+}
+
+.ntp-confirmation-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ntp-spacing-2);
+  padding: var(--ntp-spacing-4);
+}

@@ -19,6 +19,12 @@ Separate CSS files in the component folder, imported scoped via `src`.
 
 No global styles except in `_base/`.
 
+## Utility Classes vs Component CSS
+
+- Component internals: use semantic classes in the component's CSS file.
+- Consumer-side layout: use utility classes (`ntp-flex`, `ntp-gap-*`, etc.).
+- Utility classes are for arranging components, not for building them.
+
 ## CSS Local Variables
 
 When drafting component CSS, evaluate the use of local variables (`--_component-*`) against two criteria:

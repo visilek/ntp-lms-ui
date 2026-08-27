@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e9b1a66ec3e9eaba",
+        "id": "1d6c1754f95cb6f6",
         "type": "tabs",
         "children": [
           {
-            "id": "66cf75cd9b951117",
+            "id": "b2ba3b628105d072",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -183,6 +183,8 @@
   },
   "active": "0b4d09b8726e76e8",
   "lastOpenFiles": [
+    "conventions/styling.md",
+    "components/NtpCheckbox.md",
     "components/NtpConfirmationDialog.md",
     "conventions/component-api.md",
     "conventions/file-structure.md",
@@ -202,12 +204,10 @@
     "components/NtpDateInput.md",
     "components/NtpRadioGroup.md",
     "components/NtpCheckboxGroup.md",
-    "components/NtpCheckbox.md",
     "components/NtpNumberInput.md",
     "components/NtpTextInput.md",
     "conventions/implementation-patterns.md",
     "components/NtpToggle.md",
-    "conventions/styling.md",
     "conventions/commit-messages.md",
     "conventions/Untitled",
     "conventions",

@@ -90,7 +90,7 @@ function onDialogClose() {
         @closed="onDialogClose">
         <NtpDialogHeader :title="title" :icon="icon || undefined" @close="onCancel" />
 
-        <div class="ntp-pa-4" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="ntp-confirmation-dialog__body">
             <slot>
                 <p>{{ message }}</p>
             </slot>
@@ -99,7 +99,7 @@ function onDialogClose() {
                 :label="`Type ${confirmationPhrase} to confirm`" />
         </div>
 
-        <div class="ntp-pa-4" style="display: flex; justify-content: flex-end; gap: 8px;">
+        <div class="ntp-confirmation-dialog__footer">
             <slot name="footer">
                 <NtpButton :variant="cancelButtonVariant" color="on-surface-variant" @click="onCancel">
                     {{ cancelLabel }}
@@ -112,3 +112,5 @@ function onDialogClose() {
         </div>
     </NtpDialog>
 </template>
+
+<style scoped src="./NtpConfirmationDialog.css"></style>
