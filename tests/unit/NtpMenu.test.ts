@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpMenu from '@ntp-lms-ui/components/NtpMenu/NtpMenu.vue'
+import { NtpMenu } from '@ntp-lms-ui/components'
 
 const items = [
   { value: 'a', label: 'Option A' },

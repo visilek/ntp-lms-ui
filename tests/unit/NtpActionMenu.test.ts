@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpActionMenu from '@ntp-lms-ui/components/NtpActionMenu/NtpActionMenu.vue'
+import { NtpActionMenu } from '@ntp-lms-ui/components'
 
 const items = [
   { value: 'a', label: 'Option A' },
@@ -46,7 +46,7 @@ describe('NtpActionMenu', () => {
     await wrapper.find('button').trigger('click')
 
     const menuItems = document.body.querySelectorAll('.ntp-menu__item')
-    ;(menuItems[0] as HTMLElement).click()
+      ; (menuItems[0] as HTMLElement).click()
 
     expect(wrapper.emitted('select')?.[0]).toEqual([
       { value: 'a', item: items[0] },
@@ -58,7 +58,7 @@ describe('NtpActionMenu', () => {
 
     await wrapper.find('button').trigger('click')
     const menuItems = document.body.querySelectorAll('.ntp-menu__item')
-    ;(menuItems[0] as HTMLElement).click()
+      ; (menuItems[0] as HTMLElement).click()
 
     await nextTick()
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import NtpAppBar from '@ntp-lms-ui/components/NtpAppBar/NtpAppBar.vue'
+import { NtpAppBar } from '@ntp-lms-ui/components'
 
 describe('NtpAppBar', () => {
   it('renders title', () => {

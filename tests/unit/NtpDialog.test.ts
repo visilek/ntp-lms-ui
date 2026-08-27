@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
-import NtpDialog from '@ntp-lms-ui/components/NtpDialog/NtpDialog.vue'
+import { NtpDialog } from '@ntp-lms-ui/components'
 
 let wrappers: ReturnType<typeof mount>[] = []
 

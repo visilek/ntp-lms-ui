@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import {NtpChip} from '@ntp-lms-ui/components'
+import { NtpChip } from '@ntp-lms-ui/components'
 import { CHIP_VARIANTS, CHIP_COLORS, CHIP_SIZES } from '@ntp-lms-ui/lib'
 
 const meta: Meta<typeof NtpChip> = {

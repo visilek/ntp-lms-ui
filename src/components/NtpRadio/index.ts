@@ -1,0 +1,1 @@
+export { default as NtpRadioGroup } from './NtpRadioGroup.vue'

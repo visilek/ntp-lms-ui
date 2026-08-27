@@ -20,8 +20,8 @@ import { NtpConfirmationDialog } from 'ntp-lms-ui'
 | `confirmLabel` | `string` | `'Confirm'` | Confirm button text |
 | `cancelLabel` | `string` | `'Cancel'` | Cancel button text |
 | `icon` | `string` | `''` | Decorative icon. Centered header when present. |
-| `confirmColor` | `'primary' \| 'error'` | `'primary'` | Confirm button color |
-| `buttons` | `'text' \| 'filled'` | `'text'` | Button style mode |
+| `confirmButtonColor` | `'primary' \| 'error'` | `'primary'` | Confirm button color |
+| `confirmButtonVariant` | `'text' \| 'filled'` | `'text'` | Button style mode. `'filled'`: confirm = filled, cancel = outlined. `'text'`: both text. |
 | `loading` | `boolean` | `false` | Loading state on confirm |
 | `persistent` | `boolean` | `false` | Disables backdrop/Escape close |
 | `confirmationPhrase` | `string` | `''` | Type-to-confirm phrase |

@@ -6,7 +6,7 @@
 import type { DropdownLoader, DropdownOption } from './types/dropdown'
 
 /** Maximum number of items to preload without search. */
-export const DROPDOWN_PRELOAD_LIMIT = 50
+export const DROPDOWN_PRELOAD_LIMIT = 15
 
 /** Dropdown data loading mode. */
 export type DropdownMode = 'preload' | 'async'

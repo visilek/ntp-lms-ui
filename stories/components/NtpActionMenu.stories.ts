@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpActionMenu from '../../src/components/NtpActionMenu/NtpActionMenu.vue'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
+import { NtpActionMenu, NtpButton } from '@ntp-lms-ui/components'
 
 const meta = {
   title: 'Components/NtpActionMenu',

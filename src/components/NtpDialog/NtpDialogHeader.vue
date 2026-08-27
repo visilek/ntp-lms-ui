@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import type { Ref } from 'vue'
-import NtpAppBar from '@ntp-lms-ui/components/NtpAppBar/NtpAppBar.vue'
-import NtpButton from '@ntp-lms-ui/components/NtpButton/NtpButton.vue'
+import { NtpAppBar, NtpButton } from '@ntp-lms-ui/components'
 
 const fullscreenKey = Symbol('ntp-dialog-fullscreen')
 

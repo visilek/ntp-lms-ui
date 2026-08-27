@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpConfirmationDialog from '../../src/components/NtpConfirmationDialog/NtpConfirmationDialog.vue'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
+import { NtpConfirmationDialog, NtpButton } from '@ntp-lms-ui/components'
 
 const meta = {
   title: 'Components/NtpConfirmationDialog',
@@ -89,8 +88,8 @@ export const Destructive: Story = {
         message="This action is irreversible. All associated content will be removed."
         confirm-label="Delete"
         cancel-label="Keep Course"
-        confirm-color="error"
-        buttons="filled"
+        confirm-button-color="error"
+        confirm-button-variant="filled"
         :loading="isDeleting"
         @confirm="onConfirm"
       />
@@ -118,8 +117,8 @@ export const WithTypeToConfirm: Story = {
         title="Delete Course?"
         message="This action is irreversible."
         confirm-label="Delete"
-        confirm-color="error"
-        buttons="filled"
+        confirm-button-color="error"
+        confirm-button-variant="filled"
         confirmation-phrase="delete"
         @confirm="onConfirm"
       />
@@ -142,7 +141,7 @@ export const CustomContent: Story = {
         v-model:open="isOpen"
         title="Archive Items?"
         confirm-label="Archive"
-        buttons="filled"
+        confirm-button-variant="filled"
         @confirm="isOpen = false"
       >
         <template #default>

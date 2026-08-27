@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import NtpDialog from '@ntp-lms-ui/components/NtpDialog/NtpDialog.vue'
-import NtpDialogHeader from '@ntp-lms-ui/components/NtpDialog/NtpDialogHeader.vue'
-import NtpButton from '@ntp-lms-ui/components/NtpButton/NtpButton.vue'
-import NtpTextInput from '@ntp-lms-ui/components/NtpInputs/NtpTextInput.vue'
-import type { ButtonColor } from '@ntp-lms-ui/lib/types/button'
+import { NtpDialog, NtpDialogHeader, NtpButton, NtpTextInput } from '@ntp-lms-ui/components'
 
-type ConfirmColor = 'primary' | 'error'
-type ButtonMode = 'text' | 'filled'
+type ConfirmButtonColor = 'primary' | 'error'
+type ConfirmButtonVariant = 'text' | 'filled'
 
 const defaultConfirmLabel = 'Confirm'
 const defaultCancelLabel = 'Cancel'
 const defaultIcon = ''
-const defaultConfirmColor: ConfirmColor = 'primary'
-const defaultButtonMode: ButtonMode = 'text'
+const defaultConfirmButtonColor: ConfirmButtonColor = 'primary'
+const defaultConfirmButtonVariant: ConfirmButtonVariant = 'text'
 
 interface Props {
     open?: boolean
@@ -22,8 +18,8 @@ interface Props {
     confirmLabel?: string
     cancelLabel?: string
     icon?: string
-    confirmColor?: ConfirmColor
-    buttons?: ButtonMode
+    confirmButtonColor?: ConfirmButtonColor
+    confirmButtonVariant?: ConfirmButtonVariant
     loading?: boolean
     persistent?: boolean
     confirmationPhrase?: string
@@ -36,8 +32,8 @@ const {
     confirmLabel = defaultConfirmLabel,
     cancelLabel = defaultCancelLabel,
     icon = defaultIcon,
-    confirmColor = defaultConfirmColor,
-    buttons = defaultButtonMode,
+    confirmButtonColor = defaultConfirmButtonColor,
+    confirmButtonVariant = defaultConfirmButtonVariant,
     loading = false,
     persistent = false,
     confirmationPhrase = '',
@@ -60,12 +56,8 @@ const isConfirmDisabled = computed(() => {
     return loading || !isPhraseMatched.value
 })
 
-const confirmButtonVariant = computed(() => {
-    return buttons === 'filled' ? 'filled' : 'text'
-})
-
 const cancelButtonVariant = computed(() => {
-    return buttons === 'filled' ? 'outlined' : 'text'
+    return confirmButtonVariant === 'filled' ? 'outlined' : 'text'
 })
 
 watch(
@@ -112,7 +104,7 @@ function onDialogClose() {
                 <NtpButton :variant="cancelButtonVariant" color="on-surface-variant" @click="onCancel">
                     {{ cancelLabel }}
                 </NtpButton>
-                <NtpButton :variant="confirmButtonVariant" :color="confirmColor" :loading="loading"
+                <NtpButton :variant="confirmButtonVariant" :color="confirmButtonColor" :loading="loading"
                     :disabled="isConfirmDisabled" @click="onConfirm">
                     {{ confirmLabel }}
                 </NtpButton>

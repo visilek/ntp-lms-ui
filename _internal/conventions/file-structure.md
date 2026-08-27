@@ -1,10 +1,11 @@
 ## File Structure
 
 - One folder per component or component family.
-- Family folders contain multiple `.vue` + `.css` couples directly — no subfolders.
-- Standalone components: one couple per folder.
-- Family components: several couples in one folder, named consistently.
-- Barrel `index.ts` exports from the folder.
+- Family folders named after the base component: `NtpRadio/` contains `NtpRadio.vue` + `NtpRadioGroup.vue`.
+- Families with a barrel use `export *` in root index.
+- Standalone components use `export { default as NtpX }`.
+- Internal sub-components (e.g., `NtpRadio`) are not exported from the family barrel.
+- Shared styles go in `src/styles/`.
 
 ## Imports
 

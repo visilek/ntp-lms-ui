@@ -1,9 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpDialog from '../../src/components/NtpDialog/NtpDialog.vue'
-import NtpDialogHeader from '../../src/components/NtpDialog/NtpDialogHeader.vue'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
-import NtpTextInput from '../../src/components/NtpInputs/NtpTextInput.vue'
+import { NtpDialog, NtpDialogHeader, NtpButton, NtpTextInput } from '@ntp-lms-ui/components'
 
 const meta = {
   title: 'Components/NtpDialog',

@@ -1,9 +1,7 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpMenu from '../../src/components/NtpMenu/NtpMenu.vue'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
-import NtpTextInput from '../../src/components/NtpInputs/NtpTextInput.vue'
-import { MENU_PLACEMENTS } from '../../src/lib/types/menu'
+import { NtpMenu, NtpButton, NtpTextInput } from '@ntp-lms-ui/components'
+import { MENU_PLACEMENTS } from '@ntp-lms-ui/lib'
 
 const meta = {
   title: 'Components/NtpMenu',

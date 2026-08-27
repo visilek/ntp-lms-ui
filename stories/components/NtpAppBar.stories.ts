@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import NtpAppBar from '../../src/components/NtpAppBar/NtpAppBar.vue'
-import NtpButton from '../../src/components/NtpButton/NtpButton.vue'
+import { NtpAppBar, NtpButton } from '@ntp-lms-ui/components'
 
 const meta = {
   title: 'Components/NtpAppBar',
