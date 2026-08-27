@@ -18,14 +18,6 @@
   --_leading-offset: calc(24px + var(--ntp-spacing-2));
 }
 
-.ntp-input__control-wrapper {
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
 .ntp-input__control {
   flex: 1;
   min-width: 0;
@@ -47,12 +39,6 @@
   pointer-events: none;
   transition: all var(--ntp-duration-short) var(--ntp-easing-standard);
   transform-origin: left top;
-}
-
-/* Required */
-.ntp-input--required .ntp-input__label::after {
-  content: ' *';
-  color: var(--ntp-color-error);
 }
 
 .ntp-input__label--floating {
@@ -313,4 +299,10 @@
 
 .ntp-input--error .ntp-input__support-text {
   color: var(--ntp-color-error) !important;
+}
+
+/* Required */
+.ntp-input--required .ntp-input__label::after {
+  content: ' *';
+  color: var(--ntp-color-error);
 }

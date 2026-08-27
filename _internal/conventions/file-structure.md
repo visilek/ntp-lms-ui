@@ -7,6 +7,12 @@
 - Internal sub-components (e.g., `NtpRadio`) are not exported from the family barrel.
 - Shared styles go in `src/styles/`.
 
+## Documentation Structure
+
+Docs mirror code structure:
+- Standalone component → `docs/components/NtpX.md`.
+- Family → `docs/components/NtpFamily/NtpX.md`.
+
 ## Imports
 
 | Context | Import Style |

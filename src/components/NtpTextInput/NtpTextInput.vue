@@ -132,5 +132,3 @@ function handleBlur(event: FocusEvent) {
     </div>
   </div>
 </template>
-
-<style scoped src="./NtpTextInput.css"></style>

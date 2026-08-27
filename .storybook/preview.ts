@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/vue3-vite'
 
 import '../src/_tokens/index.css'
 import '../src/_base/index.css'
+import '../src/styles/input-shell.css'
 
 const preview: Preview = {
   parameters: {

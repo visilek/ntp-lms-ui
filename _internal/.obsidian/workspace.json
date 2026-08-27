@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "1d6c1754f95cb6f6",
+        "id": "10a2c5f5a5bf8003",
         "type": "tabs",
         "children": [
           {
-            "id": "b2ba3b628105d072",
+            "id": "c9f19766ec4efa78",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,13 +181,13 @@
       "bases:Create new base": false
     }
   },
-  "active": "0b4d09b8726e76e8",
+  "active": "c9f19766ec4efa78",
   "lastOpenFiles": [
+    "conventions/file-structure.md",
     "conventions/styling.md",
     "components/NtpCheckbox.md",
     "components/NtpConfirmationDialog.md",
     "conventions/component-api.md",
-    "conventions/file-structure.md",
     "components/NtpSelect.md",
     "components/NtpMultiSelect.md",
     "components/NtpDialog/NtpDialogHeader.md",

@@ -19,6 +19,15 @@ Separate CSS files in the component folder, imported scoped via `src`.
 
 No global styles except in `_base/`.
 
+## Shared Component Styles
+
+Large shared style blocks (e.g., input shell) live in `src/styles/`.
+
+- Imported once at kit root (`src/index.ts`).
+- Imported in Storybook preview.
+- Class names are namespaced (`ntp-input-*`) — no scoping needed.
+- Small duplication across components is acceptable — extract only when large.
+
 ## Utility Classes vs Component CSS
 
 - Component internals: use semantic classes in the component's CSS file.
