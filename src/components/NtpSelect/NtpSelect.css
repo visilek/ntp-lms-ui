@@ -1,0 +1,46 @@
+/* Component-specific styles. Shared input shell: src/styles/input-shell.css */
+/* The shell is global — imported once in src/index.ts and .storybook/preview.ts */
+/* It is NOT imported by this component. */
+
+.ntp-select {
+  cursor: pointer;
+}
+
+.ntp-select .ntp-input__control {
+  cursor: pointer;
+}
+
+.ntp-select__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: currentColor;
+  font-size: 16px;
+}
+
+.ntp-select__clear:hover {
+  color: var(--ntp-color-error);
+}
+
+.ntp-select__arrow {
+  color: currentColor;
+  font-size: 14px;
+}
+
+.ntp-select__loading,
+.ntp-select__empty {
+  padding: var(--ntp-spacing-3) var(--ntp-spacing-4);
+  color: var(--ntp-color-on-surface-variant);
+  font: var(--ntp-type-body-medium);
+}
+
+.ntp-select__footer-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

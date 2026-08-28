@@ -187,3 +187,37 @@ export const WithDisabledItems: Story = {
     `,
   }),
 }
+
+export const WithFooter: Story = {
+  render: () => ({
+    components: { NtpMenu, NtpButton },
+    setup() {
+      const anchorRef = ref<HTMLElement | null>(null)
+      const isOpen = ref(false)
+
+      return { anchorRef, isOpen }
+    },
+    template: `
+      <div style="padding: 100px;">
+        <div ref="anchorRef" style="display: inline-flex;">
+          <NtpButton @click="isOpen = !isOpen">Open with footer</NtpButton>
+        </div>
+
+        <NtpMenu
+          :items="[
+            { value: 'a', label: 'Option A' },
+            { value: 'b', label: 'Option B' },
+            { value: 'c', label: 'Option C' },
+          ]"
+          :anchor="anchorRef"
+          :open="isOpen"
+          @close="isOpen = false"
+        >
+          <template #footer>
+            <NtpButton variant="text" size="small">Load more</NtpButton>
+          </template>
+        </NtpMenu>
+      </div>
+    `,
+  }),
+}

@@ -1,3 +1,7 @@
+/* Component-specific styles. Shared input shell: src/styles/input-shell.css */
+/* The shell is global — imported once in src/index.ts and .storybook/preview.ts */
+/* It is NOT imported by this component. */
+
 /* Stepper buttons */
 .ntp-input__stepper {
   display: inline-flex;

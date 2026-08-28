@@ -8,3 +8,8 @@ export interface MenuItem {
   danger?: boolean
   leading?: string
 }
+
+export interface MenuSelection {
+  value: string | number
+  item: MenuItem
+}

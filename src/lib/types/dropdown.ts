@@ -1,16 +1,18 @@
-/** Dropdown option — generic value type. */
-export interface DropdownOption<T extends string | number = string> {
-  value: T
+export type DropdownRawOption = Record<string, any>
+
+export type DropdownOption = {
+  value: string | number
   label: string
   disabled?: boolean
 }
 
-/** Dropdown loader contract. */
-export type DropdownLoader<T extends string | number = string> = (
+export type DropdownOptionMapper = (item: DropdownRawOption) => DropdownOption
+
+export type DropdownOptionLoader = (
   query: string,
   page: number,
   pageSize: number,
 ) => Promise<{
-  items: DropdownOption<T>[]
+  items: DropdownRawOption[]
   totalCount: number
 }>

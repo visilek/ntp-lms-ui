@@ -1,6 +1,6 @@
 .ntp-menu {
     background-color: var(--ntp-color-surface-container);
-    border-radius: var(--ntp-shape-extra-small);
+    border-radius: var(--ntp-shape-large);
     box-shadow: var(--ntp-elevation-2);
     padding: var(--ntp-spacing-1) 0;
     overflow: hidden;
@@ -9,6 +9,8 @@
     left: 0;
     width: max-content;
     max-width: 280px;
+    max-height: 50vh;
+    overflow-y: auto;
     visibility: hidden;
 }
 
@@ -67,4 +69,9 @@
 
 .ntp-menu__item-leading {
     flex-shrink: 0;
+}
+
+.ntp-menu__footer {
+  padding: 0 var(--ntp-spacing-2) var(--ntp-spacing-2);
+  /* border-top: 1px solid var(--ntp-color-outline); */
 }

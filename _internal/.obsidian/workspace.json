@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "10a2c5f5a5bf8003",
+        "id": "f6a3f7c002e39884",
         "type": "tabs",
         "children": [
           {
-            "id": "c9f19766ec4efa78",
+            "id": "f368be1ac12a74c5",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "components/NtpMenu.md",
+                "mode": "source",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "NtpMenu"
             }
           }
         ]
@@ -181,14 +185,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "c9f19766ec4efa78",
+  "active": "f368be1ac12a74c5",
   "lastOpenFiles": [
+    "components/NtpSelect.md",
     "conventions/file-structure.md",
     "conventions/styling.md",
     "components/NtpCheckbox.md",
     "components/NtpConfirmationDialog.md",
     "conventions/component-api.md",
-    "components/NtpSelect.md",
     "components/NtpMultiSelect.md",
     "components/NtpDialog/NtpDialogHeader.md",
     "Implementation plan.md",

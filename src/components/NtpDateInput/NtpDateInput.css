@@ -1,4 +1,7 @@
-/* Date-specific — hide native format when empty and unfocused */
+/* Component-specific styles. Shared input shell: src/styles/input-shell.css */
+/* The shell is global — imported once in src/index.ts and .storybook/preview.ts */
+/* It is NOT imported by this component. */
+
 .ntp-input__control[type='date'] {
   opacity: 0;
   transition: opacity var(--ntp-duration-short) var(--ntp-easing-standard);

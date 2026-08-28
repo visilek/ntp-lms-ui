@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { CSSProperties } from 'vue'
-import type { MenuItem, MenuPlacement } from '@ntp-lms-ui/lib/types/menu'
+import type { MenuItem, MenuSelection, MenuPlacement } from '@ntp-lms-ui/lib'
 
 const defaultPlacement: MenuPlacement = 'bottom-end'
 const VIEWPORT_MARGIN = 8
@@ -13,6 +13,7 @@ interface Props {
   items?: MenuItem[]
   anchor?: AnchorLike
   placement?: MenuPlacement
+  minWidth?: string
   open?: boolean
 }
 
@@ -21,10 +22,11 @@ const {
   anchor = null,
   placement = defaultPlacement,
   open = false,
+  minWidth = '112px',
 } = defineProps<Props>()
 
 const emit = defineEmits<{
-  select: [payload: { value: string | number; item: MenuItem }]
+  select: [selection: MenuSelection]
   close: []
 }>()
 
@@ -156,15 +158,8 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="open"
-      ref="menuRef"
-      class="ntp-menu"
-      :class="{ 'ntp-menu--positioned': isPositioned }"
-      role="menu"
-      :style="position"
-      @keydown="onKeydown"
-    >
+    <div v-if="open" ref="menuRef" class="ntp-menu" :class="{ 'ntp-menu--positioned': isPositioned }" role="menu"
+      :style="{ ...position, minWidth }" @keydown="onKeydown">
       <div v-if="$slots.header" class="ntp-menu__header">
         <slot name="header" />
       </div>
@@ -174,25 +169,20 @@ onBeforeUnmount(() => {
       </template>
 
       <template v-else>
-        <button
-          v-for="item in items"
-          :key="item.value"
-          type="button"
-          class="ntp-menu__item"
-          :class="{
-            'ntp-menu__item--danger': item.danger,
-            'ntp-menu__item--disabled': item.disabled,
-          }"
-          role="menuitem"
-          :disabled="item.disabled"
-          @click="onSelect(item)"
-        >
+        <button v-for="item in items" :key="item.value" type="button" class="ntp-menu__item" :class="{
+          'ntp-menu__item--danger': item.danger,
+          'ntp-menu__item--disabled': item.disabled,
+        }" role="menuitem" :disabled="item.disabled" @click="onSelect(item)">
           <span v-if="item.leading" class="ntp-menu__item-leading" aria-hidden="true">
             {{ item.leading }}
           </span>
           <span class="ntp-menu__item-label">{{ item.label }}</span>
         </button>
       </template>
+
+      <div v-if="$slots.footer" class="ntp-menu__footer">
+        <slot name="footer" />
+      </div>
     </div>
   </Teleport>
 </template>

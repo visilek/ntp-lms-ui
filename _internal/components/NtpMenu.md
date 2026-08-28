@@ -30,3 +30,14 @@ Hidden render → measure → position → reveal. Avoids first-open timing race
 ## Focus
 
 First item focused on open. Arrow keys navigate.
+
+## Shape
+
+- Container: 16px radius (`--ntp-shape-large`).
+- `overflow: hidden` clips item hover backgrounds to container shape.
+- Max-height: 60vh with internal scroll.
+
+## Min Width
+
+- Prop `minWidth`, default `'112px'`.
+- Consumer passes input width.

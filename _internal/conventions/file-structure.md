@@ -15,13 +15,8 @@ Docs mirror code structure:
 
 ## Imports
 
-| Context | Import Style |
-|---|---|
-| Component-to-component (siblings within a family) | Direct file path — `./NtpCheckbox.vue` |
-| Stories | Alias barrel — `@ntp-lms-ui/components` |
-| Tests | Alias barrel — `@ntp-lms-ui/lib` |
-| Consumer app code | Package root — `ntp-lms-ui` |
+- Always import from public barrels: `@ntp-lms-ui/components`, `@ntp-lms-ui/lib`.
+- Never import from deep paths (`components/NtpX/NtpX.vue`).
+- Exception: sibling imports within the same family — direct path allowed.
 
-Rationale:
-- Sibling direct imports avoid circular dependency issues.
-- Stories and tests exercise the public API — use the barrel.
+Rationale: internal folder refactors only update barrels, not every consumer.

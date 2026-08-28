@@ -2,12 +2,6 @@
 
 A popup menu surface. Positions relative to an anchor element.
 
-## Import
-
-```ts
-import { NtpMenu } from 'ntp-lms-ui'
-```
-
 ## API
 
 ### Props
@@ -15,49 +9,36 @@ import { NtpMenu } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `items` | `MenuItem[]` | `[]` | Menu items |
-| `anchor` | `HTMLElement \| { $el: HTMLElement } \| null` | `null` | Element or component instance to position against |
-| `placement` | `'bottom-end' \| 'bottom-start' \| 'top-end' \| 'top-start'` | `'bottom-end'` | Position relative to anchor |
+| `anchor` | `HTMLElement \| { $el: HTMLElement } \| null` | `null` | Element or component instance |
+| `placement` | `MenuPlacement` | `'bottom-end'` | Position |
 | `open` | `boolean` | `false` | Controlled visibility |
-
-### MenuItem
-
-```ts
-interface MenuItem {
-  value: string | number
-  label: string
-  disabled?: boolean
-  danger?: boolean
-  leading?: string
-}
-```
+| `minWidth` | `string` | `'112px'` | Minimum menu width |
 
 ### Slots
 
-| Slot | Scope | Description |
-|---|---|---|
-| `header` | — | Content above items (search field) |
-| `item` | `{ item }` | Custom item rendering |
-| `default` | — | Fully custom menu content. Overrides `items`. |
+| Slot | Description |
+|---|---|
+| `header` | Content above items |
+| `default` | Custom menu content |
+| `footer` | Content below items |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `select` | `{ value, item }` | Item clicked |
-| `close` | — | Outside click, Escape, or scroll outside |
+| `select` | `MenuSelection` | Item clicked |
+| `close` | — | Outside click, Escape, scroll |
 
 ## Behavior
 
 - Teleports to body.
 - Clamps to viewport with 8px margin.
+- Max-height: 60vh with internal scroll.
 - Closes on outside click, Escape, or scroll outside.
-- Keyboard: ArrowUp/ArrowDown navigate, Enter selects.
 
 ## Usage
 
 ```html
-<NtpButton ref="anchorRef" @click="isOpen = !isOpen">Open</NtpButton>
-
 <NtpMenu
   :items="items"
   :anchor="anchorRef"
@@ -69,5 +50,4 @@ interface MenuItem {
 
 ## Accessibility
 
-- `role="menu"` with `role="menuitem"` children.
-- Focus moves to first item on open.
+- `role="menu"` + `role="menuitem"` children.

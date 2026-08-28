@@ -1,78 +1,39 @@
 # NtpSelect — Implementation Notes
 
-## Structure
+## Load Pattern
 
-```
-NtpInputs/
-├── NtpSelect.vue
-└── NtpSelect.css
-```
+Three load functions follow the same pattern:
+- try/catch/finally
+- catch emits `load-error`
+- state preserved on error
 
-## Composition
+TODO(v2): Re-evaluate extraction once core app usage patterns are known.
 
-- `useInputBase` — shared input shell (label, hint/errors, context colors).
-- `NtpMenu` — dropdown panel with header slot for search.
-- `NtpTextInput` — search input inside menu header.
-- `DropdownLoader` — consumer-provided data access.
+## Modes
 
-## Data Loading
-
-| Mode | Condition | Behavior |
+| Mode | Condition | Filtering |
 |---|---|---|
-| Preload | `totalCount ≤ 15` | All items loaded. No search. |
-| Async | `totalCount > 15` | Search via debounced API. |
+| Preload | totalCount ≤ 15 | Client-side |
+| Async | totalCount > 15 | Debounced (300ms) API |
 
-Mode re-evaluated on every open.
+## Selected Label
 
-## Input Area
+Resolution order:
+1. `cachedOption` (user selection or `initialOption`)
+2. Loaded options
+3. `#value` fallback
 
-- Visually identical to regular input shell.
-- Read-only — not editable.
-- Click opens menu.
-- Closed, empty: label resting, ▾.
-- Closed, has value: floating label + selected value + [×] + ▾.
-- Open: floating label, selected value visible, ▾.
+## initialOption
 
-## Search
+- Provides label for programmatic values.
+- Watch: sets cache + emits `update:modelValue` if different.
+- `modelValue` watch: clears cache on mismatch.
 
-- In menu header, only async mode.
-- NtpTextInput.
-- Debounced loader call.
+## Footer
 
-## Options Rendering
+- "Load more" button → spinner while loading.
+- Content centered via `.ntp-select__footer-content`.
 
-- `NtpMenu` data-driven `items`.
-- Option: `{ value, label }` from loader.
-- Radio-style selection indicator? Or plain menu items with selected state? For v1: plain menu items — selected item visually highlighted.
+## Min Width
 
-## Selected Value Display
-
-- If selected option in loaded list → show its label.
-- If selected value not in current loaded items (async, programmatic set) → attempt to resolve label from cache; fallback to raw value.
-
-## Clear Button
-
-- [×] when value selected + clearable.
-- Coexists with ▾.
-- Emits null.
-
-## Dropdown Arrow
-
-- ▾ icon in trailing slot.
-- Always visible? Or replaced by × when clearable + value selected?
-
-## Menu Anchor
-
-- Input's root element (component instance → `$el`).
-
-## Events
-
-- `update:modelValue` — selected value or `null`.
-- `blur` — menu closed.
-- `focus` — menu opened.
-
-## Accessibility
-
-- Combobox pattern: `role="combobox"`, `aria-expanded`, `aria-controls`.
-- Menu items have `role="menuitem"` (from `NtpMenu`).
-- Keyboard: menu handles arrows + Escape.
+Menu min-width matches input width via `computeMinWidth()` on open.

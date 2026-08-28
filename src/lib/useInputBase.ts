@@ -1,19 +1,5 @@
 import { computed, ref, unref, useId } from 'vue'
-import type { MaybeRef } from 'vue'
-import type { InputVariant, InputContextColor } from './types/input'
-
-export interface UseInputBaseOptions {
-  id?: string
-  label: string
-  variant: InputVariant
-  contextColor: InputContextColor
-  disabled: boolean
-  readonly: boolean
-  errors: string[]
-  hint: string
-  required: boolean
-  hasValue: MaybeRef<boolean>
-}
+import type { UseInputBaseOptions } from './types/input'
 
 export function useInputBase(options: UseInputBaseOptions) {
   const inputId = options.id ?? useId()
