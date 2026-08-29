@@ -2,6 +2,12 @@
 
 A popup menu surface. Positions relative to an anchor element.
 
+## Import
+
+```ts
+import { NtpMenu } from 'ntp-lms-ui'
+```
+
 ## API
 
 ### Props
@@ -14,19 +20,32 @@ A popup menu surface. Positions relative to an anchor element.
 | `open` | `boolean` | `false` | Controlled visibility |
 | `minWidth` | `string` | `'112px'` | Minimum menu width |
 
+### MenuItem
+
+```ts
+interface MenuItem {
+  value: string | number
+  label: string
+  disabled?: boolean
+  danger?: boolean
+  leading?: string
+  selected?: boolean
+}
+```
+
 ### Slots
 
 | Slot | Description |
 |---|---|
 | `header` | Content above items |
-| `default` | Custom menu content |
+| `default` | Custom menu content. Overrides `items`. |
 | `footer` | Content below items |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `select` | `MenuSelection` | Item clicked |
+| `select` | `MenuItem` | Item clicked |
 | `close` | — | Outside click, Escape, scroll |
 
 ## Behavior
@@ -34,6 +53,7 @@ A popup menu surface. Positions relative to an anchor element.
 - Teleports to body.
 - Clamps to viewport with 8px margin.
 - Max-height: 60vh with internal scroll.
+- Selected items have primary-tinted background.
 - Closes on outside click, Escape, or scroll outside.
 
 ## Usage
@@ -51,3 +71,4 @@ A popup menu surface. Positions relative to an anchor element.
 ## Accessibility
 
 - `role="menu"` + `role="menuitem"` children.
+- Keyboard: ArrowUp/ArrowDown navigate, Escape closes.

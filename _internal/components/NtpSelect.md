@@ -2,38 +2,25 @@
 
 ## Load Pattern
 
-Three load functions follow the same pattern:
-- try/catch/finally
-- catch emits `load-error`
-- state preserved on error
+Three functions follow same pattern: try/catch/finally, `load-error` emit, state preserved.
 
-TODO(v2): Re-evaluate extraction once core app usage patterns are known.
+TODO(v2): Re-evaluate extraction.
 
 ## Modes
 
 | Mode | Condition | Filtering |
 |---|---|---|
-| Preload | totalCount ≤ 15 | Client-side |
-| Async | totalCount > 15 | Debounced (300ms) API |
+| Preload | totalCount ≤ 15 | Local |
+| Async | totalCount > 15 | Debounced API |
 
 ## Selected Label
 
-Resolution order:
-1. `cachedOption` (user selection or `initialOption`)
-2. Loaded options
-3. `#value` fallback
+Resolution order: cachedOption → loaded options → `#value`.
 
 ## initialOption
 
-- Provides label for programmatic values.
-- Watch: sets cache + emits `update:modelValue` if different.
-- `modelValue` watch: clears cache on mismatch.
+Provides label for programmatic values. Watch syncs cache + emits.
 
-## Footer
+## Debounce
 
-- "Load more" button → spinner while loading.
-- Content centered via `.ntp-select__footer-content`.
-
-## Min Width
-
-Menu min-width matches input width via `computeMinWidth()` on open.
+300ms. Shared `debounce` from lib.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {NtpButton, NtpMenu} from '@ntp-lms-ui/components'
+import { NtpButton, NtpMenu } from '@ntp-lms-ui/components'
 import type { ButtonVariant, ButtonColor, ButtonSize, MenuItem, MenuPlacement } from '@ntp-lms-ui/lib'
 
 const defaultAriaLabel = 'More actions'
@@ -30,7 +30,7 @@ const {
 } = defineProps<Props>()
 
 const emit = defineEmits<{
-  select: [payload: { value: string | number; item: MenuItem }]
+  select: [item: MenuItem]
   open: []
   close: []
 }>()
@@ -50,37 +50,23 @@ function onMenuClose() {
   emit('close')
 }
 
-function onSelect(payload: { value: string | number; item: MenuItem }) {
+function onSelect(item: MenuItem) {
   isOpen.value = false
-  emit('select', payload)
+  emit('select', item)
 }
 </script>
 
 <template>
   <div class="ntp-action-menu">
-    <NtpButton
-      ref="triggerRef"
-      :variant="variant || defaultVariant"
-      :color="color || defaultColor"
-      :size="size || defaultSize"
-      :disabled="disabled"
-      icon-only
-      :aria-label="ariaLabel"
-      @click="toggle"
-    >
+    <NtpButton ref="triggerRef" :variant="variant || defaultVariant" :color="color || defaultColor"
+      :size="size || defaultSize" :disabled="disabled" icon-only :aria-label="ariaLabel" @click="toggle">
       <slot name="trigger">
         <span aria-hidden="true">⋮</span>
       </slot>
     </NtpButton>
 
-    <NtpMenu
-      :items="items"
-      :anchor="triggerRef"
-      :placement="placement || defaultPlacement"
-      :open="isOpen && !disabled"
-      @select="onSelect"
-      @close="onMenuClose"
-    >
+    <NtpMenu :items="items" :anchor="triggerRef" :placement="placement || defaultPlacement" :open="isOpen && !disabled"
+      @select="onSelect" @close="onMenuClose">
       <template v-if="$slots.item" #item="slotProps">
         <slot name="item" v-bind="slotProps" />
       </template>

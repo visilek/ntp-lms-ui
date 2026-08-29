@@ -15,26 +15,25 @@ import { NtpActionMenu } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `items` | `MenuItem[]` | `[]` | Menu items |
-| `ariaLabel` | `string` | `'More actions'` | Accessible label for the trigger button |
-| `variant` | `ButtonVariant` | `'text'` | Trigger button variant |
-| `color` | `ButtonColor` | `'on-surface-variant'` | Trigger button color |
-| `size` | `ButtonSize` | `'medium'` | Trigger button size |
-| `disabled` | `boolean` | `false` | Disables trigger |
+| `ariaLabel` | `string` | `'More actions'` | Accessible label for trigger |
+| `variant` | `ButtonVariant` | `'text'` | Trigger variant |
+| `color` | `ButtonColor` | `'on-surface-variant'` | Trigger color |
+| `size` | `ButtonSize` | `'medium'` | Trigger size |
+| `disabled` | `boolean` | `false` | Disabled |
 | `placement` | `MenuPlacement` | `'bottom-end'` | Menu position |
 
 ### Slots
 
-| Slot | Scope | Description |
-|---|---|---|
-| `trigger` | — | Custom trigger content. Default is `⋮` icon. |
-| `item` | `{ item }` | Custom menu item content |
-| `default` | — | Custom menu content. Overrides `items`. |
+| Slot | Description |
+|---|---|
+| `trigger` | Custom trigger content |
+| `default` | Custom menu content. Overrides `items`. |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `select` | `{ value, item }` | Item clicked. Menu closes after. |
+| `select` | `MenuItem` | Item clicked. Menu closes. |
 | `open` | — | Menu opened |
 | `close` | — | Menu closed |
 
@@ -49,8 +48,3 @@ import { NtpActionMenu } from 'ntp-lms-ui'
   @select="handleAction"
 />
 ```
-
-## Accessibility
-
-- Trigger is icon-only button with `aria-label`.
-- Default label: "More actions".

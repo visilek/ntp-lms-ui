@@ -1,49 +1,28 @@
 # NtpMultiSelect — Implementation Notes
 
-## Structure
+## State
 
-Same as `NtpSelect` + multi-selection logic.
+| State | Purpose |
+|---|---|
+| `allOptions` | Loaded options |
+| `filteredOptions` | Currently displayed in available view |
+| `selectedOptions` | Cached selected options with labels |
+| `lastSelectedOption` | Most recent user selection |
 
-## Composition
+## Display Label
 
-Same as `NtpSelect`.
+Resolution: lastSelectedOption → reverse-search modelValue in selectedOptions → allOptions → `#value`.
 
-## Data Loading
+## Master Checkbox
 
-Same as `NtpSelect` (ADR-0005).
+- Visible: available mode + totalCount > 5.
+- Tri-state based on visible options.
+- Uses `NtpCheckbox` component.
 
-## Selection Model
+## Mode Toggle
 
-- `modelValue: T[]` — array of selected values.
-- Toggle: click option adds/removes from array.
-- Menu stays open after selection (multi-select).
+`viewMode: 'available' | 'selected'`. Button label switches.
 
-## Count Chip
+## Load More
 
-- Closed state: `[N]` — number only.
-- Not dismissible.
-- Shown when `modelValue.length > 0`.
-
-## "All" Option
-
-- Shown only in preload mode AND `totalCount > 5`.
-- Top of list, visually separated.
-- Tri-state: none/some/all.
-- Click: selects all or deselects all.
-
-## Search
-
-Same as `NtpSelect`. Query persists while selecting.
-
-## Clear
-
-- No clear button.
-- Deselect via "All" or individual options.
-
-## Events
-
-- `update:modelValue` — new array.
-
-## Accessibility
-
-- `role="combobox"` + `aria-multiselectable="true"` on menu.
+Footer, available mode only. Spinner while loading.

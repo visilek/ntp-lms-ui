@@ -7,7 +7,7 @@ import type {
   DropdownOptionMapper,
   InputVariant,
   InputContextColor,
-  MenuSelection,
+  MenuItem,
 } from '@ntp-lms-ui/lib'
 import { defaultOptionMapper } from '@ntp-lms-ui/lib'
 import { NtpMenu, NtpButton, NtpSpinner } from '@ntp-lms-ui/components'
@@ -64,7 +64,7 @@ const currentPage = ref(1)
 const isPreloadMode = ref(false)
 const isLoading = ref(false)
 const fieldRef = ref<HTMLElement | null>(null)
-const cachedOption = ref<DropdownOption | null>(initialOption)
+const selectedOption = ref<DropdownOption | null>(initialOption)
 const menuMinWidth = ref('')
 
 const hasValue = computed(() => modelValue !== null && modelValue !== '')
@@ -73,8 +73,8 @@ const hasValue = computed(() => modelValue !== null && modelValue !== '')
 const selectedLabel = computed(() => {
   if (!hasValue.value) return ''
 
-  if (cachedOption.value && cachedOption.value.value === modelValue) {
-    return cachedOption.value.label
+  if (selectedOption.value && selectedOption.value.value === modelValue) {
+    return selectedOption.value.label
   }
 
   const selected = allOptions.value.find((option) => option.value === modelValue)
@@ -114,7 +114,7 @@ watch(
   () => initialOption,
   (newOption) => {
     if (!newOption) return
-    cachedOption.value = newOption
+    selectedOption.value = newOption
     if (modelValue !== newOption.value) {
       emit('update:modelValue', newOption.value)
     }
@@ -124,8 +124,8 @@ watch(
 watch(
   () => modelValue,
   (newValue) => {
-    if (cachedOption.value && cachedOption.value.value !== newValue) {
-      cachedOption.value = null
+    if (selectedOption.value && selectedOption.value.value !== newValue) {
+      selectedOption.value = null
     }
   },
 )
@@ -240,17 +240,17 @@ function onInput(event: Event) {
   onSearchInput(searchQuery.value)
 }
 
-function onSelect(selection: MenuSelection) {
-  cachedOption.value = {
-    value: selection.value,
-    label: selection.item.label,
+function onSelect(item: MenuItem) {
+  selectedOption.value = {
+    value: item.value,
+    label: item.label,
   }
-  emit('update:modelValue', selection.value)
+  emit('update:modelValue', item.value)
   closeMenu()
 }
 
 function onClear() {
-  cachedOption.value = null
+  selectedOption.value = null
   emit('update:modelValue', null)
 }
 </script>

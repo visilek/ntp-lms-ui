@@ -35,4 +35,8 @@
   --ntp-color-surface-container: hsl(48, 10%, 92%);
   --ntp-color-surface-container-high: hsl(48, 10%, 90%);
   --ntp-color-surface-container-highest: hsl(48, 10%, 88%);
+
+  /* Select containers */
+  --ntp-color-selected-container: hsl(193, 10%, 90%);
+  --ntp-color-selected-container-hover: hsl(193, 10%, 88%);
 }

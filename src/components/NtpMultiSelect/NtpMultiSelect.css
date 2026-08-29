@@ -1,0 +1,41 @@
+.ntp-select__arrow {
+  color: currentColor;
+  font-size: 14px;
+}
+
+.ntp-select__empty {
+  padding: var(--ntp-spacing-2);
+  color: var(--ntp-color-on-surface-variant);
+  font: var(--ntp-type-body-medium);
+  text-align: center;
+}
+
+.ntp-select__footer-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.ntp-multiselect__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ntp-spacing-2);
+  padding: var(--ntp-spacing-2) var(--ntp-spacing-3);
+}
+
+.ntp-multiselect__master-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--ntp-spacing-1);
+  cursor: pointer;
+  font: var(--ntp-type-body-medium);
+}
+
+.ntp-multiselect__warning {
+  font-size: 14px;
+  cursor: help;
+}
+
+.ntp-multiselect__mode-button {
+  margin-left: auto;
+}

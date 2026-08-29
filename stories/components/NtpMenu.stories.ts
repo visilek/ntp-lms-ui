@@ -57,6 +57,39 @@ export const Default: Story = {
   }),
 }
 
+export const WithSelectedItems: Story = {
+  render: () => ({
+    components: { NtpMenu, NtpButton },
+    setup() {
+      const anchorRef = ref<HTMLElement | null>(null)
+      const isOpen = ref(false)
+
+      const items = [
+        { value: 'a', label: 'Option A', selected: true },
+        { value: 'b', label: 'Option B' },
+        { value: 'c', label: 'Option C', selected: true },
+        { value: 'd', label: 'Option D' },
+      ]
+
+      return { anchorRef, isOpen, items }
+    },
+    template: `
+      <div style="padding: 100px;">
+        <div ref="anchorRef" style="display: inline-flex;">
+          <NtpButton @click="isOpen = !isOpen">Open with selected</NtpButton>
+        </div>
+
+        <NtpMenu
+          :items="items"
+          :anchor="anchorRef"
+          :open="isOpen"
+          @close="isOpen = false"
+        />
+      </div>
+    `,
+  }),
+}
+
 export const Placements: Story = {
   render: () => ({
     components: { NtpMenu, NtpButton },
@@ -118,38 +151,6 @@ export const Placements: Story = {
         :open="openMenu === 'top-start'"
         @close="openMenu = null"
       />
-    `,
-  }),
-}
-
-export const WithSearchHeader: Story = {
-  render: () => ({
-    components: { NtpMenu, NtpButton, NtpTextInput },
-    setup() {
-      const anchorRef = ref<HTMLElement | null>(null)
-      const isOpen = ref(false)
-      const searchQuery = ref('')
-
-      return { anchorRef, isOpen, searchQuery }
-    },
-    template: `
-      <div style="padding: 100px;">
-          <NtpButton ref="anchorRef" @click="isOpen = !isOpen">Open with search</NtpButton>
-
-        <NtpMenu
-          :items="[
-            { value: 'a', label: 'Option A' },
-            { value: 'b', label: 'Option B' },
-          ]"
-          :anchor="anchorRef"
-          :open="isOpen"
-          @close="isOpen = false"
-        >
-          <template #header>
-            <NtpTextInput v-model="searchQuery" label="Search" variant="outlined" />
-          </template>
-        </NtpMenu>
-      </div>
     `,
   }),
 }

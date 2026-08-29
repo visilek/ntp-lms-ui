@@ -52,9 +52,7 @@ describe('NtpMenu', () => {
 
     getMenuItems()[0].click()
 
-    expect(wrapper.emitted('select')?.[0]).toEqual([
-      { value: 'a', item: items[0] },
-    ])
+    expect(wrapper.emitted('select')?.[0]).toEqual([items[0]])
   })
 
   it('does not emit select for disabled item', async () => {

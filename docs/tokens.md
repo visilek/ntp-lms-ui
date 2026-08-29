@@ -45,6 +45,20 @@ Pattern: `--ntp-{category}-{role}`
 | Shape | `--ntp-shape-medium` |
 | Motion | `--ntp-duration-short`, `--ntp-easing-standard` |
 
+## Color Families
+
+| Family | Description |
+|---|---|
+| Primary | Main brand color. Interactive elements, CTAs. |
+| Secondary | Muted support color. |
+| Tertiary | Contrasting accent. |
+| Error | Destructive actions, error states. |
+| Surface | Backgrounds and text colors. |
+| Surface containers | Elevated surface hierarchy — darker as elevation increases. |
+| Selection | Selected item states in menus and lists. |
+
+Each family includes related tokens: base (`--ntp-color-*`), text on base (`--ntp-color-on-*`), and containers (`--ntp-color-*-container`).
+
 ## Source
 
 Token definitions live in `src/_tokens/`. The CSS files are the source of truth.

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { CSSProperties } from 'vue'
-import type { MenuItem, MenuSelection, MenuPlacement } from '@ntp-lms-ui/lib'
+import type { MenuItem, MenuPlacement, PositionStyle } from '@ntp-lms-ui/lib'
+import { computePosition } from '@ntp-lms-ui/lib'
 
 const defaultPlacement: MenuPlacement = 'bottom-end'
-const VIEWPORT_MARGIN = 8
-const ANCHOR_GAP = 4
+const defaultMinWidth = '112px'
 
 type AnchorLike = HTMLElement | { $el: HTMLElement | null } | null
 
@@ -13,8 +13,8 @@ interface Props {
   items?: MenuItem[]
   anchor?: AnchorLike
   placement?: MenuPlacement
-  minWidth?: string
   open?: boolean
+  minWidth?: string
 }
 
 const {
@@ -22,17 +22,22 @@ const {
   anchor = null,
   placement = defaultPlacement,
   open = false,
-  minWidth = '112px',
+  minWidth = defaultMinWidth,
 } = defineProps<Props>()
 
 const emit = defineEmits<{
-  select: [selection: MenuSelection]
+  select: [item: MenuItem]
   close: []
 }>()
 
 const menuRef = ref<HTMLElement | null>(null)
 const isPositioned = ref(false)
-const position = ref<CSSProperties>({})
+const position = ref<PositionStyle>({ top: '0px', left: '0px' })
+
+const menuStyle = computed<CSSProperties>(() => ({
+  ...position.value,
+  minWidth,
+}))
 
 function getAnchorElement(): HTMLElement | null {
   if (!anchor) return null
@@ -40,50 +45,25 @@ function getAnchorElement(): HTMLElement | null {
   return anchor.$el ?? null
 }
 
-function computePosition() {
+function computeMenuPosition() {
   const anchorEl = getAnchorElement()
   if (!anchorEl || !menuRef.value) return
 
   const anchorRect = anchorEl.getBoundingClientRect()
   const menuRect = menuRef.value.getBoundingClientRect()
 
-  let top = 0
-  let left = 0
-
-  switch (placement) {
-    case 'bottom-end':
-      top = anchorRect.bottom + ANCHOR_GAP
-      left = anchorRect.right - menuRect.width
-      break
-    case 'bottom-start':
-      top = anchorRect.bottom + ANCHOR_GAP
-      left = anchorRect.left
-      break
-    case 'top-end':
-      top = anchorRect.top - menuRect.height - ANCHOR_GAP
-      left = anchorRect.right - menuRect.width
-      break
-    case 'top-start':
-      top = anchorRect.top - menuRect.height - ANCHOR_GAP
-      left = anchorRect.left
-      break
-  }
-
-  const maxLeft = window.innerWidth - menuRect.width - VIEWPORT_MARGIN
-  const maxTop = window.innerHeight - menuRect.height - VIEWPORT_MARGIN
-
-  left = Math.max(VIEWPORT_MARGIN, Math.min(left, maxLeft))
-  top = Math.max(VIEWPORT_MARGIN, Math.min(top, maxTop))
-
-  position.value = {
-    top: `${top}px`,
-    left: `${left}px`,
-  }
+  position.value = computePosition(
+    anchorRect,
+    menuRect,
+    placement,
+    window.innerWidth,
+    window.innerHeight,
+  )
 }
 
 function onSelect(item: MenuItem) {
   if (item.disabled) return
-  emit('select', { value: item.value, item })
+  emit('select', item)
 }
 
 function onOutsideClick(event: MouseEvent) {
@@ -132,7 +112,7 @@ watch(
     if (isOpen) {
       isPositioned.value = false
       await nextTick()
-      computePosition()
+      computeMenuPosition()
       isPositioned.value = true
       requestAnimationFrame(() => {
         menuRef.value?.querySelector<HTMLElement>('.ntp-menu__item:not(:disabled)')?.focus()
@@ -158,27 +138,46 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <div v-if="open" ref="menuRef" class="ntp-menu" :class="{ 'ntp-menu--positioned': isPositioned }" role="menu"
-      :style="{ ...position, minWidth }" @keydown="onKeydown">
+    <div
+      v-if="open"
+      ref="menuRef"
+      class="ntp-menu"
+      :class="{ 'ntp-menu--positioned': isPositioned }"
+      role="menu"
+      :style="menuStyle"
+      @keydown="onKeydown"
+    >
       <div v-if="$slots.header" class="ntp-menu__header">
         <slot name="header" />
       </div>
 
-      <template v-if="$slots.default">
-        <slot />
-      </template>
+      <div class="ntp-menu__items">
+        <template v-if="$slots.default">
+          <slot />
+        </template>
 
-      <template v-else>
-        <button v-for="item in items" :key="item.value" type="button" class="ntp-menu__item" :class="{
-          'ntp-menu__item--danger': item.danger,
-          'ntp-menu__item--disabled': item.disabled,
-        }" role="menuitem" :disabled="item.disabled" @click="onSelect(item)">
-          <span v-if="item.leading" class="ntp-menu__item-leading" aria-hidden="true">
-            {{ item.leading }}
-          </span>
-          <span class="ntp-menu__item-label">{{ item.label }}</span>
-        </button>
-      </template>
+        <template v-else>
+          <button
+            v-for="item in items"
+            :key="item.value"
+            type="button"
+            class="ntp-menu__item"
+            :class="{
+              'ntp-menu__item--danger': item.danger,
+              'ntp-menu__item--disabled': item.disabled,
+              'ntp-menu__item--selected': item.selected,
+            }"
+            role="menuitem"
+            :disabled="item.disabled"
+            @click="onSelect(item)"
+          >
+            <span v-if="item.leading" class="ntp-menu__item-leading" aria-hidden="true">
+              {{ item.leading }}
+            </span>
+            <span class="ntp-menu__item-label">{{ item.label }}</span>
+          </button>
+        </template>
+      </div>
 
       <div v-if="$slots.footer" class="ntp-menu__footer">
         <slot name="footer" />

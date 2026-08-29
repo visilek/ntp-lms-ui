@@ -12,6 +12,9 @@ export type SelectionLabelPosition = (typeof SELECTION_LABEL_POSITIONS)[number]
 export const SELECTION_GROUP_DIRECTIONS = ['vertical', 'horizontal'] as const
 export type SelectionGroupDirection = (typeof SELECTION_GROUP_DIRECTIONS)[number]
 
+export const MASTER_CHECKBOX_STATES = ['checked', 'indeterminate', 'unchecked'] as const
+export type MasterCheckboxState = (typeof MASTER_CHECKBOX_STATES)[number]
+
 export interface UseInputBaseOptions {
   id?: string
   label: string

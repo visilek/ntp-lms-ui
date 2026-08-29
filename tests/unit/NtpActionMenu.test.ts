@@ -41,17 +41,15 @@ describe('NtpActionMenu', () => {
   })
 
   it('emits select when item clicked', async () => {
-    const wrapper = mountMenu()
+  const wrapper = mountMenu()
 
-    await wrapper.find('button').trigger('click')
+  await wrapper.find('button').trigger('click')
 
-    const menuItems = document.body.querySelectorAll('.ntp-menu__item')
-      ; (menuItems[0] as HTMLElement).click()
+  const menuItems = document.body.querySelectorAll('.ntp-menu__item')
+  ;(menuItems[0] as HTMLElement).click()
 
-    expect(wrapper.emitted('select')?.[0]).toEqual([
-      { value: 'a', item: items[0] },
-    ])
-  })
+  expect(wrapper.emitted('select')?.[0]).toEqual([items[0]])
+})
 
   it('closes menu after select', async () => {
     const wrapper = mountMenu()

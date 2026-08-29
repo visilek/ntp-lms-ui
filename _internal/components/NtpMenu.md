@@ -10,10 +10,11 @@ NtpMenu/
 
 ## Positioning
 
-- CSS base: `position: fixed; top: 0; left: 0; visibility: hidden`.
-- JS sets `top`/`left` after measurement.
-- `--positioned` class reveals.
-- Clamps to viewport with 8px margin.
+- Pure utility: `lib/positioning.ts` — `computePosition()`.
+- Component internal: `computeMenuPosition()` — measures DOM + calls utility.
+- CSS: `position: fixed; top: 0; left: 0; visibility: hidden` initially.
+- `--positioned` class reveals after measurement.
+- Clamps to viewport (8px margin).
 
 ## Anchor Resolution
 
@@ -23,21 +24,23 @@ Accepts `HTMLElement` or component instance (`$el`).
 
 Hidden render → measure → position → reveal. Avoids first-open timing race.
 
-## Scroll Handling
+## Scroll
 
 `window.addEventListener('scroll', handler, true)` — capture catches nested scrolls.
 
-## Focus
+## Selected State
 
-First item focused on open. Arrow keys navigate.
+- `MenuItem.selected` → `ntp-menu__item--selected`.
+- Background: `var(--ntp-color-selected-container)`.
+- Hover: `var(--ntp-color-selected-container-hover)`.
 
 ## Shape
 
 - Container: 16px radius (`--ntp-shape-large`).
-- `overflow: hidden` clips item hover backgrounds to container shape.
-- Max-height: 60vh with internal scroll.
+- `overflow: hidden` clips item backgrounds.
 
 ## Min Width
 
 - Prop `minWidth`, default `'112px'`.
-- Consumer passes input width.
+- Consumer passes input width for dropdowns.
+
