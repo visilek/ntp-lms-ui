@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { InputVariant, InputContextColor } from '@ntp-lms-ui/lib/types/input'
-import { useInputBase } from '@ntp-lms-ui/lib/useInputBase'
+import { useInputBase } from '@ntp-lms-ui/lib'
 
 // 1. Default constants
 const defaultVariant: InputVariant = 'filled'

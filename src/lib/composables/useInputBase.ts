@@ -1,5 +1,5 @@
 import { computed, ref, unref, useId } from 'vue'
-import type { UseInputBaseOptions } from './types/input'
+import type { UseInputBaseOptions } from '@ntp-lms-ui/lib'
 
 export function useInputBase(options: UseInputBaseOptions) {
   const inputId = options.id ?? useId()
