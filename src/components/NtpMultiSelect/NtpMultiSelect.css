@@ -32,8 +32,7 @@
 }
 
 .ntp-multiselect__warning {
-  font-size: 14px;
-  cursor: help;
+  color: var(--ntp-color-error);
 }
 
 .ntp-multiselect__mode-button {

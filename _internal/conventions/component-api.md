@@ -58,6 +58,14 @@ const classes = computed(() => [
 
 **Rule:** Always apply `|| defaultConstant` for enum props in class computations.
 
+## Default Function Props
+
+- Primitive defaults: local constants in `<script setup>`.
+- Reusable function defaults: export from `lib/` (e.g., `defaultOptionMapper` in `lib/strategies/`).
+- Component-specific function defaults: `functionDefaults.ts` in the component folder.
+
+Function props are always provided via module-level imports — never local `<script setup>` functions — because Vue hoists `defineProps` and cannot reference them.
+
 ## Shared Type Constants
 
 For enum props used by 2+ components or fundamental patterns:

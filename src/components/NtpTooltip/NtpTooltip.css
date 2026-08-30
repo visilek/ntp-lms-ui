@@ -1,0 +1,47 @@
+.ntp-tooltip {
+  position: relative;
+  display: inline-flex;
+
+}
+
+.ntp-tooltip__content {
+  position: absolute;
+  z-index: 1100;
+  padding: var(--ntp-spacing-1) var(--ntp-spacing-2);
+  background-color: var(--ntp-color-on-surface);
+  color: var(--ntp-color-surface);
+  border-radius: var(--ntp-shape-extra-small);
+  font: var(--ntp-type-body-small);
+  width: max-content;
+  max-width: 240px;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.ntp-tooltip--top .ntp-tooltip__content {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: var(--ntp-spacing-1);
+}
+
+.ntp-tooltip--bottom .ntp-tooltip__content {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--ntp-spacing-1);
+}
+
+.ntp-tooltip--left .ntp-tooltip__content {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: var(--ntp-spacing-1);
+}
+
+.ntp-tooltip--right .ntp-tooltip__content {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: var(--ntp-spacing-1);
+}

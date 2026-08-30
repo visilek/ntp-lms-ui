@@ -1,12 +1,12 @@
 .ntp-menu {
+  --_menu-radius: var(--ntp-shape-large);
   display: flex;
   flex-direction: column;
   max-height: 60vh;
   min-width: 112px;
   background-color: var(--ntp-color-surface-container);
-  border-radius: var(--ntp-shape-large);
+  border-radius: var(--_menu-radius);
   box-shadow: var(--ntp-elevation-2);
-  overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
@@ -25,7 +25,7 @@
 .ntp-menu__items {
   overflow-y: auto;
   flex: 1;
-  min-height: 0;   /* ← allows flex child to shrink below content height */
+  min-height: 0;
 }
 
 .ntp-menu__footer {
@@ -47,6 +47,15 @@
   transition: background-color var(--ntp-duration-short) var(--ntp-easing-standard);
 }
 
+/* First and last items match the container radius */
+.ntp-menu--no-header .ntp-menu__items .ntp-menu__item:first-child {
+  border-radius: var(--_menu-radius) var(--_menu-radius) 0 0;
+}
+
+.ntp-menu--no-footer .ntp-menu__items .ntp-menu__item:last-child {
+  border-radius: 0 0 var(--_menu-radius) var(--_menu-radius);
+}
+
 .ntp-menu__item:hover:not(:disabled),
 .ntp-menu__item:focus-visible {
   background-color: var(--ntp-color-surface-container-high);
@@ -59,7 +68,7 @@
 
 .ntp-menu__item--selected:hover,
 .ntp-menu__item--selected:focus-visible {
-  background-color: var(--ntp-color-selected-container-hover);
+  background-color: var(--ntp-color-selected-container-hover) !important;
 }
 
 .ntp-menu__item--danger {

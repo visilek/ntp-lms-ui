@@ -22,6 +22,14 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+
+const tinyOptions = [
+  { id: 'physics', title: 'Physics' },
+  { id: 'math', title: 'Mathematics' },
+  { id: 'chemistry', title: 'Chemistry' },
+  { id: 'biology', title: 'Biology' },
+]
+
 const smallOptions = [
   { id: 'physics', title: 'Physics' },
   { id: 'math', title: 'Mathematics' },
@@ -42,8 +50,16 @@ const totalOptions = Array.from({ length: 30 }, (_, i) => {
   }
 })
 
+async function mockLoadTiny(query: string) {
+  await new Promise((resolve) => setTimeout(resolve, 400))
+  const filtered = tinyOptions.filter((o) =>
+    o.title.toLowerCase().includes(query.toLowerCase()),
+  )
+  return { items: filtered, totalCount: filtered.length }
+}
+
 async function mockLoadSmall(query: string) {
-  await new Promise((resolve) => setTimeout(resolve, 200))
+  await new Promise((resolve) => setTimeout(resolve, 400))
   const filtered = smallOptions.filter((o) =>
     o.title.toLowerCase().includes(query.toLowerCase()),
   )
@@ -51,7 +67,7 @@ async function mockLoadSmall(query: string) {
 }
 
 async function mockLoadLarge(query: string, page: number, pageSize: number) {
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 600))
   const filtered = totalOptions.filter((o) =>
     o.title.toLowerCase().includes(query.toLowerCase()),
   )
@@ -67,11 +83,11 @@ export const Default: Story = {
     components: { NtpMultiSelect },
     setup() {
       const selected = ref<Array<string | number>>([])
-      return { selected, mockLoadSmall }
+      return { selected, mockLoadTiny }
     },
     template: `
       <div style="max-width: 400px; padding: 40px;">
-        <NtpMultiSelect v-model="selected" label="Subjects" :load-options="mockLoadSmall" />
+        <NtpMultiSelect v-model="selected" label="Subjects" :load-options="mockLoadTiny" />
         <p style="margin-top: 16px;">Selected: {{ selected }}</p>
       </div>
     `,
@@ -88,7 +104,7 @@ export const WithInitialOptions: Story = {
         { value: 'math', label: 'Mathematics' },
       ]
 
-      return { selected, initialOptions, mockLoadSmall }
+      return { selected, initialOptions, mockLoadTiny }
     },
     template: `
       <div style="max-width: 400px; padding: 40px;">
@@ -96,7 +112,7 @@ export const WithInitialOptions: Story = {
           v-model="selected"
           :initial-options="initialOptions"
           label="Subjects"
-          :load-options="mockLoadSmall"
+          :load-options="mockLoadTiny"
         />
       </div>
     `,

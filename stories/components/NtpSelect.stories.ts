@@ -81,7 +81,7 @@ export const WithInitialOption: Story = {
   render: () => ({
     components: { NtpSelect },
     setup() {
-      const selected = ref<string | number | null>('physics')
+      const selected = ref<string | number | null>()
       const initialOption = {
         value: 'physics',
         label: 'Physics',

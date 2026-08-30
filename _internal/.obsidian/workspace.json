@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "cdff2920203864fd",
+        "id": "36b5489f2e73a2e7",
         "type": "tabs",
         "children": [
           {
-            "id": "4d5514086c0d4a5d",
+            "id": "3295c104ff04411e",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "0b4d09b8726e76e8",
+  "active": "3295c104ff04411e",
   "lastOpenFiles": [
+    "components/NtpTooltip.md",
+    "conventions/component-api.md",
     "components/NtpDateInput.md",
     "Untitled.md",
     "components/NtpMultiSelect.md",
@@ -194,7 +196,6 @@
     "conventions/styling.md",
     "components/NtpCheckbox.md",
     "components/NtpConfirmationDialog.md",
-    "conventions/component-api.md",
     "components/NtpDialog/NtpDialogHeader.md",
     "Implementation plan.md",
     "components/NtpDialog/NtpDialog.md",
@@ -208,7 +209,6 @@
     "components/NtpTextInput.md",
     "conventions/implementation-patterns.md",
     "components/NtpToggle.md",
-    "conventions/commit-messages.md",
     "conventions/Untitled",
     "conventions",
     "components/NtpRichTextEditor",

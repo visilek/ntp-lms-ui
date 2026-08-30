@@ -10,7 +10,7 @@ import type {
   MasterCheckboxState,
 } from '@ntp-lms-ui/lib'
 import { useInputBase, DROPDOWN_PRELOAD_LIMIT, defaultOptionMapper, debounce } from '@ntp-lms-ui/lib'
-import { NtpMenu, NtpCheckbox, NtpButton, NtpSpinner } from '@ntp-lms-ui/components'
+import { NtpMenu, NtpCheckbox, NtpButton, NtpSpinner, NtpTooltip } from '@ntp-lms-ui/components'
 
 const defaultVariant: InputVariant = 'filled'
 const defaultContextColor: InputContextColor = 'surface'
@@ -357,16 +357,15 @@ function toggleOption(value: string | number, label: string) {
       :min-width="menuMinWidth" @select="onSelect" @close="closeMenu">
       <template #header>
         <div class="ntp-multiselect__header">
-          <label v-if="showMasterCheckbox" class="ntp-multiselect__master-checkbox">
-            <NtpCheckbox :model-value="masterCheckboxState === 'checked'"
-              :indeterminate="masterCheckboxState === 'indeterminate'" label="All" @change="onMasterCheckboxToggle" />
-          </label>
-
-          <span v-if="showMasterCheckboxWarning" class="ntp-multiselect__warning"
-            title="Selects only what's currently loaded. Load more to expand."
-            aria-label="Selects only what's currently loaded. Load more to expand.">
-            ⚠
-          </span>
+          <template v-if="showMasterCheckbox">
+            <label class="ntp-multiselect__master-checkbox">
+              <NtpCheckbox :model-value="masterCheckboxState === 'checked'" label="All"
+                :indeterminate="masterCheckboxState === 'indeterminate'" @change="onMasterCheckboxToggle" />
+            </label>
+            <NtpTooltip position="right" text="Selects only what's currently loaded. Load more to expand.">
+              <span class="ntp-multiselect__warning">⚠</span>
+            </NtpTooltip>
+          </template>
 
           <NtpButton variant="text" size="small" class="ntp-multiselect__mode-button" @click="toggleViewMode">
             {{ viewMode === 'available' ? 'Show selected' : 'Show available' }}

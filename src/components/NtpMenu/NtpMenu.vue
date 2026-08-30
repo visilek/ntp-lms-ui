@@ -138,15 +138,11 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="open"
-      ref="menuRef"
-      class="ntp-menu"
-      :class="{ 'ntp-menu--positioned': isPositioned }"
-      role="menu"
-      :style="menuStyle"
-      @keydown="onKeydown"
-    >
+    <div v-if="open" ref="menuRef" class="ntp-menu" :class="{
+      'ntp-menu--positioned': isPositioned,
+      'ntp-menu--no-header': !$slots.header,
+      'ntp-menu--no-footer': !$slots.footer,
+    }" role="menu" :style="menuStyle" @keydown="onKeydown">
       <div v-if="$slots.header" class="ntp-menu__header">
         <slot name="header" />
       </div>
@@ -157,20 +153,11 @@ onBeforeUnmount(() => {
         </template>
 
         <template v-else>
-          <button
-            v-for="item in items"
-            :key="item.value"
-            type="button"
-            class="ntp-menu__item"
-            :class="{
-              'ntp-menu__item--danger': item.danger,
-              'ntp-menu__item--disabled': item.disabled,
-              'ntp-menu__item--selected': item.selected,
-            }"
-            role="menuitem"
-            :disabled="item.disabled"
-            @click="onSelect(item)"
-          >
+          <button v-for="item in items" :key="item.value" type="button" class="ntp-menu__item" :class="{
+            'ntp-menu__item--danger': item.danger,
+            'ntp-menu__item--disabled': item.disabled,
+            'ntp-menu__item--selected': item.selected,
+          }" role="menuitem" :disabled="item.disabled" @click="onSelect(item)">
             <span v-if="item.leading" class="ntp-menu__item-leading" aria-hidden="true">
               {{ item.leading }}
             </span>
