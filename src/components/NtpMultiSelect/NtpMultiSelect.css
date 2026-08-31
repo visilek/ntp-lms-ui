@@ -23,6 +23,10 @@
   padding: var(--ntp-spacing-2) var(--ntp-spacing-3);
 }
 
+.ntp-multiselect__header-actions {
+  margin-left: auto;
+}
+
 .ntp-multiselect__master-checkbox {
   display: flex;
   align-items: center;

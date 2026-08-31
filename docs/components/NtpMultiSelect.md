@@ -14,12 +14,12 @@ import { NtpMultiSelect } from 'ntp-lms-ui'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `modelValue` | `Array<string \| number>` | `[]` | Selected values |
-| `initialOptions` | `DropdownOption[]` | `[]` | Initial selected options |
+| `modelValue` | `DropdownValue[]` | `[]` | Selected values |
 | `label` | `string` | `''` | Floating label |
 | `variant` | `InputVariant` | `'filled'` | Visual style |
 | `contextColor` | `InputContextColor` | `'surface'` | Background context |
 | `loadOptions` | `DropdownOptionLoader` | required | Async loader |
+| `preloadedOptions` | `DropdownOption[]` | `[]` | Options available at mount |
 | `mapToOptions` | `DropdownOptionMapper` | default | Maps entities |
 | `disabled` | `boolean` | `false` | Disabled |
 | `readonly` | `boolean` | `false` | Readonly |
@@ -31,7 +31,7 @@ import { NtpMultiSelect } from 'ntp-lms-ui'
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `Array<string \| number>` | Selection changed |
+| `update:modelValue` | `DropdownValue[]` | Selection changed |
 | `blur` | — | Menu closed |
 | `focus` | — | Menu opened |
 | `load-error` | `Error` | Loader failed |
@@ -43,28 +43,30 @@ import { NtpMultiSelect } from 'ntp-lms-ui'
 - "Selected" view: only selected items.
 - "Available" view: loaded options with selected highlight.
 - "Load more" only in available view.
+- Label resolution: loaded → preloaded → API → `#value`.
 
 ## Usage
+
+### Basic
 
 ```html
 <NtpMultiSelect v-model="selectedIds" label="Sections" :load-options="loadSections" />
 ```
 
-### Programmatic Values / Reset
-
-`initialOptions` serves two purposes:
-
-1. **Initial labels** — provides labels for values set before mount.
-2. **Programmatic reset** — changing `initialOptions` updates the selection.
+### With Preloaded Options
 
 ```html
 <NtpMultiSelect
   v-model="selectedIds"
-  :initial-options="selectedSections"
+  label="Sections"
   :load-options="loadSections"
+  :preloaded-options="[
+    { value: 'physics', label: 'Physics' },
+    { value: 'math', label: 'Mathematics' },
+  ]"
 />
 ```
 
-When `selectedSections` changes in the consumer, the multiselect updates `modelValue` accordingly.
+### Programmatic Reset
 
-Without `initialOptions`, programmatic values show as `#value` until the menu loads matching options.
+Changing `v-model` externally updates the selection. Missing labels resolve via preloaded or API.

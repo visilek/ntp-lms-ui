@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { NtpSelect } from '@ntp-lms-ui/components'
+import { NtpSelect, NtpButton } from '@ntp-lms-ui/components'
 import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '@ntp-lms-ui/lib'
 
 const meta = {
@@ -22,43 +22,20 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-const smallOptions = [
-  { id: 'physics', title: 'Physics' },
-  { id: 'math', title: 'Mathematics' },
-  { id: 'chemistry', title: 'Chemistry' },
-  { id: 'biology', title: 'Biology' },
-  { id: 'history', title: 'History' },
+const availableOptions = [
+  { id: 'physics', label: 'Physics' },
+  { id: 'math', label: 'Mathematics' },
+  { id: 'chemistry', label: 'Chemistry' },
+  { id: 'biology', label: 'Biology' },
+  { id: 'history', label: 'History' },
 ]
-
-const totalOptions = Array.from({ length: 30 }, (_, i) => {
-  const groupIndex = Math.floor(i / 10)
-  const groupNames = ['alpha long-named option', 'beta long-named option', 'gamma long-named option']
-  const group = groupNames[groupIndex]
-  const number = (i % 10) + 1
-  return {
-    id: `${group}-${number}`,
-    title: `${group} ${number}`,
-  }
-})
 
 async function mockLoadSmall(query: string) {
   await new Promise((resolve) => setTimeout(resolve, 200))
-  const filtered = smallOptions.filter((o) =>
-    o.title.toLowerCase().includes(query.toLowerCase()),
+  const filtered = availableOptions.filter((o) =>
+    o.label.toLowerCase().includes(query.toLowerCase()),
   )
   return { items: filtered, totalCount: filtered.length }
-}
-
-async function mockLoadLarge(query: string, page: number, pageSize: number) {
-  await new Promise((resolve) => setTimeout(resolve, 500))
-  const filtered = totalOptions.filter((o) =>
-    o.title.toLowerCase().includes(query.toLowerCase()),
-  )
-  const start = (page - 1) * pageSize
-  return {
-    items: filtered.slice(start, start + pageSize),
-    totalCount: filtered.length,
-  }
 }
 
 export const Default: Story = {
@@ -77,59 +54,43 @@ export const Default: Story = {
   }),
 }
 
-export const WithInitialOption: Story = {
+export const WithPreloadedOptions: Story = {
   render: () => ({
     components: { NtpSelect },
     setup() {
-      const selected = ref<string | number | null>()
-      const initialOption = {
-        value: 'physics',
-        label: 'Physics',
-      }
+      const selected = ref<string | number | null>('physics')
+      const preloadedOptions = [
+        { value: 'physics', label: 'Physics' },
+      ]
 
-      return { selected, initialOption, mockLoadSmall }
+      return { selected, preloadedOptions, mockLoadSmall }
     },
     template: `
       <div style="max-width: 400px; padding: 40px;">
         <NtpSelect
           v-model="selected"
           label="Subject"
-          :initial-option="initialOption"
           :load-options="mockLoadSmall"
+          :preloaded-options="preloadedOptions"
         />
       </div>
     `,
   }),
 }
 
-export const LocalFiltering: Story = {
+export const WithoutPreloadedOptions: Story = {
   render: () => ({
     components: { NtpSelect },
     setup() {
-      const selected = ref<string | number | null>(null)
+      const selected = ref<string | number | null>('physics')
       return { selected, mockLoadSmall }
     },
     template: `
       <div style="max-width: 400px; padding: 40px;">
-        <p style="margin-bottom: 16px;">Open and type to filter locally (no API calls).</p>
+        <p style="margin-bottom: 16px;">
+          Value set without preloaded — label resolves via API on mount.
+        </p>
         <NtpSelect v-model="selected" label="Subject" :load-options="mockLoadSmall" />
-      </div>
-    `,
-  }),
-}
-
-export const AsyncSearch: Story = {
-  render: () => ({
-    components: { NtpSelect },
-    setup() {
-      const selected = ref<string | number | null>(null)
-      return { selected, mockLoadLarge }
-    },
-    template: `
-      <div style="max-width: 400px; padding: 40px;">
-        <p style="margin-bottom: 16px;">Open and type to search via API (debounced).</p>
-        <NtpSelect v-model="selected" label="Option" :load-options="mockLoadLarge" />
-        <p style="margin-top: 16px;">Selected: {{ selected }}</p>
       </div>
     `,
   }),
@@ -140,22 +101,59 @@ export const NotClearable: Story = {
     components: { NtpSelect },
     setup() {
       const selected = ref<string | number | null>('physics')
-      const initialOption = {
-        value: 'physics',
-        label: 'Physics',
-      }
+      const preloadedOptions = [
+        { value: 'physics', label: 'Physics' },
+      ]
 
-      return { selected, initialOption, mockLoadSmall }
+      return { selected, preloadedOptions, mockLoadSmall }
     },
     template: `
       <div style="max-width: 400px; padding: 40px;">
         <NtpSelect
           v-model="selected"
           label="Subject"
-          :initial-option="initialOption"
           :load-options="mockLoadSmall"
+          :preloaded-options="preloadedOptions"
           :clearable="false"
         />
+      </div>
+    `,
+  }),
+}
+
+export const ProgrammaticReset: Story = {
+  render: () => ({
+    components: { NtpSelect, NtpButton },
+    setup() {
+      const selected = ref<string | number | null>(null)
+      const preloadedOptions = [
+        { value: 'physics', label: 'Physics' },
+        { value: 'math', label: 'Mathematics' },
+        { value: 'chemistry', label: 'Chemistry' },
+      ]
+
+      function resetToPhysics() {
+        selected.value = 'physics'
+      }
+
+      function resetToMath() {
+        selected.value = 'math'
+      }
+
+      return { selected, preloadedOptions, mockLoadSmall, resetToPhysics, resetToMath }
+    },
+    template: `
+      <div style="max-width: 400px; padding: 40px;">
+        <NtpSelect
+          v-model="selected"
+          label="Subject"
+          :load-options="mockLoadSmall"
+          :preloaded-options="preloadedOptions"
+        />
+        <div class="ntp-flex ntp-gap-2" style="margin-top: 16px;">
+          <NtpButton size="small" @click="resetToPhysics">Set Physics</NtpButton>
+          <NtpButton size="small" @click="resetToMath">Set Math</NtpButton>
+        </div>
       </div>
     `,
   }),

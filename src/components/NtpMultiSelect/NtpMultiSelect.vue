@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue'
+// Load functions intentionally follow the same pattern.
+// TODO(v2): Re-evaluate extraction once core app usage patterns are known.
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
+import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeOptions } from '@ntp-lms-ui/lib'
 import type {
   DropdownOption,
+  DropdownValue,
   DropdownOptionLoader,
   DropdownOptionMapper,
   InputVariant,
@@ -9,23 +13,24 @@ import type {
   MenuItem,
   MasterCheckboxState,
 } from '@ntp-lms-ui/lib'
-import { useInputBase, DROPDOWN_PRELOAD_LIMIT, defaultOptionMapper, debounce } from '@ntp-lms-ui/lib'
-import { NtpMenu, NtpCheckbox, NtpButton, NtpSpinner, NtpTooltip } from '@ntp-lms-ui/components'
+import { defaultOptionMapper } from '@ntp-lms-ui/lib'
+import { NtpMenu, NtpButton, NtpSpinner, NtpCheckbox, NtpTooltip } from '@ntp-lms-ui/components'
 
 const defaultVariant: InputVariant = 'filled'
 const defaultContextColor: InputContextColor = 'surface'
 const SEARCH_DEBOUNCE_DELAY = 300
 const MASTER_CHECKBOX_VISIBILITY_THRESHOLD = 5
+const LABEL_RESOLUTION_PAGE_SIZE = 100
 
 type ViewMode = 'available' | 'selected'
 
 interface Props {
-  modelValue?: Array<string | number>
-  initialOptions?: DropdownOption[]
+  modelValue?: DropdownValue[]
   label?: string
   variant?: InputVariant
   contextColor?: InputContextColor
   loadOptions: DropdownOptionLoader
+  preloadedOptions?: DropdownOption[]
   mapToOptions?: DropdownOptionMapper
   disabled?: boolean
   readonly?: boolean
@@ -36,11 +41,11 @@ interface Props {
 
 const {
   modelValue = [],
-  initialOptions = [],
   label = '',
   variant = defaultVariant,
   contextColor = defaultContextColor,
   loadOptions,
+  preloadedOptions = [],
   mapToOptions = defaultOptionMapper,
   disabled = false,
   readonly = false,
@@ -50,7 +55,7 @@ const {
 } = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Array<string | number>]
+  'update:modelValue': [value: DropdownValue[]]
   blur: []
   focus: []
   'load-error': [error: Error]
@@ -58,7 +63,7 @@ const emit = defineEmits<{
 
 const isOpen = ref(false)
 const searchQuery = ref('')
-const allOptions = ref<DropdownOption[]>([])
+const loadedOptions = ref<DropdownOption[]>([])
 const filteredOptions = ref<DropdownOption[]>([])
 const totalCount = ref(0)
 const currentPage = ref(1)
@@ -68,17 +73,30 @@ const fieldRef = ref<HTMLElement | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
 const menuMinWidth = ref('')
 const viewMode = ref<ViewMode>('available')
-const selectedOptions = ref<DropdownOption[]>(initialOptions)
+const selectedOptions = ref<DropdownOption[]>([])
 const lastSelectedOption = ref<DropdownOption | null>(null)
+
+
+function resolveOption(
+  value: DropdownValue,
+  availableOptions: DropdownOption[],
+): DropdownOption | undefined {
+  return availableOptions.find((o) => o.value === value)
+}
+
+function getUnresolvedValues(
+  values: DropdownValue[],
+  availableOptions: DropdownOption[],
+): DropdownValue[] {
+  return values.filter((v) => !availableOptions.some((o) => o.value === v))
+}
 
 const hasValue = computed(() => modelValue.length > 0)
 
 const displayedOptions = computed<MenuItem[]>(() => {
-  if (viewMode.value === 'selected') {
-    return selectedOptions.value.map((o) => ({ ...o, selected: true }))
-  }
+  const optionsToDisplay = viewMode.value === 'selected' ? selectedOptions.value : filteredOptions.value
 
-  return filteredOptions.value.map((o) => ({
+  return optionsToDisplay.map((o) => ({
     ...o,
     selected: isSelected(o.value),
   }))
@@ -86,6 +104,7 @@ const displayedOptions = computed<MenuItem[]>(() => {
 
 const masterCheckboxState = computed<MasterCheckboxState>(() => {
   const visibleOptions = displayedOptions.value.filter((o) => !o.disabled)
+
   const visibleCount = visibleOptions.length
   const selectedVisibleCount = visibleOptions.filter((o) => o.selected).length
 
@@ -100,7 +119,7 @@ const showMasterCheckbox = computed(() => {
 })
 
 const showMasterCheckboxWarning = computed(() => {
-  return !isPreloadMode.value && hasMore.value && viewMode.value === 'available'
+  return viewMode.value === 'available' && !isPreloadMode.value && hasMore.value
 })
 
 const hasMore = computed(() => filteredOptions.value.length < totalCount.value)
@@ -109,34 +128,41 @@ const showLoadMoreFooter = computed(() => {
   return viewMode.value === 'available' && (hasMore.value || isLoading.value)
 })
 
-function findOptionByValues(values: Array<string | number>, source: DropdownOption[]): DropdownOption | null {
-  for (const value of values) {
-    const found = source.find((o) => o.value === value)
-    if (found) return found
-  }
-  return null
-}
-
 function getDisplayLabel(): string {
   if (modelValue.length === 0) return ''
 
-  const reversedValues = [...modelValue].reverse()
+  let reference: DropdownOption | null = lastSelectedOption.value
 
-  const reference = lastSelectedOption.value
-    ?? findOptionByValues(reversedValues, selectedOptions.value)
-    ?? findOptionByValues(reversedValues, allOptions.value)
+  if (!reference) {
+    const reversedValues = [...modelValue].reverse()
+    for (const value of reversedValues) {
+      const fromSelected = resolveOption(value, selectedOptions.value)
+      if (fromSelected) {
+        reference = fromSelected
+        break
+      }
+
+      const fromLoaded = resolveOption(value, loadedOptions.value)
+      if (fromLoaded) {
+        reference = fromLoaded
+        break
+      }
+    }
+  }
 
   const referenceValue = reference?.value ?? modelValue[modelValue.length - 1]
   const referenceLabel = reference?.label ?? `#${referenceValue}`
 
   if (modelValue.length === 1) {
     return referenceLabel
-  }
-  else {
+  } else {
     const restCount = modelValue.length - 1
     return `${referenceLabel} (+${restCount})`
   }
 }
+
+
+
 
 const displayValue = computed(() => {
   if (isOpen.value) return searchQuery.value
@@ -163,12 +189,55 @@ const {
   hasValue,
 })
 
+function addToSelectedOptions(value: DropdownValue) {
+  if (selectedOptions.value.some((o) => o.value === value)) return
+
+  const fromLoaded = resolveOption(value, loadedOptions.value)
+  if (fromLoaded) {
+    selectedOptions.value = selectedOptions.value.concat(fromLoaded)
+  }
+}
+
+async function ensureOptionsLoaded(values: DropdownValue[]) {
+  const missing = getUnresolvedValues(values, loadedOptions.value)
+
+  if (missing.length === 0) return
+
+  if (preloadedOptions.some((o) => missing.includes(o.value))) {
+    loadedOptions.value = mergeOptions(loadedOptions.value, preloadedOptions)
+  }
+
+  const stillMissing = getUnresolvedValues(values, loadedOptions.value)
+
+  if (stillMissing.length === 0) return
+
+  isLoading.value = true
+  try {
+    const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
+    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    totalCount.value = response.totalCount
+  } catch (error) {
+    emit('load-error', error as Error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(async () => {
+  await ensureOptionsLoaded(modelValue)
+
+  if (modelValue.length > 0) {
+    modelValue.forEach(addToSelectedOptions)
+  }
+})
+
 watch(
-  () => initialOptions,
-  (newOptions) => {
-    selectedOptions.value = newOptions
-    const values = newOptions.map((o) => o.value)
-    emit('update:modelValue', values)
+  () => modelValue,
+  async (newValue) => {
+    await ensureOptionsLoaded(newValue)
+
+    const newValues = getUnresolvedValues(newValue, selectedOptions.value)
+    newValues.forEach(addToSelectedOptions)
   },
 )
 
@@ -178,7 +247,7 @@ function computeMinWidth() {
   }
 }
 
-function isSelected(value: string | number): boolean {
+function isSelected(value: DropdownValue): boolean {
   return modelValue.includes(value)
 }
 
@@ -200,7 +269,7 @@ function onMasterCheckboxToggle(isChecked: boolean) {
       .filter((o) => !o.disabled && !o.selected)
       .map((o) => ({ value: o.value, label: o.label }))
 
-    selectedOptions.value = selectedOptions.value.concat(newSelected)
+    selectedOptions.value = mergeOptions(selectedOptions.value, newSelected)
   }
 }
 
@@ -210,12 +279,12 @@ function toggleViewMode() {
 
 function filterLocally(query: string) {
   if (query === '') {
-    filteredOptions.value = allOptions.value
+    filteredOptions.value = loadedOptions.value
     return
   }
 
   const lowerQuery = query.toLowerCase()
-  filteredOptions.value = allOptions.value.filter((option) =>
+  filteredOptions.value = loadedOptions.value.filter((option) =>
     option.label.toLowerCase().includes(lowerQuery),
   )
 }
@@ -234,8 +303,8 @@ async function openMenu() {
   try {
     const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
     isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
-    allOptions.value = response.items.map(mapToOptions)
-    filteredOptions.value = allOptions.value
+    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    filteredOptions.value = loadedOptions.value
     totalCount.value = response.totalCount
     currentPage.value = 1
   } catch (error) {
@@ -293,8 +362,7 @@ async function loadMore() {
   try {
     const response = await loadOptions(searchQuery.value, nextPage, DROPDOWN_PRELOAD_LIMIT)
     const newOptions = response.items.map(mapToOptions)
-
-    filteredOptions.value = filteredOptions.value.concat(newOptions)
+    filteredOptions.value = mergeOptions(filteredOptions.value, newOptions)
     totalCount.value = response.totalCount
     currentPage.value = nextPage
   } catch (error) {
@@ -312,9 +380,14 @@ function onInput(event: Event) {
 
 function onSelect(item: MenuItem) {
   toggleOption(item.value, item.label)
+  nextTick(() => {
+    if (isOpen.value) {
+      inputRef.value?.focus()
+    }
+  })
 }
 
-function toggleOption(value: string | number, label: string) {
+function toggleOption(value: DropdownValue, label: string) {
   if (isSelected(value)) {
     emit('update:modelValue', modelValue.filter((v) => v !== value))
     selectedOptions.value = selectedOptions.value.filter((o) => o.value !== value)
@@ -325,7 +398,7 @@ function toggleOption(value: string | number, label: string) {
   } else {
     emit('update:modelValue', [...modelValue, value])
     const option = { value, label }
-    selectedOptions.value = selectedOptions.value.concat(option)
+    selectedOptions.value = mergeOptions(selectedOptions.value, [option])
     lastSelectedOption.value = option
   }
 }
@@ -357,19 +430,22 @@ function toggleOption(value: string | number, label: string) {
       :min-width="menuMinWidth" @select="onSelect" @close="closeMenu">
       <template #header>
         <div class="ntp-multiselect__header">
-          <template v-if="showMasterCheckbox">
-            <label class="ntp-multiselect__master-checkbox">
-              <NtpCheckbox :model-value="masterCheckboxState === 'checked'" label="All"
-                :indeterminate="masterCheckboxState === 'indeterminate'" @change="onMasterCheckboxToggle" />
-            </label>
-            <NtpTooltip position="right" text="Selects only what's currently loaded. Load more to expand.">
-              <span class="ntp-multiselect__warning">⚠</span>
-            </NtpTooltip>
-          </template>
+          <NtpCheckbox v-if="showMasterCheckbox" :model-value="masterCheckboxState === 'checked'"
+            :indeterminate="masterCheckboxState === 'indeterminate'" label="All" @change="onMasterCheckboxToggle" />
 
-          <NtpButton variant="text" size="small" class="ntp-multiselect__mode-button" @click="toggleViewMode">
-            {{ viewMode === 'available' ? 'Show selected' : 'Show available' }}
-          </NtpButton>
+          <NtpTooltip v-if="showMasterCheckboxWarning"
+            text="Selects only what's currently loaded. Load more to expand.">
+            <span class="ntp-multiselect__warning"
+              aria-label="Selects only what's currently loaded. Load more to expand.">
+              ⚠
+            </span>
+          </NtpTooltip>
+
+          <div class="ntp-multiselect__header-actions">
+            <NtpButton variant="text" size="small" @click="toggleViewMode">
+              {{ viewMode === 'available' ? 'Show selected' : 'Show available' }}
+            </NtpButton>
+          </div>
         </div>
       </template>
 

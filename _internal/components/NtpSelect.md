@@ -2,9 +2,7 @@
 
 ## Load Pattern
 
-Three functions follow same pattern: try/catch/finally, `load-error` emit, state preserved.
-
-TODO(v2): Re-evaluate extraction.
+Functions follow try/catch/finally, `load-error` emit, state preserved.
 
 ## Modes
 
@@ -13,14 +11,13 @@ TODO(v2): Re-evaluate extraction.
 | Preload | totalCount ≤ 15 | Local |
 | Async | totalCount > 15 | Debounced API |
 
-## Selected Label
+## Label Resolution
 
-Resolution order: cachedOption → loaded options → `#value`.
+1. Loaded options.
+2. Preloaded options.
+3. API load (pageSize 100).
+4. `#value` fallback.
 
-## initialOption
+## preloadedOptions
 
-Provides label for programmatic values. Watch syncs cache + emits.
-
-## Debounce
-
-300ms. Shared `debounce` from lib.
+Merged into loaded when value not found in loaded. No API call if preloaded covers.

@@ -53,6 +53,7 @@ interface MenuItem {
 - Teleports to body.
 - Clamps to viewport with 8px margin.
 - Max-height: 60vh with internal scroll.
+- Header and footer are pinned — items scroll internally when the menu exceeds 60vh.
 - Selected items have primary-tinted background.
 - Closes on outside click, Escape, or scroll outside.
 

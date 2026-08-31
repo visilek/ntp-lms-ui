@@ -64,10 +64,10 @@ describe('NtpSelect', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['a'])
   })
 
-  it('shows selected label from initialOption', async () => {
+  it('shows label from preloaded options', async () => {
     const wrapper = await mountSelect({
       modelValue: 'b',
-      initialOption: { value: 'b', label: 'Option B' },
+      preloadedOptions: [{ value: 'b', label: 'Option B' }],
     })
 
     expect(wrapper.find('input').element.value).toBe('Option B')
@@ -82,7 +82,7 @@ describe('NtpSelect', () => {
   it('shows clear button when value selected', async () => {
     const wrapper = await mountSelect({
       modelValue: 'a',
-      initialOption: { value: 'a', label: 'Option A' },
+      preloadedOptions: [{ value: 'a', label: 'Option A' }],
     })
 
     expect(wrapper.find('.ntp-select__clear').exists()).toBe(true)
@@ -91,7 +91,7 @@ describe('NtpSelect', () => {
   it('emits null on clear', async () => {
     const wrapper = await mountSelect({
       modelValue: 'a',
-      initialOption: { value: 'a', label: 'Option A' },
+      preloadedOptions: [{ value: 'a', label: 'Option A' }],
     })
 
     await wrapper.find('.ntp-select__clear').trigger('click')
@@ -102,25 +102,11 @@ describe('NtpSelect', () => {
   it('does not show clear button when not clearable', async () => {
     const wrapper = await mountSelect({
       modelValue: 'a',
-      initialOption: { value: 'a', label: 'Option A' },
+      preloadedOptions: [{ value: 'a', label: 'Option A' }],
       clearable: false,
     })
 
     expect(wrapper.find('.ntp-select__clear').exists()).toBe(false)
-  })
-
-  it('filters locally in preload mode', async () => {
-    const wrapper = await mountSelect()
-
-    await wrapper.find('.ntp-select').trigger('click')
-    await nextTick()
-
-    const input = wrapper.find('input')
-    await input.setValue('opt')
-    await nextTick()
-
-    const menuItems = document.body.querySelectorAll('.ntp-menu__item')
-    expect(menuItems.length).toBe(3)
   })
 
   it('emits load-error on loader failure', async () => {

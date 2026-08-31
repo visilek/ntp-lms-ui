@@ -14,12 +14,12 @@ import { NtpSelect } from 'ntp-lms-ui'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `modelValue` | `string \| number \| null` | `null` | Selected value |
-| `initialOption` | `DropdownOption \| null` | `null` | Initial selected option |
+| `modelValue` | `DropdownValue \| null` | `null` | Selected value |
 | `label` | `string` | `''` | Floating label |
 | `variant` | `InputVariant` | `'filled'` | Visual style |
 | `contextColor` | `InputContextColor` | `'surface'` | Background context |
 | `loadOptions` | `DropdownOptionLoader` | required | Async loader |
+| `preloadedOptions` | `DropdownOption[]` | `[]` | Options available at mount — labels resolve without API call |
 | `mapToOptions` | `DropdownOptionMapper` | default | Maps raw entities to options |
 | `clearable` | `boolean` | `true` | Show clear button |
 | `disabled` | `boolean` | `false` | Disabled |
@@ -32,7 +32,7 @@ import { NtpSelect } from 'ntp-lms-ui'
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:modelValue` | `string \| number \| null` | Selection changed |
+| `update:modelValue` | `DropdownValue \| null` | Selection changed |
 | `blur` | — | Menu closed |
 | `focus` | — | Menu opened |
 | `load-error` | `Error` | Loader failed |
@@ -41,31 +41,31 @@ import { NtpSelect } from 'ntp-lms-ui'
 
 - Open: input becomes search field.
 - Preload (≤15): local filtering.
-- Async (>15): debounced (300ms) API search.
+- Async (>15): debounced API search.
 - "Load more" footer with spinner.
-- Search cleared on close.
+- Label resolution: loaded options → preloaded options → API → `#value`.
 
 ## Usage
+
+### Basic
 
 ```html
 <NtpSelect v-model="sectionId" label="Section" :load-options="loadSections" />
 ```
 
-### Programmatic Value / Reset
-
-`initialOption` serves two purposes:
-
-1. **Initial label** — provides the label for a value set before mount.
-2. **Programmatic reset** — changing `initialOption` updates the selection.
+### With Preloaded Options
 
 ```html
 <NtpSelect
   v-model="sectionId"
-  :initial-option="selectedSection"
+  label="Section"
   :load-options="loadSections"
+  :preloaded-options="[
+    { value: 'physics', label: 'Physics' },
+  ]"
 />
 ```
 
-When `selectedSection` changes in the consumer, the select updates `modelValue` accordingly.
+### Programmatic Reset
 
-Without `initialOption`, programmatic values show as `#value` until the menu loads the matching option.
+Changing `v-model` externally updates the selection. If the new value isn't in loaded options, the component loads options to resolve the label.

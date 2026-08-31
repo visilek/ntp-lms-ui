@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { NtpMultiSelect } from '@ntp-lms-ui/components'
+import { NtpMultiSelect, NtpButton } from '@ntp-lms-ui/components'
 import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '@ntp-lms-ui/lib'
 
 const meta = {
@@ -150,6 +150,76 @@ export const AsyncMode: Story = {
         <p style="margin-bottom: 16px;">Async mode — search + load more + warning icon.</p>
         <NtpMultiSelect v-model="selected" label="Options" :load-options="mockLoadLarge" />
         <p style="margin-top: 16px;">Selected: {{ selected }}</p>
+      </div>
+    `,
+  }),
+}
+
+export const SelectedView: Story = {
+  render: () => ({
+    components: { NtpMultiSelect },
+    setup() {
+      const selected = ref<DropdownValue[]>(['physics', 'math'])
+      const preloadedOptions = [
+        { value: 'physics', label: 'Physics' },
+        { value: 'math', label: 'Mathematics' },
+        { value: 'chemistry', label: 'Chemistry' },
+      ]
+
+      return { selected, preloadedOptions, mockLoadSmall }
+    },
+    template: `
+      <div style="max-width: 400px; padding: 40px;">
+        <p style="margin-bottom: 16px;">Open and toggle "Show selected" to view the selected-only list.</p>
+        <NtpMultiSelect
+          v-model="selected"
+          label="Subjects"
+          :load-options="mockLoadSmall"
+          :preloaded-options="preloadedOptions"
+        />
+      </div>
+    `,
+  }),
+}
+
+export const ProgrammaticReset: Story = {
+  render: () => ({
+    components: { NtpMultiSelect, NtpButton },
+    setup() {
+      const selected = ref<DropdownValue[]>([])
+      const preloadedOptions = [
+        { value: 'physics', label: 'Physics' },
+        { value: 'math', label: 'Mathematics' },
+        { value: 'chemistry', label: 'Chemistry' },
+      ]
+
+      function setTwoSubjects() {
+        selected.value = ['physics', 'math']
+      }
+
+      function setOneSubject() {
+        selected.value = ['chemistry']
+      }
+
+      function clearAll() {
+        selected.value = []
+      }
+
+      return { selected, preloadedOptions, mockLoadSmall, setTwoSubjects, setOneSubject, clearAll }
+    },
+    template: `
+      <div style="max-width: 400px; padding: 40px;">
+        <NtpMultiSelect
+          v-model="selected"
+          label="Subjects"
+          :load-options="mockLoadSmall"
+          :preloaded-options="preloadedOptions"
+        />
+        <div class="ntp-flex ntp-gap-2" style="margin-top: 16px;">
+          <NtpButton size="small" @click="setTwoSubjects">Set Two</NtpButton>
+          <NtpButton size="small" @click="setOneSubject">Set One</NtpButton>
+          <NtpButton size="small" @click="clearAll">Clear</NtpButton>
+        </div>
       </div>
     `,
   }),

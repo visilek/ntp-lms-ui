@@ -46,7 +46,7 @@ describe('NtpMultiSelect', () => {
   it('shows label when one item selected', async () => {
     const wrapper = await mountMultiSelect({
       modelValue: ['a'],
-      initialOptions: [{ value: 'a', label: 'Option A' }],
+      preloadedOptions: [{ value: 'a', label: 'Option A' }],
     })
 
     expect(wrapper.find('input').element.value).toBe('Option A')
@@ -55,7 +55,7 @@ describe('NtpMultiSelect', () => {
   it('shows label with count when multiple items selected', async () => {
     const wrapper = await mountMultiSelect({
       modelValue: ['a', 'b'],
-      initialOptions: [
+      preloadedOptions: [
         { value: 'a', label: 'Option A' },
         { value: 'b', label: 'Option B' },
       ],
@@ -88,7 +88,7 @@ describe('NtpMultiSelect', () => {
   it('emits array without value when selected option clicked again', async () => {
     const wrapper = await mountMultiSelect({
       modelValue: ['a'],
-      initialOptions: [{ value: 'a', label: 'Option A' }],
+      preloadedOptions: [{ value: 'a', label: 'Option A' }],
     })
 
     await wrapper.find('.ntp-select').trigger('click')
@@ -116,7 +116,7 @@ describe('NtpMultiSelect', () => {
     await wrapper.find('.ntp-select').trigger('click')
     await nextTick()
 
-    expect(document.body.querySelector('.ntp-multiselect__master-checkbox')).not.toBeNull()
+    expect(document.body.querySelector('.ntp-checkbox')).not.toBeNull()
   })
 
   it('emits load-error on loader failure', async () => {

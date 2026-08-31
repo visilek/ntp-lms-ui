@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce } from '@ntp-lms-ui/lib'
+// Load functions intentionally follow the same pattern.
+// TODO(v2): Re-evaluate extraction once core app usage patterns are known.
+import { computed, ref, watch, onMounted } from 'vue'
+import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeOptions } from '@ntp-lms-ui/lib'
 import type {
   DropdownOption,
+  DropdownValue,
   DropdownOptionLoader,
   DropdownOptionMapper,
   InputVariant,
@@ -15,14 +18,15 @@ import { NtpMenu, NtpButton, NtpSpinner } from '@ntp-lms-ui/components'
 const defaultVariant: InputVariant = 'filled'
 const defaultContextColor: InputContextColor = 'surface'
 const SEARCH_DEBOUNCE_DELAY = 300
+const LABEL_RESOLUTION_PAGE_SIZE = 100
 
 interface Props {
-  modelValue?: string | number | null
-  initialOption?: DropdownOption | null
+  modelValue?: DropdownValue | null
   label?: string
   variant?: InputVariant
   contextColor?: InputContextColor
   loadOptions: DropdownOptionLoader
+  preloadedOptions?: DropdownOption[]
   mapToOptions?: DropdownOptionMapper
   clearable?: boolean
   disabled?: boolean
@@ -34,11 +38,11 @@ interface Props {
 
 const {
   modelValue = null,
-  initialOption = null,
   label = '',
   variant = defaultVariant,
   contextColor = defaultContextColor,
   loadOptions,
+  preloadedOptions = [],
   mapToOptions = defaultOptionMapper,
   clearable = true,
   disabled = false,
@@ -49,7 +53,7 @@ const {
 } = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string | number | null]
+  'update:modelValue': [value: DropdownValue | null]
   blur: []
   focus: []
   'load-error': [error: Error]
@@ -57,34 +61,26 @@ const emit = defineEmits<{
 
 const isOpen = ref(false)
 const searchQuery = ref('')
-const allOptions = ref<DropdownOption[]>([])
+const loadedOptions = ref<DropdownOption[]>([])
 const filteredOptions = ref<DropdownOption[]>([])
 const totalCount = ref(0)
 const currentPage = ref(1)
 const isPreloadMode = ref(false)
 const isLoading = ref(false)
 const fieldRef = ref<HTMLElement | null>(null)
-const selectedOption = ref<DropdownOption | null>(initialOption)
 const menuMinWidth = ref('')
 
 const hasValue = computed(() => modelValue !== null && modelValue !== '')
 
-
 const selectedLabel = computed(() => {
   if (!hasValue.value) return ''
 
-  if (selectedOption.value && selectedOption.value.value === modelValue) {
-    return selectedOption.value.label
-  }
-
-  const selected = allOptions.value.find((option) => option.value === modelValue)
-  if (selected) return selected.label
-
-  return `#${modelValue}`
+  const resolved = loadedOptions.value.find((o) => o.value === modelValue)
+  return resolved?.label ?? `#${modelValue}`
 })
 
 const displayValue = computed(() => {
-  if (isOpen.value && searchQuery.value !== '') return searchQuery.value
+  if (isOpen.value) return searchQuery.value
   return selectedLabel.value
 })
 
@@ -110,23 +106,37 @@ const {
   hasValue: computed(() => displayValue.value !== ''),
 })
 
-watch(
-  () => initialOption,
-  (newOption) => {
-    if (!newOption) return
-    selectedOption.value = newOption
-    if (modelValue !== newOption.value) {
-      emit('update:modelValue', newOption.value)
-    }
-  },
-)
+async function ensureOptionsLoaded(value: DropdownValue) {
+  if (loadedOptions.value.some((o) => o.value === value)) return
+
+  if (preloadedOptions.some((o) => o.value === value)) {
+    loadedOptions.value = mergeOptions(loadedOptions.value, preloadedOptions)
+    return
+  }
+
+  isLoading.value = true
+  try {
+    const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
+    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    totalCount.value = response.totalCount
+  } catch (error) {
+    emit('load-error', error as Error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(async () => {
+  if (modelValue !== null && modelValue !== '') {
+    await ensureOptionsLoaded(modelValue)
+  }
+})
 
 watch(
   () => modelValue,
-  (newValue) => {
-    if (selectedOption.value && selectedOption.value.value !== newValue) {
-      selectedOption.value = null
-    }
+  async (newValue) => {
+    if (newValue === null || newValue === '') return
+    await ensureOptionsLoaded(newValue)
   },
 )
 
@@ -138,12 +148,12 @@ function computeMinWidth() {
 
 function filterLocally(query: string) {
   if (query === '') {
-    filteredOptions.value = allOptions.value
+    filteredOptions.value = loadedOptions.value
     return
   }
 
   const lowerQuery = query.toLowerCase()
-  filteredOptions.value = allOptions.value.filter((option) =>
+  filteredOptions.value = loadedOptions.value.filter((option) =>
     option.label.toLowerCase().includes(lowerQuery),
   )
 }
@@ -161,8 +171,8 @@ async function openMenu() {
   try {
     const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
     isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
-    allOptions.value = response.items.map(mapToOptions)
-    filteredOptions.value = allOptions.value
+    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    filteredOptions.value = loadedOptions.value
     totalCount.value = response.totalCount
     currentPage.value = 1
   } catch (error) {
@@ -217,14 +227,7 @@ async function loadMore() {
   try {
     const response = await loadOptions(searchQuery.value, nextPage, DROPDOWN_PRELOAD_LIMIT)
     const newOptions = response.items.map(mapToOptions)
-
-    if (isPreloadMode.value) {
-      allOptions.value = allOptions.value.concat(newOptions)
-      filteredOptions.value = allOptions.value
-    } else {
-      filteredOptions.value = filteredOptions.value.concat(newOptions)
-    }
-
+    filteredOptions.value = mergeOptions(filteredOptions.value, newOptions)
     totalCount.value = response.totalCount
     currentPage.value = nextPage
   } catch (error) {
@@ -241,16 +244,11 @@ function onInput(event: Event) {
 }
 
 function onSelect(item: MenuItem) {
-  selectedOption.value = {
-    value: item.value,
-    label: item.label,
-  }
   emit('update:modelValue', item.value)
   closeMenu()
 }
 
 function onClear() {
-  selectedOption.value = null
   emit('update:modelValue', null)
 }
 </script>
@@ -258,31 +256,59 @@ function onClear() {
 <template>
   <div :class="wrapperClasses">
     <div ref="fieldRef" class="ntp-input__field ntp-select" @click="toggleMenu">
-      <input :id="inputId" type="text" :value="displayValue" :disabled="disabled" :readonly="readonly || !isOpen"
-        class="ntp-input__control" @focus="onFocus" @blur="onBlur" @input="onInput" />
+      <input
+        :id="inputId"
+        type="text"
+        :value="displayValue"
+        :disabled="disabled"
+        :readonly="readonly || !isOpen"
+        class="ntp-input__control"
+        @focus="onFocus"
+        @blur="onBlur"
+        @input="onInput"
+      />
 
-      <label :for="inputId" class="ntp-input__label" :class="{ 'ntp-input__label--floating': isLabelFloating }">
+      <label
+        :for="inputId"
+        class="ntp-input__label"
+        :class="{ 'ntp-input__label--floating': isLabelFloating }"
+      >
         {{ label }}
       </label>
 
       <span class="ntp-input__trailing">
-        <button v-if="clearable && hasValue && !isOpen" type="button" class="ntp-select__clear"
-          aria-label="Clear selection" @click.stop="onClear">
+        <button
+          v-if="clearable && hasValue && !isOpen"
+          type="button"
+          class="ntp-select__clear"
+          aria-label="Clear selection"
+          @click.stop="onClear"
+        >
           ×
         </button>
         <span class="ntp-select__arrow" aria-hidden="true">▾</span>
       </span>
     </div>
 
-    <div v-if="supportText.length" class="ntp-input__support-text"
-      :class="{ 'ntp-input__support-text--error': hasError }">
+    <div
+      v-if="supportText.length"
+      class="ntp-input__support-text"
+      :class="{ 'ntp-input__support-text--error': hasError }"
+    >
       <div v-for="(msg, i) in supportText" :key="i" class="ntp-input__error-line">
         {{ msg }}
       </div>
     </div>
 
-    <NtpMenu :items="filteredOptions" :anchor="fieldRef" :open="isOpen" placement="bottom-start"
-      :min-width="menuMinWidth" @select="onSelect" @close="closeMenu">
+    <NtpMenu
+      :items="filteredOptions"
+      :anchor="fieldRef"
+      :open="isOpen"
+      placement="bottom-start"
+      :min-width="menuMinWidth"
+      @select="onSelect"
+      @close="closeMenu"
+    >
       <template v-if="!isLoading && filteredOptions.length === 0" #default>
         <div class="ntp-select__empty">Empty</div>
       </template>

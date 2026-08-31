@@ -1,7 +1,15 @@
+import type { MenuItemValue } from './menu'
+
 export type DropdownRawOption = Record<string, any>
 
-export type DropdownOption = {
-  value: string | number
+export type DropdownValue = string | number
+
+// Compile-time guard: DropdownValue must remain assignable to MenuItemValue
+type Assert<T extends true> = T
+type _DropdownValueCheck = Assert<DropdownValue extends MenuItemValue ? true : false>
+
+export interface DropdownOption {
+  value: DropdownValue
   label: string
   disabled?: boolean
 }

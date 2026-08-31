@@ -45,6 +45,15 @@
   transform: translateY(-50%) scale(0.75);
 }
 
+/* When floating, transition back to resting has a delay */
+.ntp-input__label--floating {
+  transition-delay: 0s;
+}
+
+.ntp-input__label:not(.ntp-input__label--floating) {
+  transition-delay: 50ms;   /* small delay for the rest transition */
+}
+
 .ntp-input__support-text {
   font: var(--ntp-type-body-small);
   color: var(--ntp-color-on-surface-variant);
