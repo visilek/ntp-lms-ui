@@ -1,28 +1,68 @@
 # NtpCard — Implementation Notes
 
-## Render Element
+## Structure
 
-- `clickable: true` → `<button type="button">`
-- `clickable: false` → `<div>`
+```
+NtpCard/
+├── NtpCard.vue
+├── NtpCard.css
+├── NtpCardHeader.vue
+├── NtpCardHeader.css
+└── index.ts
+```
 
 ## Variants
 
 | Variant | CSS |
 |---|---|
-| `elevated` | `box-shadow: $elevation-1` |
-| `elevated` + `clickable` hover | `box-shadow: $elevation-2` |
-| `filled` | `background: $color-surface-container-highest` |
-| `outlined` | `border: 1px solid $color-outline` |
+| `elevated` | `box-shadow: var(--ntp-elevation-1)` |
+| `filled` | `background: var(--ntp-color-surface-container-highest)` |
+| `outlined` | `border: 1px solid var(--ntp-color-outline)` |
 
-## Border Radius
+## Color Override
 
-- MD3 card shape: 12dp radius (token `$shape-medium`).
+Color classes set `background-color` + `color` (the `on-*` token). Variant effects remain.
+
+## Overflow
+
+`overflow: hidden` — clips media to rounded corners.
 
 ## No Internal Padding
 
-Card applies **no padding**. Consumers use spacing utilities. This is intentional — edge-to-edge media is the default case, not an exception.
+Consumers apply spacing utilities. Cards are bare containers.
 
-## Future Considerations
+## clickable
 
-- Draggable cards.
-- Card with `href` for navigation.
+- Renders `role="button"` + `tabindex="0"`.
+- Elevated: hover raises elevation.
+- Filled/Outlined: hover darkens background.
+
+## Future
+
+- Tonal elevation — see `_internal/TODO/card-tonal-elevation.md`.
+- Layout system — see `_internal/TODO/layout-system.md`.
+
+# NtpCardHeader — Implementation Notes
+
+## Structure
+
+Flex row: avatar (fixed 40px) + text block (flex-grow) + action slot (fixed).
+
+## Color Inheritance
+
+- Title: `color: inherit`.
+- Subtitle: `color: inherit; opacity: 0.75`.
+- Overlay modes override with white.
+
+## Overlay Modes
+
+| Mode | Background |
+|---|---|
+| `scrim` | `linear-gradient(to top, rgba(0,0,0,0.6), transparent)` |
+| `solid` | `rgba(0,0,0,0.5)` |
+
+Overlay adds `padding: var(--ntp-spacing-4)`.
+
+## Slot Overrides
+
+`title`, `subtitle`, `avatar` slots override props.

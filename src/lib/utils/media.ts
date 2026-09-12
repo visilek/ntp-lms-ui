@@ -1,0 +1,9 @@
+import type { MediaItem } from '@ntp-lms-ui/lib/types'
+import type { AttachedFigureCompact } from '@ntp-lms-ui/lib/types'
+
+export function figureToMediaItem(figure: AttachedFigureCompact): MediaItem {
+  return {
+    src: figure.thumbnail,
+    alt: figure.title,
+  }
+}

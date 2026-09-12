@@ -1,18 +1,17 @@
-/** Figure renditions — full detail endpoint. */
 export interface FigureRenditions {
   thumbnail: string
   display: string
   original: string
 }
 
-/** Figure album reference. */
+export type AttachedFigureRenditions = Pick<FigureRenditions, 'thumbnail' | 'display'>
+
 export interface FigureAlbumRef {
   id: string
   title: string
   slug: string
 }
 
-/** Figure data — full figure entity from detail endpoint. */
 export interface FigureData {
   id: string
   title: string
@@ -25,18 +24,16 @@ export interface FigureData {
   updatedAt: string
 }
 
-/** Figure attachment renditions — attachment contract. */
-export interface FigureAttachmentRenditions {
-  thumbnail: string
-  display: string
-}
-
-/** Figure attachment — full-state replacement contract. */
-export interface FigureAttachment {
+export interface AttachedFigureFull {
   figureId: string
   title: string
   position: number
   isCover: boolean
-  renditions: FigureAttachmentRenditions
+  renditions: AttachedFigureRenditions
   removable?: boolean
+}
+
+export interface AttachedFigureCompact {
+  title: string
+  thumbnail: string
 }

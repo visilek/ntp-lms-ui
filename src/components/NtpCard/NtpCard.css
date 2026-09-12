@@ -1,0 +1,54 @@
+.ntp-card {
+  border-radius: var(--ntp-shape-medium);
+  overflow: hidden;
+  transition: box-shadow var(--ntp-duration-short) var(--ntp-easing-standard),
+              background-color var(--ntp-duration-short) var(--ntp-easing-standard);
+}
+
+.ntp-card--elevated {
+  background-color: var(--ntp-color-surface);
+  box-shadow: var(--ntp-elevation-1);
+}
+
+.ntp-card--filled {
+  background-color: var(--ntp-color-surface-container-highest);
+}
+
+.ntp-card--outlined {
+  background-color: var(--ntp-color-surface);
+  border: 1px solid var(--ntp-color-outline);
+}
+
+/* Color overrides — background and text only */
+.ntp-card--color-primary {
+  background-color: var(--ntp-color-primary-container);
+  color: var(--ntp-color-on-primary-container);
+}
+
+.ntp-card--color-secondary {
+  background-color: var(--ntp-color-secondary-container);
+  color: var(--ntp-color-on-secondary-container);
+}
+
+.ntp-card--color-tertiary {
+  background-color: var(--ntp-color-tertiary-container);
+  color: var(--ntp-color-on-tertiary-container);
+}
+
+.ntp-card--clickable {
+  cursor: pointer;
+}
+
+.ntp-card--clickable.ntp-card--elevated:hover {
+  box-shadow: var(--ntp-elevation-2);
+}
+
+.ntp-card--clickable.ntp-card--filled:hover,
+.ntp-card--clickable.ntp-card--outlined:hover {
+  background-color: var(--ntp-color-surface-container-high);
+}
+
+.ntp-card--clickable:focus-visible {
+  outline: 2px solid var(--ntp-color-primary);
+  outline-offset: 2px;
+}

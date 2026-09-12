@@ -1,27 +1,18 @@
 # NtpCard Family
 
-Card components for content containers following Material Design 3.
+Card components following Material Design 3. Composition-based.
 
 ## Components
 
 | Component | Purpose |
 |---|---|
-| `NtpCard` | Bare container: border radius, elevation/background per variant. No internal padding. |
-| `NtpCardHeader` | Avatar + title + subtitle block. Optional overlay treatment for use over media. |
+| `NtpCard` | Bare container: variant (elevated/filled/outlined), color, clickable |
+| `NtpCardHeader` | Avatar + title + subtitle, optional action slot |
+| `NtpMedia` | Image primitive (separate top-level component) |
 
 ## Layout
 
-Cards do **not** apply internal padding. Use spacing utility classes to arrange content:
-
-| Class | Applies To |
-|---|---|
-| `ntp-pa-{n}` | Padding all sides |
-| `ntp-px-{n}` | Padding left + right |
-| `ntp-py-{n}` | Padding top + bottom |
-| `ntp-pt-{n}` / `ntp-pb-{n}` | Padding top / bottom |
-| `ntp-pl-{n}` / `ntp-pr-{n}` | Padding left / right |
-
-Spacing scale (4dp base): `1` = 4dp, `2` = 8dp, `3` = 12dp, `4` = 16dp, `5` = 20dp, `6` = 24dp, `8` = 32dp, `10` = 40dp, `12` = 48dp.
+Cards have **no internal padding**. Consumers apply spacing utilities.
 
 ## Composition Patterns
 
@@ -40,7 +31,7 @@ Spacing scale (4dp base): `1` = 4dp, `2` = 8dp, `3` = 12dp, `4` = 16dp, `5` = 20
 
 ```html
 <NtpCard>
-  <NtpMedia src="cover.jpg" alt="Cover" aspect-ratio="21 / 9" />
+  <NtpMedia :media="{ src: 'cover.jpg', alt: 'Cover' }" aspect-ratio="21 / 9" />
   <div class="ntp-pa-4">
     <NtpCardHeader title="Physics 101" />
     <p>Body...</p>
@@ -52,9 +43,11 @@ Spacing scale (4dp base): `1` = 4dp, `2` = 8dp, `3` = 12dp, `4` = 16dp, `5` = 20
 
 ```html
 <NtpCard>
-  <div class="media-container">
-    <NtpMedia src="cover.jpg" alt="Cover" />
-    <NtpCardHeader title="Physics 101" subtitle="Mechanics" overlay="scrim" />
+  <div style="position: relative;">
+    <NtpMedia :media="{ src: 'cover.jpg', alt: 'Cover' }" />
+    <div style="position: absolute; bottom: 0; left: 0; right: 0;">
+      <NtpCardHeader title="Physics 101" subtitle="Mechanics" overlay="scrim" />
+    </div>
   </div>
   <div class="ntp-pa-4">
     <p>Body...</p>
@@ -67,7 +60,7 @@ Spacing scale (4dp base): `1` = 4dp, `2` = 8dp, `3` = 12dp, `4` = 16dp, `5` = 20
 ```html
 <NtpCard>
   <div class="ntp-pa-4">
-    <div class="ntp-d-flex ntp-justify-between ntp-align-start">
+    <div class="ntp-flex ntp-justify-between ntp-items-start">
       <NtpCardHeader title="Physics 101" subtitle="Mechanics" />
       <NtpActionMenu :items="actions" @select="handleAction" />
     </div>
@@ -76,14 +69,26 @@ Spacing scale (4dp base): `1` = 4dp, `2` = 8dp, `3` = 12dp, `4` = 16dp, `5` = 20
 </NtpCard>
 ```
 
-### Footer Actions
+### With Footer Actions
 
 ```html
 <NtpCard>
   <div class="ntp-pa-4">
     <p>Body...</p>
   </div>
-  <div class="ntp-px-4 ntp-pb-3 ntp-d-flex ntp-justify-end">
+  <div class="ntp-px-4 ntp-pb-3 ntp-flex ntp-justify-end ntp-gap-2">
     <NtpButton variant="text" size="small">Reply</NtpButton>
   </div>
 </NtpCard>
+```
+
+### Colored Card
+
+```html
+<NtpCard color="primary">
+  <div class="ntp-pa-4">
+    <NtpCardHeader title="Physics 101" subtitle="Mechanics" />
+    <p>Body...</p>
+  </div>
+</NtpCard>
+```

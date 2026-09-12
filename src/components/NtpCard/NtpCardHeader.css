@@ -1,0 +1,76 @@
+.ntp-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ntp-spacing-3);
+  position: relative;
+}
+
+.ntp-card-header__avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ntp-shape-full);
+  overflow: hidden;
+}
+
+.ntp-card-header__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ntp-card-header__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ntp-card-header__title {
+  font: var(--ntp-type-title-medium);
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ntp-card-header__subtitle {
+  font: var(--ntp-type-body-medium);
+  color: inherit;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ntp-card-header__action {
+  flex-shrink: 0;
+}
+
+/* Overlay modes */
+.ntp-card-header--overlay-scrim,
+.ntp-card-header--overlay-solid {
+  color: white;
+}
+
+.ntp-card-header--overlay-scrim .ntp-card-header__title,
+.ntp-card-header--overlay-solid .ntp-card-header__title {
+  color: white;
+  opacity: 1;
+}
+
+.ntp-card-header--overlay-scrim .ntp-card-header__subtitle,
+.ntp-card-header--overlay-solid .ntp-card-header__subtitle {
+  color: white;
+  opacity: 0.85;
+}
+
+.ntp-card-header--overlay-scrim {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  padding: var(--ntp-spacing-4);
+}
+
+.ntp-card-header--overlay-solid {
+  background: rgba(0, 0, 0, 0.5);
+  padding: var(--ntp-spacing-4);
+}

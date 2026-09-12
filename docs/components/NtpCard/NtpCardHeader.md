@@ -1,6 +1,6 @@
 # NtpCardHeader
 
-Avatar + title + subtitle block for card headers. Supports overlay treatment for use over media or color fills.
+Avatar + title + subtitle block for card headers. Supports overlay modes for use over media.
 
 ## Import
 
@@ -14,31 +14,51 @@ import { NtpCardHeader } from 'ntp-lms-ui'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `title` | `string` | `''` | Primary title text |
-| `subtitle` | `string` | `''` | Secondary text below title |
-| `avatar` | `string` | `''` | Avatar image URL |
+| `title` | `string` | `''` | Primary title |
+| `subtitle` | `string` | `''` | Secondary text |
+| `avatar` | `string` | `''` | Avatar image URL (40dp) |
 | `overlay` | `'none' \| 'scrim' \| 'solid'` | `'none'` | Visual treatment over media/color |
 
 ### Slots
 
 | Slot | Description |
 |---|---|
-| `avatar` | Custom avatar content. Overrides `avatar` prop. |
-| `title` | Custom title content. Overrides `title` prop. |
-| `subtitle` | Custom subtitle content. Overrides `subtitle` prop. |
+| `default` | Action content (right-aligned) |
+| `avatar` | Custom avatar. Overrides `avatar` prop. |
+| `title` | Custom title. Overrides `title` prop. |
+| `subtitle` | Custom subtitle. Overrides `subtitle` prop. |
+
+## Color Inheritance
+
+- Title inherits the card's `color`.
+- Subtitle inherits with 75% opacity (muted).
+- Overlay modes force white text.
 
 ## Overlay Modes
 
-| Mode | Description |
+| Mode | Use |
 |---|---|
-| `none` | Default. Text uses standard tokens. |
-| `scrim` | Dark gradient behind header. White text. |
-| `solid` | Semi-transparent dark background. White text. |
+| `none` | Header over normal card surface |
+| `scrim` | Dark gradient — header over image |
+| `solid` | Semi-transparent dark background |
 
 ## Usage
 
-See [NtpCard Family](components/NtpCard/index.md) for composition patterns.
+```html
+<!-- Normal -->
+<NtpCardHeader title="John Doe" subtitle="2 hours ago" avatar="..." />
+
+<!-- Over media -->
+<NtpCard>
+  <div style="position: relative;">
+    <NtpMedia :media="{ src: 'cover.jpg' }" />
+    <div style="position: absolute; bottom: 0; left: 0; right: 0;">
+      <NtpCardHeader title="Title" subtitle="Subtitle" overlay="scrim" />
+    </div>
+  </div>
+</NtpCard>
+```
 
 ## Accessibility
 
-- Renders semantic heading elements? Or plain divs? For v1: plain divs with appropriate text styling. Consumers wrap with heading tags if needed.
+- Avatar has empty `alt` (decorative) or consumer-provided alt via slot.

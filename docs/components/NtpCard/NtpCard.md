@@ -15,7 +15,8 @@ import { NtpCard } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `variant` | `'elevated' \| 'filled' \| 'outlined'` | `'elevated'` | Card style |
-| `clickable` | `boolean` | `false` | Interactive card. Hover state. Emits `click`. |
+| `color` | `'surface' \| 'primary' \| 'secondary' \| 'tertiary'` | `'surface'` | Background tint |
+| `clickable` | `boolean` | `false` | Interactive card |
 
 ### Slots
 
@@ -27,7 +28,7 @@ import { NtpCard } from 'ntp-lms-ui'
 
 | Event | Payload | Description |
 |---|---|---|
-| `click` | `MouseEvent` | Emitted only when `clickable` is `true`. |
+| `click` | `MouseEvent` | Emitted only when `clickable` is `true` |
 
 ## Variants
 
@@ -37,11 +38,32 @@ import { NtpCard } from 'ntp-lms-ui'
 | `filled` | Surface container highest | None | None |
 | `outlined` | Surface | 1px outline | None |
 
+## Colors
+
+`color` overrides the background with a container tint. Variant effects (shadow, border) remain.
+
+| Color | Background |
+|---|---|
+| `surface` | Default per variant |
+| `primary` | Primary container tint |
+| `secondary` | Secondary container tint |
+| `tertiary` | Tertiary container tint |
+
 ## Usage
 
-See [NtpCard Family](components/NtpCard/index.md) for composition patterns.
+```html
+<NtpCard>
+  <div class="ntp-pa-4">
+    <NtpCardHeader title="Physics 101" subtitle="Mechanics" />
+    <p>Card content</p>
+  </div>
+</NtpCard>
+
+<NtpCard color="primary" clickable @click="openCourse">
+  <div class="ntp-pa-4">...</div>
+</NtpCard>
+```
 
 ## Accessibility
 
-- `clickable` cards render as `<button type="button">` for keyboard accessibility.
-- Non-clickable cards render as `<div>`.
+- `clickable` cards render with `role="button"` and `tabindex="0"`.

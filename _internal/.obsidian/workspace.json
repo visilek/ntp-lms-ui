@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e298ea2d2d4839d1",
+        "id": "e717e9a00c80e0ba",
         "type": "tabs",
         "children": [
           {
-            "id": "4d688540da7387c3",
+            "id": "d5bed71795630b21",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "4d688540da7387c3",
+  "active": "0b4d09b8726e76e8",
   "lastOpenFiles": [
+    "components/NtpCard/NtpCardHeader.md",
+    "components/NtpCard/NtpCard.md",
+    "components/NtpCard/index.md",
+    "TODO/layout-system.md",
+    "TODO/card-tonal-elevation.md",
+    "components/NtpMedia.md",
     "components/NtpMultiSelect.md",
     "components/NtpSelect.md",
     "TODO/label-transition-refinement.md",
@@ -204,12 +210,6 @@
     "components/NtpConfirmationDialog.md",
     "components/NtpDialog/NtpDialogHeader.md",
     "Implementation plan.md",
-    "components/NtpDialog/NtpDialog.md",
-    "components/NtpAppBar.md",
-    "components/NtpMedia.md",
-    "MD references.md",
-    "components/NtpDateTimeInput.md",
-    "components/NtpRadioGroup.md",
     "conventions/Untitled",
     "conventions",
     "components/NtpRichTextEditor",
