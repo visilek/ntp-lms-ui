@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "c1944da75d2bab64",
+        "id": "a7ed5bf37722546a",
         "type": "tabs",
         "children": [
           {
-            "id": "7ec780e972f9abc4",
+            "id": "e5c27bd625754267",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,8 +181,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "b2062c26b8c28c8d",
+  "active": "e5c27bd625754267",
   "lastOpenFiles": [
+    "components/NtpBreadcrumbs.md",
     "components/NtpCard/NtpCardHeader.md",
     "components/NtpCard/NtpCard.md",
     "components/NtpCard/index.md",
@@ -208,7 +209,6 @@
     "components/NtpChip.md",
     "components/NtpSpinner.md",
     "components/NtpRichTextEditor/NtpRichTextEditor.md",
-    "components/NtpRichTextEditor/index.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel",
     "components",

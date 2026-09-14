@@ -1,5 +1,6 @@
 export { default as NtpActionMenu } from './NtpActionMenu/NtpActionMenu.vue'
 export { default as NtpAppBar } from './NtpAppBar/NtpAppBar.vue'
+export { default as NtpBreadcrumbs } from './NtpBreadcrumbs/NtpBreadcrumbs.vue'
 export { default as NtpButton } from './NtpButton/NtpButton.vue'
 export * from './NtpCard'
 export * from './NtpCheckbox'

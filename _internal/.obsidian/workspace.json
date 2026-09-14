@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e717e9a00c80e0ba",
+        "id": "27496aff6b864c37",
         "type": "tabs",
         "children": [
           {
-            "id": "d5bed71795630b21",
+            "id": "2cd4ffda194e6a64",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -51,7 +51,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "006",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -183,6 +183,9 @@
   },
   "active": "0b4d09b8726e76e8",
   "lastOpenFiles": [
+    "components/NtpBreadcrumbs.md",
+    "conventions/README.md",
+    "conventions/types.md",
     "components/NtpCard/NtpCardHeader.md",
     "components/NtpCard/NtpCard.md",
     "components/NtpCard/index.md",
@@ -207,9 +210,6 @@
     "conventions/file-structure.md",
     "conventions/styling.md",
     "components/NtpCheckbox.md",
-    "components/NtpConfirmationDialog.md",
-    "components/NtpDialog/NtpDialogHeader.md",
-    "Implementation plan.md",
     "conventions/Untitled",
     "conventions",
     "components/NtpRichTextEditor",

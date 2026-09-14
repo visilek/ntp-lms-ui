@@ -149,7 +149,7 @@ export const WithMedia: Story = {
     components: { NtpCard, NtpCardHeader, NtpMedia },
     template: `
       <div class="ntp-flex ntp-flex-wrap ntp-gap-4" style="padding: 16px;">
-        <NtpCard style="padding: 16px; max-width: 480px;">
+        <NtpCard style="max-width: 480px;">
           <NtpMedia
             :media="{ src: 'https://www.filepicker.io/api/file/3xzWlTCMR4uC49QTCzS8', alt: 'Course cover' }"
             aspect-ratio="16 / 9"
@@ -160,7 +160,7 @@ export const WithMedia: Story = {
           </div>
         </NtpCard>
 
-        <NtpCard color="primary" style="padding: 16px; max-width: 480px;">
+        <NtpCard color="primary" style="max-width: 480px;">
           <NtpMedia
             :media="{ src: 'https://www.filepicker.io/api/file/3xzWlTCMR4uC49QTCzS8', alt: 'Course cover' }"
             aspect-ratio="16 / 9"
@@ -171,7 +171,7 @@ export const WithMedia: Story = {
           </div>
         </NtpCard>
 
-        <NtpCard color="tertiary" style="padding: 16px; max-width: 480px;">
+        <NtpCard color="tertiary" style="max-width: 480px;">
           <NtpMedia
             :media="{ src: 'https://www.filepicker.io/api/file/3xzWlTCMR4uC49QTCzS8', alt: 'Course cover' }"
             aspect-ratio="16 / 9"
