@@ -1,12 +1,3 @@
-/**
- * Pure utility — converts LaTeX expressions in a string to KaTeX HTML.
- *
- * Supports:
- * - Inline math: $...$
- * - Block math: $$...$$
- * - Escaped dollar signs: \$ (rendered as literal $)
- */
-
 import katex from 'katex'
 
 const ESCAPED_DOLLAR = '\u0000ESCAPED_DOLLAR\u0000'
@@ -14,6 +5,11 @@ const BLOCK_MATH_PLACEHOLDER = '\u0000BLOCK'
 
 /**
  * Render all LaTeX expressions in a text string to KaTeX HTML.
+ *
+ * Supports:
+ * - Inline math: $...$
+ * - Block math: $$...$$
+ * - Escaped dollar signs: \$ (rendered as literal $)
  *
  * @param text - Input string possibly containing $...$ or $$...$$ expressions.
  * @returns String with LaTeX replaced by KaTeX HTML. Unchanged if no math found.
@@ -57,4 +53,16 @@ export function renderLatex(text: string): string {
   result = result.replace(new RegExp(ESCAPED_DOLLAR, 'g'), '$')
 
   return result
+}
+
+
+/**
+ * Process an element: read text content, render LaTeX, write inner HTML.
+ * Intended for string-only elements — no nested Vue components.
+ * Used by v-latex directive
+ */
+export function processLatex(el: HTMLElement): void {
+  const raw = el.textContent ?? ''
+  const rendered = renderLatex(raw)
+  el.innerHTML = rendered
 }

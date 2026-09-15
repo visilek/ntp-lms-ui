@@ -1,0 +1,15 @@
+/*
+ * MD3 Window Size Classes
+ * Keep in sync with lib/breakpoints.ts
+ *
+ * Note: CSS custom properties cannot be used in @media queries.
+ * These tokens document the values; components use literals with
+ * a comment referencing this file.
+ */
+:root {
+  --ntp-breakpoint-compact: 0px;
+  --ntp-breakpoint-medium: 600px;
+  --ntp-breakpoint-expanded: 840px;
+  --ntp-breakpoint-large: 1200px;
+  --ntp-breakpoint-extra-large: 1600px;
+}

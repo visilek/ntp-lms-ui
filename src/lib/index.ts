@@ -1,5 +1,5 @@
 export * from './composables'
-export * from './latex'
-export * from './strategies'
+export * from './constants'
+export * from './domain-specific'
 export * from './types'
 export * from './utils'

@@ -2,7 +2,7 @@
 // Load functions intentionally follow the same pattern.
 // TODO(v2): Re-evaluate extraction once core app usage patterns are known.
 import { computed, ref, watch, onMounted, nextTick } from 'vue'
-import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeOptions } from '@ntp-lms-ui/lib'
+import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeDropdownOptions } from '@ntp-lms-ui/lib'
 import type {
   DropdownOption,
   DropdownValue,
@@ -204,7 +204,7 @@ async function ensureOptionsLoaded(values: DropdownValue[]) {
   if (missing.length === 0) return
 
   if (preloadedOptions.some((o) => missing.includes(o.value))) {
-    loadedOptions.value = mergeOptions(loadedOptions.value, preloadedOptions)
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, preloadedOptions)
   }
 
   const stillMissing = getUnresolvedValues(values, loadedOptions.value)
@@ -214,7 +214,7 @@ async function ensureOptionsLoaded(values: DropdownValue[]) {
   isLoading.value = true
   try {
     const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
-    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
     totalCount.value = response.totalCount
   } catch (error) {
     emit('load-error', error as Error)
@@ -269,7 +269,7 @@ function onMasterCheckboxToggle(isChecked: boolean) {
       .filter((o) => !o.disabled && !o.selected)
       .map((o) => ({ value: o.value, label: o.label }))
 
-    selectedOptions.value = mergeOptions(selectedOptions.value, newSelected)
+    selectedOptions.value = mergeDropdownOptions(selectedOptions.value, newSelected)
   }
 }
 
@@ -303,7 +303,7 @@ async function openMenu() {
   try {
     const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
     isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
-    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
     filteredOptions.value = loadedOptions.value
     totalCount.value = response.totalCount
     currentPage.value = 1
@@ -362,7 +362,7 @@ async function loadMore() {
   try {
     const response = await loadOptions(searchQuery.value, nextPage, DROPDOWN_PRELOAD_LIMIT)
     const newOptions = response.items.map(mapToOptions)
-    filteredOptions.value = mergeOptions(filteredOptions.value, newOptions)
+    filteredOptions.value = mergeDropdownOptions(filteredOptions.value, newOptions)
     totalCount.value = response.totalCount
     currentPage.value = nextPage
   } catch (error) {
@@ -398,7 +398,7 @@ function toggleOption(value: DropdownValue, label: string) {
   } else {
     emit('update:modelValue', [...modelValue, value])
     const option = { value, label }
-    selectedOptions.value = mergeOptions(selectedOptions.value, [option])
+    selectedOptions.value = mergeDropdownOptions(selectedOptions.value, [option])
     lastSelectedOption.value = option
   }
 }

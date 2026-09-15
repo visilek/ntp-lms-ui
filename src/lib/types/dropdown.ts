@@ -1,4 +1,6 @@
-import type { MenuItemValue } from './menu'
+import type { MenuItemValue } from '@ntp-lms-ui/lib/types'
+
+export type DropdownMode = 'preload' | 'async'
 
 export type DropdownRawOption = Record<string, any>
 

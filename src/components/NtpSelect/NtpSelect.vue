@@ -2,7 +2,7 @@
 // Load functions intentionally follow the same pattern.
 // TODO(v2): Re-evaluate extraction once core app usage patterns are known.
 import { computed, ref, watch, onMounted } from 'vue'
-import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeOptions } from '@ntp-lms-ui/lib'
+import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeDropdownOptions } from '@ntp-lms-ui/lib'
 import type {
   DropdownOption,
   DropdownValue,
@@ -110,14 +110,14 @@ async function ensureOptionsLoaded(value: DropdownValue) {
   if (loadedOptions.value.some((o) => o.value === value)) return
 
   if (preloadedOptions.some((o) => o.value === value)) {
-    loadedOptions.value = mergeOptions(loadedOptions.value, preloadedOptions)
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, preloadedOptions)
     return
   }
 
   isLoading.value = true
   try {
     const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
-    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
     totalCount.value = response.totalCount
   } catch (error) {
     emit('load-error', error as Error)
@@ -171,7 +171,7 @@ async function openMenu() {
   try {
     const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
     isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
-    loadedOptions.value = mergeOptions(loadedOptions.value, response.items.map(mapToOptions))
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
     filteredOptions.value = loadedOptions.value
     totalCount.value = response.totalCount
     currentPage.value = 1
@@ -227,7 +227,7 @@ async function loadMore() {
   try {
     const response = await loadOptions(searchQuery.value, nextPage, DROPDOWN_PRELOAD_LIMIT)
     const newOptions = response.items.map(mapToOptions)
-    filteredOptions.value = mergeOptions(filteredOptions.value, newOptions)
+    filteredOptions.value = mergeDropdownOptions(filteredOptions.value, newOptions)
     totalCount.value = response.totalCount
     currentPage.value = nextPage
   } catch (error) {
