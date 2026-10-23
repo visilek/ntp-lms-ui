@@ -35,9 +35,9 @@ This component is **dumb** — it receives state via props and emits change even
 
 - Previous and Next buttons.
 - Numbered buttons:
-  - First 2 pages: `1, 2`
+  - First 1 page
   - Current page ± 1 neighbor
-  - Last 2 pages
+  - Last 1 page
   - Gaps between disjoint ranges shown as ellipsis (`…`).
 
 ## Display
@@ -50,7 +50,7 @@ This component is **dumb** — it receives state via props and emits change even
 
 | Case | Behavior |
 |---|---|
-| `totalCount === 0` | Component hidden or shows "No items" |
+| `totalCount === 0` | Count text and page-size selector remain visible; page-number buttons are hidden (same as `totalPages === 1`). The component does not hide itself — the consumer decides whether to render it when there are no items. |
 | `totalPages === 1` | Page number buttons hidden. Count + page size selector remain. |
 | Page size change | Emits `update:pageSize`. Parent resets page to 1. |
 

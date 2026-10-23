@@ -14,14 +14,7 @@ Example: `totalPages=20, currentPage=10`
 
 ## Internal NtpSelect for Page Size
 
-- Uses `NtpSelect` with a static loader:
-  ```ts
-  const loadPageSizes = async () => ({
-    items: pageSizeOptions.map(size => ({ value: size, label: String(size) })),
-    totalCount: pageSizeOptions.length
-  })
-  ```
-- Preload mode (totalCount ≤ limit). No search.
+Uses `NtpSelect` in **preload mode** — passes `:preloaded-options`, no `loadOptions`. The page-size list is static, so a loader is unnecessary.
 
 ## Page Size Change
 
@@ -36,6 +29,6 @@ Example: `totalPages=20, currentPage=10`
 
 ## Edge Cases
 
-- `totalCount === 0`: render nothing. Return `null` or `v-if` in parent.
+- `totalCount === 0`: Count text and page-size selector remain visible; page-number buttons are hidden (same as `totalPages === 1`).
 - `totalPages === 1`: hide page number buttons. Keep count + page size selector.
 - `page > totalPages`: parent responsibility to clamp. Component renders as given.
