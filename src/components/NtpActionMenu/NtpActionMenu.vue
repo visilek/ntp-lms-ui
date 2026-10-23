@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { NtpButton, NtpMenu } from '@ntp-lms-ui/components'
-import type { ButtonVariant, ButtonColor, ButtonSize, MenuItem, MenuPlacement } from '@ntp-lms-ui/lib'
+import type { ButtonVariant, ButtonColor, ButtonSize, MenuItem, MenuPlacement } from '@ntp-lms-ui/lib/types'
 
 const defaultAriaLabel = 'More actions'
 const defaultVariant: ButtonVariant = 'text'

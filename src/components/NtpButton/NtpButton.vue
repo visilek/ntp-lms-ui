@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ButtonVariant, ButtonColor, ButtonSize } from '@ntp-lms-ui/lib/types/button'
+import type { ButtonVariant, ButtonColor, ButtonSize } from '@ntp-lms-ui/lib/types'
 
 // Default constants
 const defaultVariant: ButtonVariant = 'filled'

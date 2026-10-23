@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ChipVariant, ChipColor, ChipSize } from '@ntp-lms-ui/lib/types/chip'
+import type { ChipVariant, ChipColor, ChipSize } from '@ntp-lms-ui/lib/types'
 
 const defaultVariant: ChipVariant = 'filled'
 const defaultColor: ChipColor = 'neutral'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MediaItem, MediaFrame } from '@ntp-lms-ui/lib'
+import type { MediaItem, MediaFrame } from '@ntp-lms-ui/lib/types'
 
 const defaultAspectRatio = '4 / 3'
 const defaultFit: NonNullable<MediaFrame['fit']> = 'cover'

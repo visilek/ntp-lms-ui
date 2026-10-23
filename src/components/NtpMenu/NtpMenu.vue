@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { CSSProperties } from 'vue'
-import type { MenuItem, MenuItemValue, MenuPlacement, PositionStyle } from '@ntp-lms-ui/lib'
-import { computePosition } from '@ntp-lms-ui/lib'
+import type { MenuItem, MenuItemValue, MenuPlacement, PositionStyle } from '@ntp-lms-ui/lib/types'
+import { computePosition } from '@ntp-lms-ui/lib/utils'
 
 const defaultPlacement: MenuPlacement = 'bottom-end'
 const defaultMinWidth = '112px'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { InputVariant, InputContextColor } from '@ntp-lms-ui/lib/types/input'
+import type { InputVariant, InputContextColor } from '@ntp-lms-ui/lib/types'
 import { useInputBase } from '@ntp-lms-ui/lib'
 import { useNumberInput } from './useNumberInput'
 

@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { NtpMultiSelect, NtpButton } from '@ntp-lms-ui/components'
 import { INPUT_VARIANTS, INPUT_CONTEXT_COLORS } from '@ntp-lms-ui/lib'
+import type { DropdownValue } from '@ntp-lms-ui/lib/types'
 
 const meta = {
   title: 'Components/NtpMultiSelect',
@@ -220,6 +221,27 @@ export const ProgrammaticReset: Story = {
           <NtpButton size="small" @click="setOneSubject">Set One</NtpButton>
           <NtpButton size="small" @click="clearAll">Clear</NtpButton>
         </div>
+      </div>
+    `,
+  }),
+}
+
+export const StaticOptions: Story = {
+  render: () => ({
+    components: { NtpMultiSelect },
+    setup() {
+      const selected = ref<DropdownValue[]>([])
+      const options = [
+        { value: 'draft', label: 'Draft' },
+        { value: 'published', label: 'Published' },
+        { value: 'archived', label: 'Archived' },
+      ]
+      return { selected, options }
+    },
+    template: `
+      <div style="max-width: 400px; padding: 40px;">
+        <p style="margin-bottom: 16px;">Static options — no loader.</p>
+        <NtpMultiSelect v-model="selected" label="Statuses" :preloaded-options="options" />
       </div>
     `,
   }),

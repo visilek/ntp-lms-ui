@@ -1,4 +1,4 @@
-import type { MenuPlacement, PositionStyle } from '@ntp-lms-ui/lib'
+import type { MenuPlacement, PositionStyle } from '@ntp-lms-ui/lib/types'
 
 const VIEWPORT_MARGIN = 8
 const ANCHOR_GAP = 4

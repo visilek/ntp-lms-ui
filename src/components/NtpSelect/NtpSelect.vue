@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // Load functions intentionally follow the same pattern.
 // TODO(v2): Re-evaluate extraction once core app usage patterns are known.
-import { computed, ref, watch, onMounted } from 'vue'
-import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeDropdownOptions } from '@ntp-lms-ui/lib'
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
+import { useInputBase, DROPDOWN_PRELOAD_LIMIT, debounce, mergeDropdownOptions, defaultOptionMapper } from '@ntp-lms-ui/lib'
 import type {
   DropdownOption,
   DropdownValue,
@@ -11,8 +11,7 @@ import type {
   InputVariant,
   InputContextColor,
   MenuItem,
-} from '@ntp-lms-ui/lib'
-import { defaultOptionMapper } from '@ntp-lms-ui/lib'
+} from '@ntp-lms-ui/lib/types'
 import { NtpMenu, NtpButton, NtpSpinner } from '@ntp-lms-ui/components'
 
 const defaultVariant: InputVariant = 'filled'
@@ -25,7 +24,7 @@ interface Props {
   label?: string
   variant?: InputVariant
   contextColor?: InputContextColor
-  loadOptions: DropdownOptionLoader
+  loadOptions?: DropdownOptionLoader
   preloadedOptions?: DropdownOption[]
   mapToOptions?: DropdownOptionMapper
   clearable?: boolean
@@ -107,6 +106,7 @@ const {
 })
 
 async function ensureOptionsLoaded(value: DropdownValue) {
+
   if (loadedOptions.value.some((o) => o.value === value)) return
 
   if (preloadedOptions.some((o) => o.value === value)) {
@@ -114,15 +114,17 @@ async function ensureOptionsLoaded(value: DropdownValue) {
     return
   }
 
-  isLoading.value = true
-  try {
-    const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
-    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
-    totalCount.value = response.totalCount
-  } catch (error) {
-    emit('load-error', error as Error)
-  } finally {
-    isLoading.value = false
+  if (loadOptions) {
+    isLoading.value = true
+    try {
+      const response = await loadOptions('', 1, LABEL_RESOLUTION_PAGE_SIZE)
+      loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
+      totalCount.value = response.totalCount
+    } catch (error) {
+      emit('load-error', error as Error)
+    } finally {
+      isLoading.value = false
+    }
   }
 }
 
@@ -148,7 +150,7 @@ function computeMinWidth() {
 
 function filterLocally(query: string) {
   if (query === '') {
-    filteredOptions.value = loadedOptions.value
+    filteredOptions.value = [...loadedOptions.value]
     return
   }
 
@@ -167,18 +169,26 @@ async function openMenu() {
   onFocus()
   searchQuery.value = ''
 
-  isLoading.value = true
-  try {
-    const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
-    isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
-    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
+  if (!loadOptions) {
+    loadedOptions.value = mergeDropdownOptions(loadedOptions.value, preloadedOptions)
     filteredOptions.value = loadedOptions.value
-    totalCount.value = response.totalCount
-    currentPage.value = 1
-  } catch (error) {
-    emit('load-error', error as Error)
-  } finally {
-    isLoading.value = false
+    totalCount.value = loadedOptions.value.length
+    isPreloadMode.value = true
+  }
+  else {
+    isLoading.value = true
+    try {
+      const response = await loadOptions('', 1, DROPDOWN_PRELOAD_LIMIT)
+      isPreloadMode.value = response.totalCount <= DROPDOWN_PRELOAD_LIMIT
+      loadedOptions.value = mergeDropdownOptions(loadedOptions.value, response.items.map(mapToOptions))
+      filteredOptions.value = loadedOptions.value
+      totalCount.value = response.totalCount
+      currentPage.value = 1
+    } catch (error) {
+      emit('load-error', error as Error)
+    } finally {
+      isLoading.value = false
+    }
   }
 }
 
@@ -198,7 +208,7 @@ function toggleMenu() {
 }
 
 async function performSearch(query: string) {
-  if (isPreloadMode.value) {
+  if (!loadOptions || isPreloadMode.value) {
     filterLocally(query)
     return
   }
@@ -221,6 +231,8 @@ const onSearchInput = debounce((query: string) => {
 }, SEARCH_DEBOUNCE_DELAY)
 
 async function loadMore() {
+  if (!loadOptions) return
+
   const nextPage = currentPage.value + 1
 
   isLoading.value = true
@@ -237,9 +249,26 @@ async function loadMore() {
   }
 }
 
+async function onInputClick(event: MouseEvent) {
+  if (isOpen.value) {
+    event.stopPropagation()
+    return
+  }
+
+  const target = event.target as HTMLInputElement
+  await nextTick()
+  target.focus()
+}
+
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement
   searchQuery.value = target.value
+
+  if (!loadOptions || isPreloadMode.value) {
+    filterLocally(searchQuery.value)
+    return
+  }
+
   onSearchInput(searchQuery.value)
 }
 
@@ -256,59 +285,31 @@ function onClear() {
 <template>
   <div :class="wrapperClasses">
     <div ref="fieldRef" class="ntp-input__field ntp-select" @click="toggleMenu">
-      <input
-        :id="inputId"
-        type="text"
-        :value="displayValue"
-        :disabled="disabled"
-        :readonly="readonly || !isOpen"
-        class="ntp-input__control"
-        @focus="onFocus"
-        @blur="onBlur"
-        @input="onInput"
-      />
+      <input :id="inputId" type="text" :value="displayValue" :disabled="disabled" :readonly="readonly || !isOpen"
+        class="ntp-input__control" @click="onInputClick" @focus="onFocus" @blur="onBlur" @input="onInput" />
 
-      <label
-        :for="inputId"
-        class="ntp-input__label"
-        :class="{ 'ntp-input__label--floating': isLabelFloating }"
-      >
+      <label :for="inputId" class="ntp-input__label" :class="{ 'ntp-input__label--floating': isLabelFloating }">
         {{ label }}
       </label>
 
       <span class="ntp-input__trailing">
-        <button
-          v-if="clearable && hasValue && !isOpen"
-          type="button"
-          class="ntp-select__clear"
-          aria-label="Clear selection"
-          @click.stop="onClear"
-        >
+        <button v-if="clearable && hasValue && !isOpen" type="button" class="ntp-select__clear"
+          aria-label="Clear selection" @click.stop="onClear">
           ×
         </button>
         <span class="ntp-select__arrow" aria-hidden="true">▾</span>
       </span>
     </div>
 
-    <div
-      v-if="supportText.length"
-      class="ntp-input__support-text"
-      :class="{ 'ntp-input__support-text--error': hasError }"
-    >
+    <div v-if="supportText.length" class="ntp-input__support-text"
+      :class="{ 'ntp-input__support-text--error': hasError }">
       <div v-for="(msg, i) in supportText" :key="i" class="ntp-input__error-line">
         {{ msg }}
       </div>
     </div>
 
-    <NtpMenu
-      :items="filteredOptions"
-      :anchor="fieldRef"
-      :open="isOpen"
-      placement="bottom-start"
-      :min-width="menuMinWidth"
-      @select="onSelect"
-      @close="closeMenu"
-    >
+    <NtpMenu :items="filteredOptions" :anchor="fieldRef" :open="isOpen" placement="bottom-start"
+      :min-width="menuMinWidth" @select="onSelect" @close="closeMenu">
       <template v-if="!isLoading && filteredOptions.length === 0" #default>
         <div class="ntp-select__empty">Empty</div>
       </template>

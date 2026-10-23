@@ -1,5 +1,4 @@
-import type { MediaItem } from '@ntp-lms-ui/lib/types'
-import type { AttachedFigureCompact } from '@ntp-lms-ui/lib/types'
+import type { MediaItem, AttachedFigureCompact } from '@ntp-lms-ui/lib/types'
 
 export function figureToMediaItem(figure: AttachedFigureCompact): MediaItem {
   return {

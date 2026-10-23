@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { SpinnerSize, SpinnerColor } from '@ntp-lms-ui/lib/types/spinner'
+import type { SpinnerSize, SpinnerColor } from '@ntp-lms-ui/lib/types'
 
 const defaultSize: SpinnerSize = 'medium'
 const defaultColor: SpinnerColor = 'primary'

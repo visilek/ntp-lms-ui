@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types/input'
+import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types'
 
 const defaultLabelPosition: SelectionLabelPosition = 'right'
 

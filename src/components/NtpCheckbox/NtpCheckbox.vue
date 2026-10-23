@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types/input'
+import type { SelectionLabelPosition } from '@ntp-lms-ui/lib/types'
 
 
 const defaultLabelPosition: SelectionLabelPosition = 'right'
@@ -9,6 +9,7 @@ interface Props {
   modelValue?: boolean
   label?: string
   labelPosition?: SelectionLabelPosition
+  ariaLabel?: string
   indeterminate?: boolean
   required?: boolean
   disabled?: boolean
@@ -19,6 +20,7 @@ const {
   modelValue = false,
   label = '',
   labelPosition = defaultLabelPosition,
+  ariaLabel = '',
   indeterminate = false,
   required = false,
   disabled = false,
@@ -31,6 +33,7 @@ const emit = defineEmits<{
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
+const resolvedAriaLabel = computed(() => ariaLabel || label || undefined)
 
 watch(() => indeterminate, (val) => {
   if (inputRef.value) {
@@ -64,7 +67,7 @@ function onClick(event: MouseEvent) {
 
 <template>
   <label :class="checkboxClasses">
-    <input ref="inputRef" type="checkbox" :checked="modelValue" :aria-required="required || undefined" :disabled="disabled" @change="onChange"
+    <input ref="inputRef" type="checkbox" :checked="modelValue" :aria-label="resolvedAriaLabel" :aria-required="required || undefined" :disabled="disabled" @change="onChange"
       @click="onClick" />
 
     <span v-if="label || $slots.default" class="ntp-checkbox__label">

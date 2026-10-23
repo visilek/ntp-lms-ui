@@ -131,4 +131,63 @@ describe('NtpMultiSelect', () => {
 
     expect(wrapper.emitted('load-error')).toBeTruthy()
   })
+
+  // Static options mode
+
+it('opens menu with static options', async () => {
+  const wrapper = await mountMultiSelect({
+    loadOptions: undefined,
+    preloadedOptions: [
+      { value: 'a', label: 'Option A' },
+      { value: 'b', label: 'Option B' },
+    ],
+  })
+
+  await wrapper.find('.ntp-select').trigger('click')
+  await nextTick()
+
+  expect(document.body.querySelector('.ntp-menu')).not.toBeNull()
+  expect(document.body.textContent).toContain('Option A')
+  expect(document.body.textContent).toContain('Option B')
+})
+
+it('selects values from static options', async () => {
+  const wrapper = await mountMultiSelect({
+    loadOptions: undefined,
+    preloadedOptions: [
+      { value: 'a', label: 'Option A' },
+      { value: 'b', label: 'Option B' },
+    ],
+  })
+
+  await wrapper.find('.ntp-select').trigger('click')
+  await nextTick()
+
+  const menuItems = document.body.querySelectorAll('.ntp-menu__item')
+  ;(menuItems[0] as HTMLElement).click()
+
+  expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['a']])
+})
+
+it('filters static options locally', async () => {
+  const wrapper = await mountMultiSelect({
+    loadOptions: undefined,
+    preloadedOptions: [
+      { value: 'a', label: 'Alpha' },
+      { value: 'b', label: 'Beta' },
+      { value: 'c', label: 'Gamma' },
+    ],
+  })
+
+  await wrapper.find('.ntp-select').trigger('click')
+  await nextTick()
+
+  const input = wrapper.find('input')
+  await input.setValue('be')
+  await nextTick()
+
+  const menuItems = document.body.querySelectorAll('.ntp-menu__item')
+  expect(menuItems.length).toBe(1)
+  expect((menuItems[0] as HTMLElement).textContent).toContain('Beta')
+})
 })

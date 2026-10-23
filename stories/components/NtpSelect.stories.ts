@@ -159,6 +159,28 @@ export const ProgrammaticReset: Story = {
   }),
 }
 
+export const StaticOptions: Story = {
+  render: () => ({
+    components: { NtpSelect },
+    setup() {
+      const selected = ref<string | number | null>(null)
+      const options = [
+        { value: 'draft', label: 'Draft' },
+        { value: 'published', label: 'Published' },
+        { value: 'archived', label: 'Archived' },
+      ]
+      return { selected, options }
+    },
+    template: `
+      <div style="max-width: 400px; padding: 40px;">
+        <p style="margin-bottom: 16px;">Static options — no loader.</p>
+        <NtpSelect v-model="selected" label="Status" :preloaded-options="options" />
+        <p style="margin-top: 16px;">Selected: {{ selected }}</p>
+      </div>
+    `,
+  }),
+}
+
 export const ContextColors: Story = {
   render: () => ({
     components: { NtpSelect },

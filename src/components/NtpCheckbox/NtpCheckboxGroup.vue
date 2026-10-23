@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import NtpCheckbox from './NtpCheckbox.vue'
-import type { SelectionLabelPosition, SelectionGroupDirection } from '@ntp-lms-ui/lib/types/input'
+import type { SelectionLabelPosition, SelectionGroupDirection } from '@ntp-lms-ui/lib/types'
 
 
 
