@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "5d2dc44cb7addbf9",
+        "id": "6a62d442cf8ee9e4",
         "type": "tabs",
         "children": [
           {
-            "id": "8aff903fcd28c5e1",
+            "id": "2de55ab362918b85",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -181,15 +181,18 @@
       "bases:Create new base": false
     }
   },
-  "active": "b2062c26b8c28c8d",
+  "active": "2de55ab362918b85",
   "lastOpenFiles": [
+    "components/NtpPagination.md",
+    "components/NtpMultiSelect.md",
+    "components/NtpTable.md",
+    "components/NtpToggle.md",
+    "components/NtpSelect.md",
     "components/NtpBreadcrumbs.md",
     "components/NtpCard/NtpCardHeader.md",
     "components/NtpCard/NtpCard.md",
     "components/NtpCard/index.md",
     "components/NtpMenu.md",
-    "components/NtpMultiSelect.md",
-    "components/NtpSelect.md",
     "components/NtpTooltip.md",
     "components/NtpConfirmationDialog.md",
     "tokens.md",
@@ -202,13 +205,10 @@
     "components/NtpDateTimeInput.md",
     "components/NtpDateInput.md",
     "components/NtpRadioGroup.md",
-    "components/NtpToggle.md",
     "components/NtpTextInput.md",
     "components/NtpCheckboxGroup.md",
     "components/NtpButton.md",
     "components/NtpChip.md",
-    "components/NtpSpinner.md",
-    "components/NtpRichTextEditor/NtpRichTextEditor.md",
     "components/NtpRichTextEditor",
     "components/NtpCarousel",
     "components",

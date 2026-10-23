@@ -1,0 +1,54 @@
+.ntp-sort-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ntp-spacing-1);
+  padding: 0;
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+.ntp-sort-switcher:hover {
+  color: var(--ntp-color-on-surface);
+}
+
+.ntp-sort-switcher:focus-visible {
+  outline: 2px solid var(--ntp-color-primary);
+  outline-offset: 2px;
+  border-radius: var(--ntp-radius-sm);
+}
+
+.ntp-sort-switcher__label {
+  display: inline;
+}
+
+.ntp-sort-switcher__arrows {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  margin-inline-start: var(--ntp-spacing-1);
+  vertical-align: middle;
+}
+
+.ntp-sort-switcher__arrow {
+  display: block;
+  fill: var(--ntp-color-on-surface-variant);
+  opacity: 0.4;
+  transition:
+    fill var(--ntp-duration-short) var(--ntp-easing-standard),
+    opacity var(--ntp-duration-short) var(--ntp-easing-standard);
+}
+
+.ntp-sort-switcher--asc .ntp-sort-switcher__arrow--up {
+  fill: var(--ntp-color-primary);
+  opacity: 1;
+}
+
+.ntp-sort-switcher--desc .ntp-sort-switcher__arrow--down {
+  fill: var(--ntp-color-primary);
+  opacity: 1;
+}

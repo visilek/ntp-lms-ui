@@ -18,7 +18,7 @@ import { NtpSelect } from 'ntp-lms-ui'
 | `label` | `string` | `''` | Floating label |
 | `variant` | `InputVariant` | `'filled'` | Visual style |
 | `contextColor` | `InputContextColor` | `'surface'` | Background context |
-| `loadOptions` | `DropdownOptionLoader` | required | Async loader |
+| `loadOptions` | `DropdownOptionLoader` | — | Optional. Async loader for dynamic options. When omitted, `preloadedOptions` serves as the full option set. |
 | `preloadedOptions` | `DropdownOption[]` | `[]` | Options available at mount — labels resolve without API call |
 | `mapToOptions` | `DropdownOptionMapper` | default | Maps raw entities to options |
 | `clearable` | `boolean` | `true` | Show clear button |
@@ -44,6 +44,19 @@ import { NtpSelect } from 'ntp-lms-ui'
 - Async (>15): debounced API search.
 - "Load more" footer with spinner.
 - Label resolution: loaded options → preloaded options → API → `#value`.
+
+### Static Mode
+
+When `loadOptions` is omitted, the component operates in static mode:
+
+- `preloadedOptions` is the full option set.
+- No API calls.
+- Filtering is synchronous (no debounce).
+- No pagination, no "Load more".
+
+```html
+<NtpSelect v-model="status" label="Status" :preloaded-options="statusOptions" />
+```
 
 ## Usage
 

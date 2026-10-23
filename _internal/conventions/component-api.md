@@ -24,24 +24,17 @@ Example: `type` on `<button>` is hardcoded to `"button"`. No prop.
 
 Component owns logic (state, accessibility, keyboard). Consumer owns rendering via scoped slots.
 
-## Vue 3.5 Destructured Props with Default Constants
+## Vue 3.5 Destructured Props
 
-Use destructured props. For enum string props with defaults used more than once, define typed local camelCase constants.
+Use destructured props with module-level default constants.
 
 ```ts
-type ButtonVariant = 'filled' | 'outlined' | 'text'
-
-const defaultVariant: ButtonVariant = 'filled'
-
 const {
   variant = defaultVariant,
 } = defineProps<Props>()
 ```
 
-Rationale:
-- Named constants avoid duplicating magic strings.
-- Type annotations preserve union type safety.
-- Boolean defaults (`false`) don't need constants.
+Enum string defaults used more than once → named typed constants. Boolean defaults (`false`) don't need constants.
 
 ## Empty String Protection for Class-Affecting Enum Props
 
@@ -50,21 +43,23 @@ Every enum prop used in class names must have the `|| default` fallback:
 ```ts
 const classes = computed(() => [
   `component--${variant || defaultVariant}`,
-  `component--${color || defaultColor}`,
 ])
 ```
 
 **Why:** Destructured defaults (`variant = defaultVariant`) handle `undefined` but not `''`. Consumers (Storybook controls, JS callers) may pass empty strings. Without the fallback, the class becomes `component--` — broken styling.
 
-**Rule:** Always apply `|| defaultConstant` for enum props in class computations.
+## Component-Local Constants
 
-## Default Function Props
+Component-private constants live in the component folder as `constants.ts`.
 
-- Primitive defaults: local constants in `<script setup>`.
-- Reusable function defaults: export from `lib/` (e.g., `defaultOptionMapper` in `lib/strategies/`).
-- Component-specific function defaults: `functionDefaults.ts` in the component folder.
+Includes:
+- Default prop values (primitives, arrays, functions)
+- Internal limits and magic numbers
+- Component-specific configuration
 
-Function props are always provided via module-level imports — never local `<script setup>` functions — because Vue hoists `defineProps` and cannot reference them.
+Rationale: Vue hoists `defineProps` — local `<script setup>` constants cannot be referenced as defaults. Module-level exports from `constants.ts` solve this and keep the component folder self-contained.
+
+Promote to `lib/constants/` when a constant is used by 2+ components.
 
 ## Shared Type Constants
 
@@ -86,15 +81,15 @@ Component-specific types used by one component only → local to `.vue` file.
 
 In `<script setup>`, declare props in this order:
 
-1. Imports (type aliases from `lib/types/`)
+1. Imports
 2. Local type aliases (component-specific)
-3. Default constants
+3. Default constants (or import from `constants.ts`)
 4. Props interface
 5. Destructured props
 
 ```ts
 // 1. Imports
-import type { ButtonVariant } from '@ntp-lms-ui/lib/types/button'
+import type { ButtonVariant } from '@ntp-lms-ui/lib/types'
 
 // 2. Local type aliases
 type ButtonColor = 'primary' | 'secondary' | 'error'
@@ -114,4 +109,30 @@ const {
   variant = defaultVariant,
   color = defaultColor,
 } = defineProps<Props>()
+```
 
+Note: when defaults live in `constants.ts`, import them instead of declaring locally.
+
+## Event Payloads
+
+Emit domain objects directly — not wrapper payloads.
+
+```ts
+// ✅ Correct
+emit('select', item)
+
+// ❌ Wrong
+emit('select', { value: item.value, item })
+```
+
+## Types
+
+Types are always **named** — no anonymous inline type literals.
+
+Location depends on scope:
+
+| Scope | Location |
+|---|---|
+| One file | Local to that file |
+| Across files, one component | Component folder (`types.ts`) |
+| Across components | `lib/types/`, organized by domain |

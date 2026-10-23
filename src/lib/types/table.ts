@@ -1,15 +1,83 @@
-/** Sort state — used by Table. */
-export interface SortState {
-  key: string
-  order: 'asc' | 'desc'
+import type { PaginatedResult } from './pagination'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Row
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** A single row of table data. Values are untyped at the table level. */
+export type TableRow = Record<string, any>
+
+/** A row's unique identifier (the value of the field named by `rowKey`). */
+export type TableRowKey = string | number
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Columns
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const COLUMN_TYPES = ['text', 'enum', 'date', 'number'] as const
+
+export type ColumnType = (typeof COLUMN_TYPES)[number]
+
+export const FILTER_MODES = [
+  'exact',
+  'icontains',
+  'gte',
+  'lte',
+  'gt',
+  'lt',
+  'in',
+] as const
+
+export type FilterMode = (typeof FILTER_MODES)[number]
+
+export type ColumnAlign = 'start' | 'center' | 'end'
+
+export interface ColumnFilter {
+  field: string
+  mode: FilterMode
+  value: string | number | string[]
 }
 
-/** Table column definition. */
 export interface TableColumn {
   key: string
   label: string
+  type?: ColumnType
   sortable?: boolean
   filterable?: boolean
   width?: string
-  align?: 'start' | 'center' | 'end'
+  align?: ColumnAlign
+  sortComparator?: (a: any, b: any) => number
+  filterMatcher?: (value: any, filter: ColumnFilter) => boolean
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sort
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SortOrder = 'asc' | 'desc'
+
+export interface SortState {
+  key: string
+  order: SortOrder
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Data loading
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface LoadRowsParams {
+  page: number
+  pageSize: number
+  sort: SortState | null
+  filters: ColumnFilter[]
+}
+
+export type LoadRows = (
+  params: LoadRowsParams,
+) => Promise<PaginatedResult<TableRow>>
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Mode
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type TableMode = 'fixed' | 'complete' | 'partial'

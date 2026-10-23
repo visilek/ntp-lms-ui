@@ -1,10 +1,6 @@
-Good. Let me outline the implementation plan.
+# Implementation Phase Planning
 
----
-
-## Implementation Phase Planning
-
-### Guiding Principles
+## Guiding Principles
 
 1. **Tokens first.** Everything depends on design tokens (colors, spacing, typography, elevation). No component before tokens.
 2. **Base before components.** Reset, global styles, spacing utilities.
@@ -14,7 +10,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 1: Foundation
+# Phase 1: Foundation
 
 | Step | Deliverable | Dependencies |
 |---|---|---|
@@ -26,7 +22,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 2: Core Primitives
+# Phase 2: Core Primitives
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -39,7 +35,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 3: Overlays & Menus
+# Phase 3: Overlays & Menus
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -52,7 +48,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 4: Dropdowns
+# Phase 4: Dropdowns
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -64,7 +60,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 5: Surfaces & Layout
+# Phase 5: Surfaces & Layout
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -76,7 +72,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 6: Data Display
+# Phase 6: Data Display
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -88,7 +84,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 7: Rich Text & Carousel
+# Phase 7: Rich Text & Carousel
 
 | Step | Components | Dependencies |
 |---|---|---|
@@ -102,7 +98,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Phase 8: Integration & Demo
+# Phase 8: Integration & Demo
 
 | Step | Deliverable |
 |---|---|
@@ -114,7 +110,7 @@ Good. Let me outline the implementation plan.
 
 ---
 
-## Suggested Team Workflow
+# Suggested Team Workflow
 
 | Phase | Parallelizable? |
 |---|---|
