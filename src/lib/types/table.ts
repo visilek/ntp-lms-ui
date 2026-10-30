@@ -46,7 +46,7 @@ export interface TableColumn {
   filterable?: boolean
   width?: string
   align?: ColumnAlign
-  sortComparator?: (a: any, b: any) => number
+  sortLocally?: (a: any, b: any, rowA: TableRow, rowB: TableRow) => number
   filterLocally?: (cell: any, filter: ColumnFilter, row: TableRow) => boolean
   displayMapper?: (cell: any, row: TableRow) => string | number | null | undefined
 }

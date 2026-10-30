@@ -5,6 +5,10 @@ const warn = createDevWarn('composables/useColumnSort')
 
 const collator = new Intl.Collator()
 
+function isObjectOrArray(value: unknown): boolean {
+  return value !== null && typeof value === 'object'
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Per-type comparators
 // ─────────────────────────────────────────────────────────────────────────────
@@ -42,42 +46,30 @@ function compareDate(a: unknown, b: unknown): number {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function applyComparator(a: unknown, b: unknown, column: TableColumn): number {
-    const type = column.type ?? 'text';
+  const type = column.type ?? 'text';
 
-    switch (type) {
-        case 'text':
-        case 'enum': // Enum values are strings; compare as text.
-            return compareText(a, b);
-        case 'number':
-            return compareNumber(a, b);
-        case 'date':
-            return compareDate(a, b);
-        default: {
-            const _exhaustive: never = type;
-            warn(`unhandled column type "${String(_exhaustive)}"; treating as equal`);
-            return 0;
-        }
+  switch (type) {
+    case 'text':
+    case 'enum': // Enum values are strings; compare as text.
+      return compareText(a, b);
+    case 'number':
+      return compareNumber(a, b);
+    case 'date':
+      return compareDate(a, b);
+    default: {
+      const _exhaustive: never = type;
+      warn(`unhandled column type "${String(_exhaustive)}"; treating as equal`);
+      return 0;
     }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Public composable
 // ─────────────────────────────────────────────────────────────────────────────
-
 export function useColumnSort() {
   function compare(a: unknown, b: unknown, column: TableColumn): number {
-    if (column.sortComparator) {
-      try {
-        return column.sortComparator(a, b)
-      } catch (error) {
-        warn(
-          `sortComparator for column "${column.key}" threw: ` +
-          `${(error as Error).message}; treating as equal`,
-        )
-        return 0
-      }
-    }
-
+    // Default comparator only — no sortLocally handling here.
     return applyComparator(a, b, column)
   }
 
@@ -86,21 +78,41 @@ export function useColumnSort() {
     sort: SortState | null,
     columns: TableColumn[],
   ): T[] {
-    if (!sort) {
-      return [...rows]
-    }
+    if (!sort) return [...rows]
 
     const column = columns.find((c) => c.key === sort.key)
-
     if (!column) {
       warn(`sort references unknown column "${sort.key}"; sort ignored`)
       return [...rows]
     }
 
-    return [...rows].sort((a, b) => {
-      const result = compare(a[sort.key], b[sort.key], column)
+    let failedColumn = false
+
+    const sorted = [...rows].sort((a, b) => {
+      let result: number
+      if (column.sortLocally) {
+        result = column.sortLocally(a[sort.key], b[sort.key], a, b)
+      } else {
+        const cellA = a[sort.key]
+        const cellB = b[sort.key]
+        if (isObjectOrArray(cellA) || isObjectOrArray(cellB)) {
+          failedColumn = true
+          result = 0
+        } else {
+          result = compare(cellA, cellB, column)
+        }
+      }
       return sort.order === 'desc' ? -result : result
     })
+
+    if (failedColumn) {
+      warn(
+        `Column "${column.key}" contains non-scalar values but has no sortLocally callback. ` +
+        `Sorting treats these rows as equal.`,
+      )
+    }
+
+    return sorted
   }
 
   return { compare, apply }
