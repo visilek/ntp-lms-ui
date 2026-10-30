@@ -173,3 +173,99 @@ describe('NtpTable', () => {
     })
   })
 })
+
+describe('displayMapper', () => {
+  it('uses displayMapper when present', () => {
+    const columns: TableColumn[] = [
+      {
+        key: 'status',
+        label: 'Status',
+        displayMapper: (cell) => cell.label,
+      },
+    ]
+    const rows: TableRow[] = [
+      { id: 1, status: { value: 'ACTIVE', label: 'Active' } },
+    ]
+
+    const wrapper = mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+    })
+
+    expect(wrapper.text()).toContain('Active')
+    expect(wrapper.text()).not.toContain('[object Object]')
+  })
+
+  it('passes cell and row to displayMapper', () => {
+    const mapper = vi.fn((cell: any, row: TableRow) => `${cell.label} (${row.id})`)
+    const columns: TableColumn[] = [
+      { key: 'status', label: 'Status', displayMapper: mapper },
+    ]
+    const rows: TableRow[] = [
+      { id: 1, status: { label: 'Active' } },
+      { id: 2, status: { label: 'Draft' } },
+    ]
+
+    mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+    })
+
+    expect(mapper).toHaveBeenCalledWith({ label: 'Active' }, rows[0])
+    expect(mapper).toHaveBeenCalledWith({ label: 'Draft' }, rows[1])
+  })
+
+  it('renders a number returned by displayMapper', () => {
+    const columns: TableColumn[] = [
+      { key: 'value', label: 'Value', displayMapper: () => 42 },
+    ]
+    const rows: TableRow[] = [{ id: 1, value: 'anything' }]
+
+    const wrapper = mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+    })
+
+    expect(wrapper.text()).toContain('42')
+  })
+
+  it('renders nothing when displayMapper returns null', () => {
+    const columns: TableColumn[] = [
+      { key: 'value', label: 'Value', displayMapper: () => null },
+    ]
+    const rows: TableRow[] = [{ id: 1, value: 'anything' }]
+
+    const wrapper = mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+    })
+
+    const cells = wrapper.findAll('.ntp-table__cell')
+    expect(cells[0].text()).toBe('')
+  })
+
+  it('renders the raw cell when displayMapper is absent', () => {
+    const columns: TableColumn[] = [{ key: 'title', label: 'Title' }]
+    const rows: TableRow[] = [{ id: 1, title: 'Mechanics' }]
+
+    const wrapper = mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+    })
+
+    expect(wrapper.text()).toContain('Mechanics')
+  })
+
+  it('passes the raw cell value to the #cell slot when provided', () => {
+    const columns: TableColumn[] = [
+      { key: 'status', label: 'Status', displayMapper: (cell) => cell.label },
+    ]
+    const rows: TableRow[] = [
+      { id: 1, status: { value: 'ACTIVE', label: 'Active' } },
+    ]
+
+    const wrapper = mount(NtpTable, {
+      props: { columns, rowKey: 'id', rows },
+      slots: {
+        cell: '<template #cell="{ value }"><span class="custom">{{ value.value }}</span></template>',
+      },
+    })
+
+    expect(wrapper.find('.custom').text()).toBe('ACTIVE')
+  })
+})

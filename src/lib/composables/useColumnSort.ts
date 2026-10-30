@@ -1,5 +1,5 @@
 import type { SortState, TableColumn } from '@ntp-lms-ui/lib/types'
-import { createDevWarn } from '@ntp-lms-ui/lib'
+import { createDevWarn } from '@ntp-lms-ui/lib/utils' // Keep 'utils' subfolder in the imports path to avoid circular imports error
 
 const warn = createDevWarn('composables/useColumnSort')
 

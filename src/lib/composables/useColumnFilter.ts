@@ -1,5 +1,5 @@
 import type { ColumnFilter, ColumnType, TableColumn } from '@ntp-lms-ui/lib/types'
-import { createDevWarn } from '@ntp-lms-ui/lib'
+import { createDevWarn } from '@ntp-lms-ui/lib/utils'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Internal helpers

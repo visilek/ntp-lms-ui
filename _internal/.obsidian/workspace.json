@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "conventions/dev-tooling.md",
-                "mode": "preview",
+                "file": "prompt drafts.md",
+                "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "dev-tooling"
+              "title": "prompt drafts"
             }
           }
         ]
@@ -79,8 +79,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -186,10 +185,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "3444fcb56a075389",
+  "active": "fbbf91ace95d1a52",
   "lastOpenFiles": [
-    "Untitled.md",
     "conventions/dev-tooling.md",
+    "prompt drafts.md",
     "conventions/filtering.md",
     "conventions/types.md",
     "conventions/file-structure.md",

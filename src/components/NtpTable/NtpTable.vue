@@ -130,9 +130,16 @@ const displayedRows = computed<TableRow[]>(() => {
   }
 
   // Concern 9: reorder stage will insert here.
-
   return result
 })
+
+function cellDisplayValue(row: TableRow, column: TableColumn): unknown {
+  const cell = row[column.key]
+  if (column.displayMapper) {
+    return column.displayMapper(cell, row)
+  }
+  return cell
+}
 
 // 10. Selection
 const tableSelection = useTableSelection({
@@ -218,7 +225,7 @@ defineExpose({
           <td v-for="column in columns" :key="column.key" class="ntp-table__cell"
             :class="column.align ? `ntp-table__cell--${column.align}` : undefined">
             <slot name="cell" :column="column" :row="row" :value="row[column.key]">
-              {{ row[column.key] }}
+              {{ cellDisplayValue(row, column) }}
             </slot>
           </td>
         </tr>

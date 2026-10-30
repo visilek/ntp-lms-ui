@@ -48,6 +48,7 @@ export interface TableColumn {
   align?: ColumnAlign
   sortComparator?: (a: any, b: any) => number
   filterMatcher?: (value: any, filter: ColumnFilter) => boolean
+  displayMapper?: (cell: any, row: TableRow) => string | number | null | undefined
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

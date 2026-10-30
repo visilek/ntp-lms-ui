@@ -248,3 +248,34 @@ export const Empty: Story = {
     `,
   }),
 }
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. Fixed dataset with complex columns
+// ─────────────────────────────────────────────────────────────────────────────
+export const ComplexColumns: Story = {
+  render: () => ({
+    components: { NtpTable },
+    setup: () => {
+      const columns: TableColumn[] = [
+        { key: 'title', label: 'Title' },
+        {
+          key: 'status',
+          label: 'Status',
+          displayMapper: (cell) => cell.label,
+        },
+      ]
+      const rows: TableRow[] = [
+        { id: 1, title: 'Mechanics', status: { value: 'ACTIVE', label: 'Active' } },
+        { id: 2, title: 'Optics', status: { value: 'DRAFT', label: 'Draft' } },
+        { id: 3, title: 'Thermodynamics', status: { value: 'ARCHIVED', label: 'Archived' } },
+      ]
+      return { columns, rows }
+    },
+    template: `
+      <div style="padding: 16px;">
+        <NtpTable :columns="columns" :rows="rows" row-key="id" />
+      </div>
+    `,
+  }),
+}
