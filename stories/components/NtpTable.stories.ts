@@ -262,8 +262,18 @@ export const ComplexColumns: Story = {
         {
           key: 'status',
           label: 'Status',
+          filterable: true,
           displayMapper: (cell) => cell.label,
-        },
+          filterLocally: (cell, filter) => {
+            if (filter.mode === 'icontains') {
+              return String(cell.label).toLowerCase().includes(String(filter.value).toLowerCase())
+            }
+            if (filter.mode === 'exact') {
+              return cell.value === filter.value
+            }
+            return false
+          },
+        }
       ]
       const rows: TableRow[] = [
         { id: 1, title: 'Mechanics', status: { value: 'ACTIVE', label: 'Active' } },

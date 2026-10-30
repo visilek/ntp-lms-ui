@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ae181d19ba7e1969",
+        "id": "5201c89ca48ff4a3",
         "type": "tabs",
         "children": [
           {
-            "id": "fbbf91ace95d1a52",
+            "id": "3a7eb822b4e35f91",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "prompt drafts.md",
+                "file": "decisions/ADR-007-complex-columns-via-callbacks.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "prompt drafts"
+              "title": "ADR-007-complex-columns-via-callbacks"
             }
           }
         ]
@@ -185,10 +185,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "fbbf91ace95d1a52",
+  "active": "3a7eb822b4e35f91",
   "lastOpenFiles": [
-    "conventions/dev-tooling.md",
+    "decisions/ADR-007-complex-columns-via-callbacks.md",
+    "decisions/ADR-006-drag-and-drop-reorder-strategy.md",
     "prompt drafts.md",
+    "conventions/dev-tooling.md",
     "conventions/filtering.md",
     "conventions/types.md",
     "conventions/file-structure.md",
@@ -200,7 +202,6 @@
     "components/NtpPagination.md",
     "components/NtpMultiSelect.md",
     "components/NtpTable.md",
-    "decisions/ADR-006-drag-and-drop-reorder-strategy.md",
     "decisions/ADR-005-testing-strategy.md",
     "decisions/ADR-004-versioned-package-separate-repository.md",
     "decisions/ADR-003-separate-documentation.md",
@@ -212,7 +213,6 @@
     "conventions/composables.md",
     "conventions/styling.md",
     "conventions/dependencies.md",
-    "conventions/naming.md",
     "TODO",
     "conventions/Untitled",
     "conventions",

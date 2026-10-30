@@ -1,4 +1,4 @@
-import type { ColumnFilter, ColumnType, TableColumn } from '@ntp-lms-ui/lib/types'
+import type { ColumnFilter, ColumnType, TableColumn, TableRow } from '@ntp-lms-ui/lib/types'
 import { createDevWarn } from '@ntp-lms-ui/lib/utils'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -18,6 +18,10 @@ function arraysEqual(a: unknown[], b: unknown[]): boolean {
 
 function normalizeToArray(value: string | number | string[]): unknown[] {
   return isArray(value) ? value : [value]
+}
+
+function isObjectOrArray(value: unknown): boolean {
+  return value !== null && typeof value === 'object'
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,19 +174,20 @@ function applyFilter(value: unknown, filter: ColumnFilter, column: TableColumn):
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function useColumnFilter() {
-  function matches(value: unknown, filter: ColumnFilter, column: TableColumn): boolean {
-    if (column.filterMatcher) {
+  function matches(value: unknown, filter: ColumnFilter, column: TableColumn, row: TableRow): boolean {
+    if (column.filterLocally) {
       try {
-        return column.filterMatcher(value, filter)
+        return column.filterLocally(value, filter, row)
       } catch (error) {
         warn(
-          `filterMatcher for column "${column.key}" threw: ` +
+          `filterLocally for column "${column.key}" threw: ` +
           `${(error as Error).message}; filter ignored`,
         )
         return true
       }
     }
 
+    // Object/array cells without filterLocally → handled at the apply level.
     return applyFilter(value, filter, column)
   }
 
@@ -193,13 +198,11 @@ export function useColumnFilter() {
   ): boolean {
     return filters.every((filter) => {
       const column = columns.find((c) => c.key === filter.field)
-
       if (!column) {
         warn(`filter references unknown column "${filter.field}"; filter ignored`)
         return true
       }
-
-      return matches(row[filter.field], filter, column)
+      return matches(row[filter.field], filter, column, row)
     })
   }
 
@@ -208,7 +211,38 @@ export function useColumnFilter() {
     filters: ColumnFilter[],
     columns: TableColumn[],
   ): T[] {
-    return rows.filter((row) => matchesAll(row, filters, columns))
+    if (filters.length === 0) return rows
+
+    const failedColumns = new Set<string>()
+
+    const filtered = rows.filter((row) =>
+      filters.every((filter) => {
+        const column = columns.find((c) => c.key === filter.field)
+        if (!column) return true
+
+        if (column.filterLocally) {
+          return matches(row[filter.field], filter, column, row)
+        }
+
+        const cell = row[filter.field]
+        if (isObjectOrArray(cell)) {
+          failedColumns.add(column.key)
+          return true  // fail-open
+        }
+
+        return applyFilter(cell, filter, column)
+      }),
+    )
+
+    if (failedColumns.size > 0) {
+      warn(
+        `Column(s) ${[...failedColumns].map((k) => `"${k}"`).join(', ')} ` +
+        `contain non-scalar values but have no filterLocally callback. ` +
+        `Filtering ignores these columns.`,
+      )
+    }
+
+    return filtered
   }
 
   return { matches, matchesAll, apply }
