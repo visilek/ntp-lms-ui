@@ -474,6 +474,101 @@ describe('useTable', () => {
         })
     })
 
+
+    // ───────────────────────────────────────────────────────────────────────────
+    // API request modifiers
+    // ───────────────────────────────────────────────────────────────────────────
+
+    describe('request modifiers', () => {
+        it('applies sortRequest before calling the loader', async () => {
+            const sortRequest = vi.fn((_col, order, params: LoadRowsParams) => ({
+                ...params,
+                sort: { key: 'status__label', order },
+            }))
+            const columns = [makeColumn('status', true, false)]
+            columns[0].sortRequest = sortRequest
+
+            const calls: LoadRowsParams[] = []
+            const loadRows = (params: LoadRowsParams) => {
+                calls.push(params)
+                return Promise.resolve(makeResult([], 100, 1, 20))
+            }
+
+            mountTable({
+                loadRows,
+                columns,
+                initialRows: Array.from({ length: 25 }, (_, i) => makeRow(i)),  // seed partial mode
+                initialPageSize: 20,
+                initialSort: { key: 'status', order: 'asc' },
+            })
+
+            await flushPromises()
+
+            expect(sortRequest).toHaveBeenCalled()
+            expect(calls[0].sort).toEqual({ key: 'status__label', order: 'asc' })
+        })
+
+        it('applies filterRequest before calling the loader', async () => {
+            const filterRequest = vi.fn((_col, filter: ColumnFilter, params: LoadRowsParams) => ({
+                ...params,
+                filters: params.filters.map((f) =>
+                    f.field === filter.field ? { ...f, field: 'status__label' } : f,
+                ),
+            }))
+            const columns = [makeColumn('status', false, true)]
+            columns[0].filterRequest = filterRequest
+
+            const calls: LoadRowsParams[] = []
+            const loadRows = (params: LoadRowsParams) => {
+                calls.push(params)
+                return Promise.resolve(makeResult([], 100, 1, 20))
+            }
+
+            mountTable({
+                loadRows,
+                columns,
+                initialRows: Array.from({ length: 25 }, (_, i) => makeRow(i)),
+                initialPageSize: 20,
+                initialFilters: [{ field: 'status', mode: 'exact', value: 'ACTIVE' }],
+            })
+
+            await flushPromises()
+
+            expect(filterRequest).toHaveBeenCalled()
+            expect(calls[0].filters[0].field).toBe('status__label')
+        })
+
+        it('applies both modifiers with filter first, then sort', async () => {
+            const order: string[] = []
+            const filterRequest = vi.fn((_col, _filter, params: LoadRowsParams) => {
+                order.push('filter')
+                return params
+            })
+            const sortRequest = vi.fn((_col, _order, params: LoadRowsParams) => {
+                order.push('sort')
+                return params
+            })
+            const columns = [makeColumn('status', true, true)]
+            columns[0].filterRequest = filterRequest
+            columns[0].sortRequest = sortRequest
+
+            const loadRows = vi.fn().mockResolvedValue(makeResult([], 100, 1, 20))
+
+            mountTable({
+                loadRows,
+                columns,
+                initialRows: Array.from({ length: 25 }, (_, i) => makeRow(i)),
+                initialPageSize: 20,
+                initialSort: { key: 'status', order: 'asc' },
+                initialFilters: [{ field: 'status', mode: 'exact', value: 'ACTIVE' }],
+            })
+
+            await flushPromises()
+
+            expect(order).toEqual(['filter', 'sort'])
+        })
+    })
+
     // ───────────────────────────────────────────────────────────────────────────
     // Operations
     // ───────────────────────────────────────────────────────────────────────────

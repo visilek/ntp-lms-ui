@@ -31,6 +31,10 @@ const rows: TableRow[] = [
   { id: 5, title: 'Optics', status: 'DRAFT', createdAt: '2026-02-05' },
 ]
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 function makeRow(id: number): TableRow {
   return {
     id,
@@ -38,10 +42,6 @@ function makeRow(id: number): TableRow {
     status: id % 3 === 0 ? 'DRAFT' : 'ACTIVE',
     createdAt: `2026-0${(id % 9) + 1}-15`,
   }
-}
-
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 async function mockLoadRows(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {
@@ -84,6 +84,81 @@ function mockLoadRowsSmall(params: LoadRowsParams): Promise<PaginatedResult<Tabl
     totalCount: items.length,
     page: params.page,
     pageSize: params.pageSize,
+  })
+}
+
+function makeComplexRow(id: number): TableRow {
+  const statusVariants = [
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'DRAFT', label: 'Draft' },
+    { value: 'ARCHIVED', label: 'Archived' },
+  ]
+  return {
+    id,
+    title: `Row ${id}`,
+    status: statusVariants[id % 3],
+    createdAt: `2026-0${(id % 9) + 1}-15`,
+  }
+}
+
+function getSortValue(row: TableRow, key: string): any {
+  if (key === 'status__label') return row.status?.label
+  if (key === 'status__value') return row.status?.value
+  return row[key]
+}
+
+function getFilterValue(row: TableRow, field: string): any {
+  return getSortValue(row, field)  // same extraction logic
+}
+
+function mockLoadRowsComplex(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {
+  return new Promise((resolve) => {
+    const totalCount = 47
+    let allItems: TableRow[] = []
+    for (let i = 1; i <= totalCount; i++) {
+      allItems.push(makeComplexRow(i))
+    }
+
+    // Apply filters
+    if (params.filters.length > 0) {
+      allItems = allItems.filter((row) =>
+        params.filters.every((filter) => {
+          const val = getFilterValue(row, filter.field)
+          if (filter.mode === 'icontains') {
+            return String(val).toLowerCase().includes(String(filter.value).toLowerCase())
+          }
+          if (filter.mode === 'exact') {
+            return val === filter.value
+          }
+          return true
+        }),
+      )
+    }
+
+    // Apply sort
+    if (params.sort) {
+      const { key, order } = params.sort
+      const sortedArr = [...allItems].sort((a, b) => {
+        const av = getSortValue(a, key)
+        const bv = getSortValue(b, key)
+        if (av === bv) return 0
+        return av < bv ? -1 : 1
+      })
+      allItems = order === 'desc' ? sortedArr.reverse() : sortedArr
+    }
+
+    const start = (params.page - 1) * params.pageSize
+    const end = Math.min(start + params.pageSize, allItems.length)
+    const items = allItems.slice(start, end)
+
+    setTimeout(() => {
+      resolve({
+        items,
+        totalCount: allItems.length,
+        page: params.page,
+        pageSize: params.pageSize,
+      })
+    }, 600)
   })
 }
 
@@ -289,6 +364,58 @@ export const ComplexColumns: Story = {
     template: `
       <div style="padding: 16px;">
         <NtpTable :columns="columns" :rows="rows" row-key="id" />
+      </div>
+    `,
+  }),
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. Partial mode with complex columns
+// ─────────────────────────────────────────────────────────────────────────────
+export const ComplexColumnsPartial: Story = {
+  render: () => ({
+    components: { NtpTable },
+    setup: () => {
+      const columns: TableColumn[] = [
+        { key: 'title', label: 'Title', sortable: true },
+        {
+          key: 'status',
+          label: 'Status',
+          type: 'enum',
+          sortable: true,
+          filterable: true,
+          displayMapper: (cell) => cell.label,
+          filterLocally: (cell, filter) => {
+            if (filter.mode === 'icontains') {
+              return String(cell.label).toLowerCase().includes(String(filter.value).toLowerCase())
+            }
+            return false
+          },
+          sortLocally: (a, b) => a.label.localeCompare(b.label),
+          sortRequest: (col, order, params) => ({
+            ...params,
+            sort: { key: 'status__label', order },
+          }),
+          filterRequest: (col, filter, params) => ({
+            ...params,
+            filters: params.filters.map((f) =>
+              f.field === 'status' ? { ...f, field: 'status__label' } : f,
+            ),
+          }),
+        },
+      ]
+      const data = ref<TableRow[]>([])
+      return { columns, data, mockLoadRowsComplex }
+    },
+    template: `
+      <div style="padding: 16px;">
+        <NtpTable
+          :columns="columns"
+          v-model:rows="data"
+          :load-rows="mockLoadRowsComplex"
+          row-key="id"
+        />
       </div>
     `,
   }),

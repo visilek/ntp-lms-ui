@@ -1,19 +1,12 @@
-import { computed, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type {
-  ColumnFilter,
-  LoadRowsParams,
-  PaginatedResult,
-  SortState,
-  SortIndicatorState,
-  SortAriaValue,
-  TableColumn,
-  TableMode,
-  TableRow,
-  TableRowKey,
-  MasterCheckboxState,
+  ColumnFilter, LoadRowsParams, PaginatedResult,
+  SortState, SortIndicatorState, SortAriaValue,
+  TableColumn, TableMode, TableRow, TableRowKey, MasterCheckboxState,
 } from '@ntp-lms-ui/lib/types'
-import { useColumnFilter, useColumnSort } from '@ntp-lms-ui/lib'
+import { useColumnFilter, useColumnSort } from '@ntp-lms-ui/lib/composables'
+import { applyFilterRequest, applySortRequest } from '@ntp-lms-ui/lib/utils'
 import { useTableSort } from './useTableSort'
 import { useTableSelection } from './useTableSelection'
 
@@ -261,10 +254,13 @@ export function useTable(options: UseTableOptions) {
       filters: mode.value === 'partial' ? filters.value : [],
     }
 
-    // Concern 6.5 Stage 4: apply request modifiers here (once implemented).
+    const finalParams = applySortRequest(
+      applyFilterRequest(baseParams, options.columns),
+      options.columns,
+    )
 
     try {
-      const response = await loader(baseParams)
+      const response = await loader(finalParams)
       if (id !== requestId) return
 
       lastError.value = null

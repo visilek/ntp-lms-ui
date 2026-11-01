@@ -47,7 +47,9 @@ export interface TableColumn {
   width?: string
   align?: ColumnAlign
   sortLocally?: (a: any, b: any, rowA: TableRow, rowB: TableRow) => number
+  sortRequest?: (column: TableColumn, order: SortOrder, params: LoadRowsParams) => LoadRowsParams
   filterLocally?: (cell: any, filter: ColumnFilter, row: TableRow) => boolean
+  filterRequest?: (column: TableColumn, filter: ColumnFilter, params: LoadRowsParams) => LoadRowsParams
   displayMapper?: (cell: any, row: TableRow) => string | number | null | undefined
 }
 
