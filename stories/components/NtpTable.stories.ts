@@ -40,14 +40,17 @@ function makeRow(id: number): TableRow {
   }
 }
 
-function mockLoadRows(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function mockLoadRows(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {
   const totalCount = 47
   const allItems: TableRow[] = []
   for (let i = 1; i <= totalCount; i++) {
     allItems.push(makeRow(i))
   }
 
-  // Apply sort if present
   let sorted = allItems
   if (params.sort) {
     const { key, order } = params.sort
@@ -60,17 +63,18 @@ function mockLoadRows(params: LoadRowsParams): Promise<PaginatedResult<TableRow>
     sorted = order === 'desc' ? sortedArr.reverse() : sortedArr
   }
 
-  // Paginate
   const start = (params.page - 1) * params.pageSize
   const end = Math.min(start + params.pageSize, totalCount)
   const items = sorted.slice(start, end)
 
-  return Promise.resolve({
+  await delay(800)
+
+  return {
     items,
     totalCount,
     page: params.page,
     pageSize: params.pageSize,
-  })
+  }
 }
 
 function mockLoadRowsSmall(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {

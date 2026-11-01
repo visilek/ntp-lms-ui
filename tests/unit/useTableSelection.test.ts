@@ -1,202 +1,159 @@
-import { describe, it, expect, vi } from 'vitest'
-import { ref } from 'vue'
+import { describe, it, expect } from 'vitest'
 import { useTableSelection } from '../../src/components/NtpTable/composables/useTableSelection'
 
-function setup(options?: {
-  rows?: Array<Record<string, any>>
-  selectedKeys?: Array<string | number>
-  mode?: 'fixed' | 'complete' | 'partial'
-}) {
-  const rows = ref(options?.rows ?? [])
-  const selectedKeys = ref(options?.selectedKeys ?? [])
-  const mode = ref(options?.mode ?? 'complete')
-  const emit = vi.fn()
-
-  const selection = useTableSelection({
-    rows,
-    rowKey: 'id',
-    selectedKeys,
-    mode,
-    emit,
-  })
-
-  return { rows, selectedKeys, mode, emit, selection }
-}
-
 describe('useTableSelection', () => {
-  describe('headerCheckboxState', () => {
-    it('returns "unchecked" when no rows', () => {
-      const { selection } = setup()
-      expect(selection.headerCheckboxState.value).toBe('unchecked')
+  const {
+    selectAll,
+    deselectAll,
+    toggleRow,
+    isSelected,
+    headerStateFor,
+    showWarningFor,
+  } = useTableSelection()
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // selectAll
+  // ───────────────────────────────────────────────────────────────────────────
+
+  describe('selectAll', () => {
+    it('returns visible keys when current selection is empty', () => {
+      expect(selectAll([1, 2, 3], [])).toEqual([1, 2, 3])
     })
 
-    it('returns "unchecked" when no rows are selected', () => {
-      const { selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-      })
-      expect(selection.headerCheckboxState.value).toBe('unchecked')
+    it('merges visible keys into the current selection', () => {
+      const result = selectAll([1, 2, 3], [99])
+      expect(result).toHaveLength(4)
+      expect(result).toEqual(expect.arrayContaining([1, 2, 3, 99]))
     })
 
-    it('returns "checked" when all visible rows are selected', () => {
-      const { selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-        selectedKeys: [1, 2],
-      })
-      expect(selection.headerCheckboxState.value).toBe('checked')
+    it('does not duplicate already-selected visible keys', () => {
+      const result = selectAll([1, 2, 3], [1, 2])
+      expect(result).toHaveLength(3)
+      expect(result).toEqual(expect.arrayContaining([1, 2, 3]))
     })
 
-    it('returns "indeterminate" when some visible rows are selected', () => {
-      const { selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }, { id: 3 }],
-        selectedKeys: [1],
-      })
-      expect(selection.headerCheckboxState.value).toBe('indeterminate')
-    })
-
-    it('ignores selected keys that are not in the visible rows', () => {
-      const { selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-        selectedKeys: [1, 2, 99],
-      })
-      expect(selection.headerCheckboxState.value).toBe('checked')
-    })
-  })
-
-  describe('showWarning', () => {
-    it('is false in fixed mode', () => {
-      const { selection } = setup({ mode: 'fixed' })
-      expect(selection.showWarning.value).toBe(false)
-    })
-
-    it('is false in complete mode', () => {
-      const { selection } = setup({ mode: 'complete' })
-      expect(selection.showWarning.value).toBe(false)
-    })
-
-    it('is true in partial mode', () => {
-      const { selection } = setup({ mode: 'partial' })
-      expect(selection.showWarning.value).toBe(true)
-    })
-
-    it('reacts to mode changes', () => {
-      const { mode, selection } = setup({ mode: 'complete' })
-      expect(selection.showWarning.value).toBe(false)
-
-      mode.value = 'partial'
-      expect(selection.showWarning.value).toBe(true)
+    it('does not mutate the input arrays', () => {
+      const visibleKeys = [1, 2, 3]
+      const currentSelectedKeys = [99]
+      selectAll(visibleKeys, currentSelectedKeys)
+      expect(visibleKeys).toEqual([1, 2, 3])
+      expect(currentSelectedKeys).toEqual([99])
     })
   })
 
-  describe('isSelected', () => {
-    it('returns true for a selected key', () => {
-      const { selection } = setup({ selectedKeys: [1, 2] })
-      expect(selection.isSelected(1)).toBe(true)
+  // ───────────────────────────────────────────────────────────────────────────
+  // deselectAll
+  // ───────────────────────────────────────────────────────────────────────────
+
+  describe('deselectAll', () => {
+    it('removes visible keys from the selection', () => {
+      expect(deselectAll([1, 2, 3], [1, 2, 3])).toEqual([])
     })
 
-    it('returns false for an unselected key', () => {
-      const { selection } = setup({ selectedKeys: [1] })
-      expect(selection.isSelected(2)).toBe(false)
+    it('preserves keys not in the visible set', () => {
+      expect(deselectAll([1, 2], [1, 2, 99])).toEqual([99])
+    })
+
+    it('returns the current selection unchanged when no visible keys are selected', () => {
+      expect(deselectAll([1, 2], [99])).toEqual([99])
+    })
+
+    it('does not mutate the input arrays', () => {
+      const visibleKeys = [1, 2]
+      const currentSelectedKeys = [1, 2, 99]
+      deselectAll(visibleKeys, currentSelectedKeys)
+      expect(visibleKeys).toEqual([1, 2])
+      expect(currentSelectedKeys).toEqual([1, 2, 99])
     })
   })
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // toggleRow
+  // ───────────────────────────────────────────────────────────────────────────
 
   describe('toggleRow', () => {
-    it('adds a key to selection when not present', () => {
-      const { emit, selection } = setup({ selectedKeys: [] })
-
-      selection.toggleRow(1)
-
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [1])
+    it('adds the key when not present', () => {
+      expect(toggleRow(1, [])).toEqual([1])
     })
 
-    it('removes a key from selection when present', () => {
-      const { emit, selection } = setup({ selectedKeys: [1, 2] })
-
-      selection.toggleRow(1)
-
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [2])
+    it('removes the key when present', () => {
+      expect(toggleRow(1, [1, 2])).toEqual([2])
     })
 
     it('does not mutate the input array', () => {
-      const selectedKeys = [1, 2]
-      const { selection } = setup({ selectedKeys })
-
-      selection.toggleRow(1)
-
-      expect(selectedKeys).toEqual([1, 2])
+      const input = [1, 2]
+      toggleRow(1, input)
+      expect(input).toEqual([1, 2])
     })
   })
 
-  describe('toggleAll', () => {
-    it('adds all visible keys when checked is true', () => {
-      const { emit, selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-        selectedKeys: [],
-      })
+  // ───────────────────────────────────────────────────────────────────────────
+  // isSelected
+  // ───────────────────────────────────────────────────────────────────────────
 
-      selection.toggleAll(true)
-
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [1, 2])
+  describe('isSelected', () => {
+    it('returns true when the key is selected', () => {
+      expect(isSelected(1, [1, 2])).toBe(true)
     })
 
-    it('merges with existing selection on check', () => {
-      const { emit, selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-        selectedKeys: [99],
-      })
-
-      selection.toggleAll(true)
-
-      const call = emit.mock.calls.find(([event]) => event === 'update:selectedKeys')
-      expect(call).toBeDefined()
-      const payload = call![1] as Array<string | number>
-      expect(payload).toHaveLength(3)
-      expect(payload).toEqual(expect.arrayContaining([1, 2, 99]))
+    it('returns false when the key is not selected', () => {
+      expect(isSelected(3, [1, 2])).toBe(false)
     })
 
-    it('removes visible keys when checked is false', () => {
-      const { emit, selection } = setup({
-        rows: [{ id: 1 }, { id: 2 }],
-        selectedKeys: [1, 2, 99],
-      })
+    it('returns false for an empty selection', () => {
+      expect(isSelected(1, [])).toBe(false)
+    })
+  })
 
-      selection.toggleAll(false)
+  // ───────────────────────────────────────────────────────────────────────────
+  // headerStateFor
+  // ───────────────────────────────────────────────────────────────────────────
 
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [99])
+  describe('headerStateFor', () => {
+    it('returns "unchecked" when no visible keys', () => {
+      expect(headerStateFor([], [1, 2])).toBe('unchecked')
     })
 
-    it('preserves keys outside the visible set on uncheck', () => {
-      const { emit, selection } = setup({
-        rows: [{ id: 1 }],
-        selectedKeys: [1, 2, 3],
-      })
-
-      selection.toggleAll(false)
-
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [2, 3])
+    it('returns "unchecked" when none are selected', () => {
+      expect(headerStateFor([1, 2], [])).toBe('unchecked')
     })
 
-    it('does nothing to existing selection when no visible rows and checked is true', () => {
-      const { emit, selection } = setup({
-        rows: [],
-        selectedKeys: [1],
-      })
-
-      selection.toggleAll(true)
-
-      const call = emit.mock.calls.find(([event]) => event === 'update:selectedKeys')
-      expect(call).toBeDefined()
-      expect(call![1]).toEqual([1])
+    it('returns "unchecked" when no visible keys are selected', () => {
+      expect(headerStateFor([1, 2], [3, 4])).toBe('unchecked')
     })
 
-    it('does nothing to existing selection when no visible rows and checked is false', () => {
-      const { emit, selection } = setup({
-        rows: [],
-        selectedKeys: [1],
-      })
+    it('returns "checked" when all visible keys are selected', () => {
+      expect(headerStateFor([1, 2, 3], [1, 2, 3])).toBe('checked')
+    })
 
-      selection.toggleAll(false)
+    it('returns "checked" even with extra off-page selections', () => {
+      expect(headerStateFor([1, 2], [1, 2, 99])).toBe('checked')
+    })
 
-      expect(emit).toHaveBeenCalledWith('update:selectedKeys', [1])
+    it('returns "indeterminate" when some visible keys are selected', () => {
+      expect(headerStateFor([1, 2, 3], [1])).toBe('indeterminate')
+    })
+
+    it('returns "indeterminate" when some but not all are selected plus off-page', () => {
+      expect(headerStateFor([1, 2, 3], [1, 99])).toBe('indeterminate')
+    })
+  })
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // showWarningFor
+  // ───────────────────────────────────────────────────────────────────────────
+
+  describe('showWarningFor', () => {
+    it('returns false for fixed mode', () => {
+      expect(showWarningFor('fixed')).toBe(false)
+    })
+
+    it('returns false for complete mode', () => {
+      expect(showWarningFor('complete')).toBe(false)
+    })
+
+    it('returns true for partial mode', () => {
+      expect(showWarningFor('partial')).toBe(true)
     })
   })
 })

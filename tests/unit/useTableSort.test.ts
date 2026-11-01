@@ -1,5 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
-import { ref } from 'vue'
+import { describe, it, expect } from 'vitest'
 import { useTableSort } from '../../src/components/NtpTable/composables/useTableSort'
 import type { SortState, TableColumn } from '@ntp-lms-ui/lib/types'
 
@@ -8,123 +7,82 @@ function makeColumn(key: string, sortable = true): TableColumn {
 }
 
 describe('useTableSort', () => {
+  const { switchSort, ariaSortFor, stateFor } = useTableSort()
+
   describe('switchSort', () => {
-    it('does nothing for non-sortable columns', () => {
-      const sort = ref<SortState | null>(null)
-      const setSort = vi.fn()
-      const { switchSort } = useTableSort({ sort, setSort })
+    it('returns the current sort unchanged for non-sortable columns', () => {
+      expect(switchSort(makeColumn('title', false), null)).toBeNull()
 
-      switchSort(makeColumn('title', false))
-
-      expect(setSort).not.toHaveBeenCalled()
+      const current: SortState = { key: 'status', order: 'asc' }
+      expect(switchSort(makeColumn('title', false), current)).toBe(current)
     })
 
     it('cycles null → asc on a new column', () => {
-      const sort = ref<SortState | null>(null)
-      const setSort = vi.fn()
-      const { switchSort } = useTableSort({ sort, setSort })
-
-      switchSort(makeColumn('title'))
-
-      expect(setSort).toHaveBeenCalledWith({ key: 'title', order: 'asc' })
+      expect(switchSort(makeColumn('title'), null)).toEqual({ key: 'title', order: 'asc' })
     })
 
     it('cycles asc → desc on the same column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'asc' })
-      const setSort = vi.fn()
-      const { switchSort } = useTableSort({ sort, setSort })
-
-      switchSort(makeColumn('title'))
-
-      expect(setSort).toHaveBeenCalledWith({ key: 'title', order: 'desc' })
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(switchSort(makeColumn('title'), current)).toEqual({ key: 'title', order: 'desc' })
     })
 
     it('cycles desc → null on the same column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'desc' })
-      const setSort = vi.fn()
-      const { switchSort } = useTableSort({ sort, setSort })
-
-      switchSort(makeColumn('title'))
-
-      expect(setSort).toHaveBeenCalledWith(null)
+      const current: SortState = { key: 'title', order: 'desc' }
+      expect(switchSort(makeColumn('title'), current)).toBeNull()
     })
 
-    it('resets to asc when clicking a different column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'desc' })
-      const setSort = vi.fn()
-      const { switchSort } = useTableSort({ sort, setSort })
-
-      switchSort(makeColumn('status'))
-
-      expect(setSort).toHaveBeenCalledWith({ key: 'status', order: 'asc' })
+    it('resets to asc when switching columns', () => {
+      const current: SortState = { key: 'title', order: 'desc' }
+      expect(switchSort(makeColumn('status'), current)).toEqual({ key: 'status', order: 'asc' })
     })
   })
 
   describe('ariaSortFor', () => {
-    it('returns undefined for the inactive column', () => {
-      const sort = ref<SortState | null>(null)
-      const setSort = vi.fn()
-      const { ariaSortFor } = useTableSort({ sort, setSort })
+    it('returns "none" for non-sortable columns', () => {
+      expect(ariaSortFor(makeColumn('title', false), null)).toBe('none')
 
-      expect(ariaSortFor(makeColumn('title'))).toBeUndefined()
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(ariaSortFor(makeColumn('title', false), current)).toBe('none')
     })
 
-    it('returns undefined for a column that is not the active sort', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'asc' })
-      const setSort = vi.fn()
-      const { ariaSortFor } = useTableSort({ sort, setSort })
-
-      expect(ariaSortFor(makeColumn('status'))).toBeUndefined()
+    it('returns "none" when sort is null', () => {
+      expect(ariaSortFor(makeColumn('title'), null)).toBe('none')
     })
 
-    it('returns "ascending" for the active column in asc order', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'asc' })
-      const setSort = vi.fn()
-      const { ariaSortFor } = useTableSort({ sort, setSort })
-
-      expect(ariaSortFor(makeColumn('title'))).toBe('ascending')
+    it('returns "none" for a non-active column', () => {
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(ariaSortFor(makeColumn('status'), current)).toBe('none')
     })
 
-    it('returns "descending" for the active column in desc order', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'desc' })
-      const setSort = vi.fn()
-      const { ariaSortFor } = useTableSort({ sort, setSort })
+    it('returns "ascending" for the active ascending column', () => {
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(ariaSortFor(makeColumn('title'), current)).toBe('ascending')
+    })
 
-      expect(ariaSortFor(makeColumn('title'))).toBe('descending')
+    it('returns "descending" for the active descending column', () => {
+      const current: SortState = { key: 'title', order: 'desc' }
+      expect(ariaSortFor(makeColumn('title'), current)).toBe('descending')
     })
   })
 
   describe('stateFor', () => {
     it('returns "none" when no sort is active', () => {
-      const sort = ref<SortState | null>(null)
-      const setSort = vi.fn()
-      const { stateFor } = useTableSort({ sort, setSort })
-
-      expect(stateFor(makeColumn('title'))).toBe('none')
+      expect(stateFor(makeColumn('title'), null)).toBe('none')
     })
 
     it('returns "none" for a non-active column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'asc' })
-      const setSort = vi.fn()
-      const { stateFor } = useTableSort({ sort, setSort })
-
-      expect(stateFor(makeColumn('status'))).toBe('none')
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(stateFor(makeColumn('status'), current)).toBe('none')
     })
 
     it('returns "asc" for the active ascending column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'asc' })
-      const setSort = vi.fn()
-      const { stateFor } = useTableSort({ sort, setSort })
-
-      expect(stateFor(makeColumn('title'))).toBe('asc')
+      const current: SortState = { key: 'title', order: 'asc' }
+      expect(stateFor(makeColumn('title'), current)).toBe('asc')
     })
 
     it('returns "desc" for the active descending column', () => {
-      const sort = ref<SortState | null>({ key: 'title', order: 'desc' })
-      const setSort = vi.fn()
-      const { stateFor } = useTableSort({ sort, setSort })
-
-      expect(stateFor(makeColumn('title'))).toBe('desc')
+      const current: SortState = { key: 'title', order: 'desc' }
+      expect(stateFor(makeColumn('title'), current)).toBe('desc')
     })
   })
 })

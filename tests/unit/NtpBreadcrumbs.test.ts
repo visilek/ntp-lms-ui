@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { NtpBreadcrumbs } from '@ntp-lms-ui/components'
+import type { BreadcrumbItem } from '@ntp-lms-ui/lib/types'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -11,16 +12,9 @@ const router = createRouter({
   ],
 })
 
-let wrappers: ReturnType<typeof mount>[] = []
 
-function mountBreadcrumbs(props = {}) {
-  const wrapper = mount(NtpBreadcrumbs, {
-    props,
-    global: {
-      plugins: [router],
-    },
-  })
-  wrappers.push(wrapper)
+function mountBreadcrumbs(props: { items: BreadcrumbItem[] }) {
+  const wrapper = mount(NtpBreadcrumbs, { props, global: { plugins: [router], } })
   return wrapper
 }
 

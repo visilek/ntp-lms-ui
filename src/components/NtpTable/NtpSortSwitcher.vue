@@ -1,9 +1,8 @@
 <script setup lang="ts">
-
-type SortSwitcherState = 'none' | 'asc' | 'desc'
+import type { SortIndicatorState } from '@ntp-lms-ui/lib/types'
 
 interface Props {
-  state?: SortSwitcherState
+  state?: SortIndicatorState
 }
 
 const { state = 'none' } = defineProps<Props>()

@@ -1,38 +1,14 @@
 <script setup lang="ts">
 // 1. Imports
 import { computed } from 'vue'
-import type {
-  ColumnFilter,
-  LoadRowsParams,
-  PaginatedResult,
-  SortState,
-  TableColumn,
-  TableRow,
-  TableRowKey,
-} from '@ntp-lms-ui/lib/types'
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_PAGE_SIZE_OPTIONS,
-  useColumnFilter,
-  useColumnSort,
-} from '@ntp-lms-ui/lib'
+import type { ColumnFilter, LoadRowsParams, PaginatedResult, SortState, TableColumn, TableRow, TableRowKey } from '@ntp-lms-ui/lib/types'
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS } from '@ntp-lms-ui/lib'
 import { NtpCheckbox, NtpPagination, NtpTooltip } from '@ntp-lms-ui/components'
-import {
-  DEFAULT_EMPTY_TEXT,
-  DEFAULT_FILTERS,
-  DEFAULT_ROWS,
-  DEFAULT_SELECTED_KEYS,
-  SELECTION_COLUMN_WIDTH,
-  SELECTION_COLUMN_WIDTH_WITH_WARNING,
-} from './constants'
-import { useTableFetch, useTableMode, useTableSelection, useTableSort } from './composables'
+import { DEFAULT_EMPTY_TEXT, DEFAULT_FILTERS, DEFAULT_ROWS, DEFAULT_SELECTED_KEYS, SELECTION_COLUMN_WIDTH, SELECTION_COLUMN_WIDTH_WITH_WARNING } from './constants'
 import NtpSortSwitcher from './NtpSortSwitcher.vue'
+import { useTable } from './composables'
 
-// 2. Local type aliases
-// (none yet)
-
-// 3. Props interface
+// 2. Props interface
 interface Props {
   columns: TableColumn[]
   rowKey: string
@@ -55,10 +31,9 @@ interface Props {
   stickyHeader?: boolean
 }
 
-// 4. Props — static vs reactive
+// 3. Props — static vs reactive
 const props = defineProps<Props>()
 
-// Destructured: effectively static after mount.
 const {
   columns,
   rowKey,
@@ -70,9 +45,6 @@ const {
   stickyHeader = true,
 } = props
 
-// Refs: may change via v-model or external writes.
-// All are `computed` — read-only observers with defaults applied. Writes to
-// v-model props flow through emits, not through these refs.
 const rowsRef = computed(() => props.rows ?? DEFAULT_ROWS)
 const selectedKeysRef = computed(() => props.selectedKeys ?? DEFAULT_SELECTED_KEYS)
 const pageRef = computed(() => props.page ?? DEFAULT_PAGE)
@@ -80,7 +52,7 @@ const pageSizeRef = computed(() => props.pageSize ?? DEFAULT_PAGE_SIZE)
 const sortRef = computed(() => props.sort ?? null)
 const filtersRef = computed(() => props.filters ?? DEFAULT_FILTERS)
 
-// 5. Emits
+// 4. Emits
 const emit = defineEmits<{
   'update:rows': [rows: TableRow[]]
   'update:selectedKeys': [keys: TableRowKey[]]
@@ -88,50 +60,64 @@ const emit = defineEmits<{
   'update:pageSize': [pageSize: number]
   'update:sort': [sort: SortState | null]
   'update:filters': [filters: ColumnFilter[]]
-  'rowClick': [payload: { row: TableRow, key: TableRowKey }]
   'load-error': [error: Error]
 }>()
 
-// 6. Fetch subsystem
-const tableFetch = useTableFetch({
+// 5. Table state — all state and operations owned by useTable
+const table = useTable({
   loadRows,
+  columns,
+  rowKey,
+  initialRows: rowsRef.value,
   initialPage: pageRef.value,
   initialPageSize: pageSizeRef.value,
   initialSort: sortRef.value,
   initialFilters: filtersRef.value,
-  emit,
+  initialSelectedKeys: selectedKeysRef.value,
+  rowsProp: rowsRef,
   pageProp: pageRef,
   pageSizeProp: pageSizeRef,
   sortProp: sortRef,
   filtersProp: filtersRef,
+  selectedKeysProp: selectedKeysRef,
+  emit,
 })
 
-// 7. Mode
-const { mode } = useTableMode({
-  hasLoader: computed(() => loadRows !== undefined),
-  totalCount: tableFetch.totalCount,
-  pageSize: tableFetch.pageSize,
-})
+// 6. Destructure — only what the template and defineExpose use
+const {
+  // State
+  page,
+  pageSize,
+  totalCount,
 
-// 8. Column transforms (library composables)
-const columnFilter = useColumnFilter()
-const columnSort = useColumnSort()
+  // Derived
+  displayedRows,
 
-// 9. Display pipeline
-const displayedRows = computed<TableRow[]>(() => {
-  let result = rowsRef.value
+  // Setters
+  setPage,
+  setPageSize,
 
-  if (mode.value !== 'partial') {
-    result = columnFilter.apply(result, tableFetch.filters.value, columns)
-  }
+  // Operations
+  switchSort,
+  toggleRow,
+  handleHeaderCheckbox,
 
-  if (mode.value !== 'partial' && tableFetch.sort.value) {
-    result = columnSort.apply(result, tableFetch.sort.value, columns)
-  }
+  // State-bound template helpers
+  stateForColumn,
+  ariaSortForColumn,
+  isRowSelected,
+  headerState,
+  showSelectionWarning,
+} = table
 
-  // Concern 9: reorder stage will insert here.
-  return result
-})
+// 7. Layout functions and computeds (component-specific)
+const selectionColumnWidth = computed(() =>
+  showSelectionWarning.value
+    ? SELECTION_COLUMN_WIDTH_WITH_WARNING
+    : SELECTION_COLUMN_WIDTH,
+)
+
+const showPagination = computed(() => loadRows !== undefined)
 
 function cellDisplayValue(row: TableRow, column: TableColumn): unknown {
   const cell = row[column.key]
@@ -141,33 +127,9 @@ function cellDisplayValue(row: TableRow, column: TableColumn): unknown {
   return cell
 }
 
-// 10. Selection
-const tableSelection = useTableSelection({
-  rows: displayedRows,
-  rowKey,
-  selectedKeys: selectedKeysRef,
-  mode,
-  emit,
-})
-
-const selectionColumnWidth = computed(() =>
-  tableSelection.showWarning.value
-    ? SELECTION_COLUMN_WIDTH_WITH_WARNING
-    : SELECTION_COLUMN_WIDTH,
-)
-
-// 11. Sorting
-const tableSort = useTableSort({
-  sort: tableFetch.sort,
-  setSort: tableFetch.setSort,
-})
-
-// 12. Pagination visibility
-const showPagination = computed(() => loadRows !== undefined)
-
-// 13. Exposed methods
+// 8. Exposed methods
 defineExpose({
-  refetch: tableFetch.refetch,
+  refetch: table.refetch,
 })
 </script>
 
@@ -178,11 +140,10 @@ defineExpose({
         <tr class="ntp-table__row ntp-table__row--header">
           <th v-if="selectable" class="ntp-table__header-cell ntp-table__header-cell--selection"
             :style="{ width: selectionColumnWidth }" scope="col">
-            <NtpCheckbox :model-value="tableSelection.headerCheckboxState.value === 'checked'"
-              :indeterminate="tableSelection.headerCheckboxState.value === 'indeterminate'"
+            <NtpCheckbox :model-value="headerState === 'checked'" :indeterminate="headerState === 'indeterminate'"
               :disabled="displayedRows.length === 0" aria-label="Select all rows on this page"
-              @update:model-value="tableSelection.toggleAll" />
-            <NtpTooltip v-if="tableSelection.showWarning.value" text="&quot;Select all&quot; affects visible rows only">
+              @update:model-value="handleHeaderCheckbox" />
+            <NtpTooltip v-if="showSelectionWarning" text='"Select all" affects visible rows only'>
               <span class="ntp-table__selection-warning" aria-label='"Select all" affects visible rows only'>
                 ⚠
               </span>
@@ -191,10 +152,9 @@ defineExpose({
 
           <th v-for="column in columns" :key="column.key" class="ntp-table__header-cell"
             :class="column.align ? `ntp-table__header-cell--${column.align}` : undefined"
-            :style="column.width ? { width: column.width } : undefined" :aria-sort="tableSort.ariaSortFor(column)"
-            scope="col">
-            <NtpSortSwitcher v-if="column.sortable" :state="tableSort.stateFor(column)"
-              @click="tableSort.switchSort(column)">
+            :style="column.width ? { width: column.width } : undefined"
+            :aria-sort="column.sortable ? ariaSortForColumn(column) : undefined" scope="col">
+            <NtpSortSwitcher v-if="column.sortable" :state="stateForColumn(column)" @click="switchSort(column)">
               <slot name="header" :column="column">
                 {{ column.label }}
               </slot>
@@ -218,8 +178,8 @@ defineExpose({
 
         <tr v-for="row in displayedRows" :key="row[rowKey]" class="ntp-table__row ntp-table__row--data">
           <td v-if="selectable" class="ntp-table__cell ntp-table__cell--selection">
-            <NtpCheckbox :model-value="tableSelection.isSelected(row[rowKey])" :aria-label="`Select row ${row[rowKey]}`"
-              @update:model-value="() => tableSelection.toggleRow(row[rowKey])" />
+            <NtpCheckbox :model-value="isRowSelected(row[rowKey])" :aria-label="`Select row ${row[rowKey]}`"
+              @update:model-value="() => toggleRow(row[rowKey])" />
           </td>
 
           <td v-for="column in columns" :key="column.key" class="ntp-table__cell"
@@ -233,9 +193,8 @@ defineExpose({
     </table>
 
     <div v-if="showPagination" class="ntp-table__pagination">
-      <NtpPagination :page="tableFetch.page.value" :page-size="tableFetch.pageSize.value"
-        :total-count="tableFetch.totalCount.value" :page-size-options="pageSizeOptions"
-        @update:page="tableFetch.setPage" @update:page-size="tableFetch.setPageSize" />
+      <NtpPagination :page="page" :page-size="pageSize" :total-count="totalCount" :page-size-options="pageSizeOptions"
+        @update:page="setPage" @update:page-size="setPageSize" />
     </div>
   </div>
 </template>

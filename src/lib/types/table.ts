@@ -55,7 +55,13 @@ export interface TableColumn {
 // Sort
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type SortOrder = 'asc' | 'desc'
+export const SORT_ORDERS = ['asc', 'desc'] as const
+export type SortOrder = (typeof SORT_ORDERS)[number]
+
+export const SORT_INDICATOR_STATES = ['none', 'asc', 'desc'] as const
+export type SortIndicatorState = (typeof SORT_INDICATOR_STATES)[number]
+
+export type SortAriaValue = 'ascending' | 'descending' | 'none'
 
 export interface SortState {
   key: string
