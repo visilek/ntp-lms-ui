@@ -50,11 +50,22 @@ Rules:
 
 ### Barrel Imports
 
-Every folder has an `index.ts`. The root `lib/index.ts` re-exports all of them.
+Every folder has an `index.ts`. Sub-barrels exist for each `lib/` subfolder (`lib/types`, `lib/utils`, `lib/constants`, `lib/composables`, `lib/domain-specific/*`).
 
-Consumers import from `@ntp-lms-ui/lib` (public) or `@ntp-lms-ui/lib/types` (types only).
+**Barrel scope:** a barrel exports what its consumer(s) need — not a folder manifest. A folder's barrel may export a subset of the folder's files (e.g., `NtpTable/composables/index.ts` exports only `useTable`, while `useTableSort` and `useTableSelection` are internal).
 
-Barrel imports ensure that refactoring internal structure doesn't affect consumers.
+**Consumers import via barrels:**
+- Public consumers of the kit: `@ntp-lms-ui/components`, `@ntp-lms-ui/lib/types`, `@ntp-lms-ui/lib/utils`, etc.
+- Component-internal imports from subfolders: `from './composables'` (the subfolder barrel).
+
+**Internal sibling imports use direct relative paths**, not the barrel — to avoid circular dependencies when the barrel re-exports the importing file.
+
+**Tests and stories use relative paths** (they can use barrels when the needed item is exported there; direct file imports otherwise).
+
+**The sub-barrel-first policy (new code):**
+- Values → `@ntp-lms-ui/lib/utils`, `/constants`, `/composables`, or `/domain-specific/*`.
+- Types → `@ntp-lms-ui/lib/types`.
+- The root `@ntp-lms-ui/lib` barrel is to be removed in a future import-policy migration commit (see `_internal/todo/import-policy-full-migration.md`). New code should not import from it.
 
 ## Documentation Structure
 
@@ -64,10 +75,10 @@ Docs mirror code structure:
 
 ## Imports
 
-- Always import from public barrels: `@ntp-lms-ui/components`, `@ntp-lms-ui/lib`.
-- Never import from deep paths (`components/NtpX/NtpX.vue`).
-- Exceptions:
-	- sibling imports within the same family — direct path allowed.
-	- `@ntp-lms-ui/lib/types`
+- **Values** from sub-barrels: `@ntp-lms-ui/lib/utils`, `/constants`, `/composables`, `/domain-specific/*`; or `@ntp-lms-ui/components` for components.
+- **Types** from `@ntp-lms-ui/lib/types`.
+- Never import from deep file paths (`components/NtpX/NtpX.vue`) except for sibling imports within the same family.
+- Internal kit code (inside `lib/` or `components/<Name>/`) imports across boundaries via sub-barrels, never via the root `@ntp-lms-ui/lib` barrel — to avoid circular dependencies.
+- Within a folder, sibling files import each other via direct relative paths, not via the folder's own barrel.
 
-Rationale: internal folder refactors only update barrels, not every consumer.
+Rationale: sub-barrels avoid cycles (the root barrel is not re-importable during its own evaluation), and precise paths communicate the kind of import (types vs. values).

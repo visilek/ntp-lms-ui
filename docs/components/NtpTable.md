@@ -1,11 +1,12 @@
 # NtpTable
 
-A data table component for structured data presentation. Dumb component — receives data via props, emits user intent. Consumer owns data fetching, sorting, filtering, and persistence.
+A data table component that handles rendering, sorting, filtering, pagination, and selection. The table owns its internal state (page, sort, filters, selection, mode) and, given a loader, its fetch lifecycle. Complex cells (objects like `{ value, label }` or `{ id, title }`) are supported via per-column callbacks.
 
 ## Import
 
 ```ts
-import { NtpTable } from 'ntp-lms-ui'
+import { NtpTable } from '@ntp-lms-ui/components'
+import type { TableColumn, TableRow } from '@ntp-lms-ui/lib/types'
 ```
 
 ## API
@@ -15,126 +16,185 @@ import { NtpTable } from 'ntp-lms-ui'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `columns` | `TableColumn[]` | **required** | Column definitions |
-| `rows` | `Record<string, any>[]` | **required** | Row data |
-| `rowKey` | `string` | **required** | Unique row identifier field |
-| `sort` | `{ key: string, order: 'asc' \| 'desc' } \| null` | `null` | Current sort state (controlled) |
-| `selectedKeys` | `Array<string \| number>` | `[]` | Selected row keys (v-model:selected-keys) |
-| `selectable` | `boolean` | `false` | Show checkbox column |
-| `reorderMode` | `boolean` | `false` | Enable drag-and-drop sorting |
-| `highlightedKeys` | `Array<string \| number>` | `[]` | Rows to briefly highlight (1.5s animation) |
-| `loading` | `boolean` | `false` | Show loading overlay with spinner |
+| `rowKey` | `string` | **required** | Row identifier field |
+| `rows` | `TableRow[]` | `[]` | Rows to display (v-model:rows). Seed in loader mode. |
+| `loadRows` | `(params: LoadRowsParams) => Promise<PaginatedResult<TableRow>>` | — | Loader callback. Presence switches the table to loader mode. |
+| `selectable` | `boolean` | `false` | Enable the checkbox column |
+| `selectedKeys` | `TableRowKey[]` | `[]` | Selected row keys (v-model:selected-keys) |
+| `sort` | `SortState \| null` | `null` | Current sort (v-model:sort) |
+| `filters` | `ColumnFilter[]` | `[]` | Active filters (v-model:filters) |
+| `page` | `number` | `1` | Current page (v-model:page). Loader mode only. |
+| `pageSize` | `number` | `20` | Items per page (v-model:page-size). Loader mode only. |
+| `pageSizeOptions` | `number[]` | `[10, 20, 50, 100]` | Page size options passed to `NtpPagination` |
 | `emptyText` | `string` | `'No data'` | Empty state text |
 | `stickyHeader` | `boolean` | `true` | Sticky header row |
-
-### Slots
-
-| Slot | Scope | Description |
-|---|---|---|
-| `cell` | `{ column, row, value }` | Custom cell content. Falls back to plain text. |
-| `header` | `{ column }` | Custom column label content. Falls back to `column.label`. |
-| `filter` | `{ column, close }` | Filter input content. Rendered for `filterable` columns. `close()` removes the filter from active set. |
-| `actions` | `{ row }` | Row action buttons. Consumer renders conditionally. |
-| `empty` | — | Custom empty state. Overrides `emptyText`. |
-| `loading` | — | Custom loading indicator. Overrides default spinner. |
 
 ### Events
 
 | Event | Payload | Description |
 |---|---|---|
-| `update:selectedKeys` | `Array<string \| number>` | Selection changed |
-| `sort` | `{ key, order } \| null` | Sort requested. Cycle: `asc` → `desc` → `null`. |
-| `rowClick` | `{ row, key }` | Row clicked |
-| `lockOrder` | `Array<string \| number>` | User requested order persistence |
-| `resetOrder` | — | User cancelled reordering |
+| `update:rows` | `TableRow[]` | Rows changed (loader mode: emitted after each fetch) |
+| `update:selectedKeys` | `TableRowKey[]` | Selection changed |
+| `update:sort` | `SortState \| null` | Sort changed |
+| `update:filters` | `ColumnFilter[]` | Filters changed |
+| `update:page` | `number` | Page changed |
+| `update:pageSize` | `number` | Page size changed |
+| `load-error` | `Error` | Loader rejected |
 
-## Column Definition
+### Slots
+
+| Slot | Scope | Description |
+|---|---|---|
+| `cell` | `{ column, row, value }` | Custom cell content. `value` is the raw cell (may be an object for complex columns). |
+| `header` | `{ column }` | Custom header content. Falls back to `column.label`. |
+| `empty` | — | Custom empty state. Overrides `emptyText`. |
+
+### Exposed methods
+
+| Method | Signature | Description |
+|---|---|---|
+| `refetch` | `() => Promise<void>` | Re-run the loader with the current parameters. Loader mode only. |
+
+## Modes
+
+The table operates in one of three modes, derived from the props it receives. The mode is never declared — it's computed from `loadRows` presence and the current response:
+
+| Condition | Mode |
+|---|---|
+| No `loadRows` | **Fixed** |
+| `loadRows` + `totalCount <= pageSize` | **Complete** |
+| `loadRows` + `totalCount > pageSize` | **Partial** |
+
+Mode determines where sorting and filtering happen, and what UI is shown:
+
+| Behavior | Fixed | Complete | Partial |
+|---|---|---|---|
+| Sorting | Local | Local | Server (refetch) |
+| Filtering | Local | Local | Server (refetch) |
+| Pagination | Hidden | Shown | Shown |
+| Selection warning | None | None | "'Select all' affects visible rows only" |
+
+**Local sorting/filtering** applies on the client (fast, no network). **Server sorting/filtering** refetches via `loadRows` with the updated parameters.
+
+Mode is re-evaluated after every fetch. If the response's `totalCount` crosses the page-size boundary (e.g., a filter reduces the result set below one page), the mode transitions automatically — and a refetch follows, because the previous response was based on the old mode's assumptions.
+
+## Column definition
 
 ```ts
 interface TableColumn {
   key: string
   label: string
+  type?: 'text' | 'enum' | 'date' | 'number'
   sortable?: boolean
   filterable?: boolean
   width?: string
   align?: 'start' | 'center' | 'end'
+
+  // Optional callbacks
+  displayMapper?: (cell: any, row: TableRow) => string | number | null | undefined
+  sortLocally?: (a: any, b: any, rowA: TableRow, rowB: TableRow) => number
+  filterLocally?: (cell: any, filter: ColumnFilter, row: TableRow) => boolean
+  sortRequest?: (column: TableColumn, order: SortOrder, params: LoadRowsParams) => LoadRowsParams
+  filterRequest?: (column: TableColumn, filter: ColumnFilter, params: LoadRowsParams) => LoadRowsParams
 }
 ```
 
-## Sort Behavior
+### Scalar columns
 
-- Click sortable column header to cycle: `asc` → `desc` → `null`.
-- Arrow indicator shows current direction.
-- Sort state is controlled — table emits `sort`, parent fetches sorted data.
+For columns whose cells are scalars (`string`, `number`, `date` string), no callbacks are needed. The table's type-based defaults apply:
 
-## Filtering
+| `type` | Local sort | Local filter (by mode) |
+|---|---|---|
+| `text` (or undefined) | `localeCompare` | `icontains` → case-insensitive substring |
+| `number` | numeric comparison | `exact` → strict equality |
+| `date` | `Date.parse` comparison | `exact` → same day |
+| `enum` | `localeCompare` (string) | `exact` → equality |
 
-- `filterable: true` on a column shows a filter toggle button in the header.
-- Toggling a filter reveals the filter row below the header.
-- Filter row collapses when all filters are inactive.
-- The `filter` slot provides the input. Consumer owns filtering logic.
-- Developer must keep `filterable` prop and `filter` slot content in sync.
+Server-side sorting and filtering pass `column.key` and `filter.value` to the backend as-is. The backend's standard lookups (`?sort=title&order=asc`, `?title__icontains=x`) handle the request.
 
-## Selection
+### Complex columns
 
-- `selectable: true` shows a checkbox column as the first column.
-- Header checkbox is tri-state: all / some / none.
-- Row checkboxes bound to `selectedKeys`.
+For columns whose cells are objects — enums (`{ value, label }`), relations (`{ id, title }`), or any JSON object — the defaults don't work. You must provide:
 
-## Row Actions
+- **`displayMapper`** to render the cell (otherwise Vue renders `[object Object]`).
+- **`sortLocally`** and **`filterLocally`** for local sorting/filtering (optional if the table is always in partial mode, but required for complete/fixed mode).
+- **`sortRequest`** and **`filterRequest`** for server-side sorting/filtering (optional if the table is always in complete/fixed mode, but required for partial mode).
 
-The `actions` slot renders per row. Consumer decides what to show based on row data.
+A dev-warn fires once per `apply` operation when a complex cell hits the default path without a callback.
 
-```html
-<NtpTable :columns="columns" :rows="rows" row-key="id">
-  <template #actions="{ row }">
-    <NtpActionMenu
-      v-if="row.status === 'DRAFT'"
-      :items="draftActions"
-      @select="(e) => handleAction(e, row)"
-    />
-  </template>
-</NtpTable>
+### Callbacks are complete overrides
+
+When a callback is provided, the framework invokes it and uses its result as-is. It doesn't augment, transform, or validate. This means:
+
+- A `sortLocally` that returns values inconsistent with the backend's ordering will cause complete/partial mode divergence.
+- A `filterLocally` that matches different rows than the server-side `filterRequest` will cause the same.
+
+**The invariant:** local filtering/sorting must produce the same result set as server-side filtering/sorting for the same criterion. The backend is the source of truth.
+
+### The two-sided pattern
+
+For a complex column to work correctly in both modes, provide both the local and the request callback:
+
+```ts
+{
+  key: 'status',
+  label: 'Status',
+  type: 'enum',
+  sortable: true,
+  filterable: true,
+
+  // Render: show the label
+  displayMapper: (cell) => cell.label,
+
+  // Local: sort/filter by label
+  sortLocally: (a, b) => a.label.localeCompare(b.label),
+  filterLocally: (cell, filter) => {
+    if (filter.mode === 'icontains') {
+      return String(cell.label).toLowerCase().includes(String(filter.value).toLowerCase())
+    }
+    if (filter.mode === 'exact') return cell.label === filter.value
+    return false
+  },
+
+  // Server: translate to `status__label` lookup
+  sortRequest: (col, order, params) => ({
+    ...params,
+    sort: { key: 'status__label', order },
+  }),
+  filterRequest: (col, filter, params) => ({
+    ...params,
+    filters: params.filters.map((f) =>
+      f.field === 'status' ? { ...f, field: 'status__label' } : f,
+    ),
+  }),
+}
 ```
 
-## Reorder (Drag-and-Drop)
+## Loader contract
 
-### Activation
+```ts
+interface LoadRowsParams {
+  page: number
+  pageSize: number
+  sort: SortState | null
+  filters: ColumnFilter[]
+}
 
-Consumer sets `reorderMode = true`. Drag handles appear.
+interface PaginatedResult<T> {
+  items: T[]
+  totalCount: number
+  page: number
+  pageSize: number
+}
+```
 
-### During Drag
+The loader receives the current request parameters and returns a page of items plus the total count. The response's `page` and `pageSize` are authoritative — the table syncs its internal state to them, which handles server-side clamping of out-of-range pages.
 
-- Table maintains an internal `keyOrder` map.
-- Rows display in `keyOrder` sequence.
-- Visual reordering is immediate.
-- No events emitted during drag.
+In complete/fixed mode, sort and filters are **not** sent to the loader (local pipeline handles them). In partial mode, they are.
 
-### Lock
+## Usage examples
 
-Consumer renders "Save order" button. On click, consumer calls API. Table emits `lockOrder` with current `keyOrder`.
-
-| Outcome | Table | Consumer |
-|---|---|---|
-| Success | Keeps `keyOrder` until `reorderMode` turns `false` | Updates `rows`, sets `reorderMode = false` |
-| Failure | Keeps `keyOrder` | Shows error. User retries or resets. |
-
-### Reset
-
-Consumer renders "Cancel" button. On click, consumer sets `reorderMode = false`. Table clears `keyOrder`, reverts to `rows` prop order.
-
-### One Rule
-
-**`reorderMode` turning `false` always clears `keyOrder`.**
-
-## Row Highlight
-
-- `highlightedKeys` prop accepts row keys.
-- Matching rows briefly animate (1.5s color transition).
-- Parent clears keys after animation.
-
-## Usage Examples
-
-### Basic
+### Fixed dataset
 
 ```html
 <NtpTable
@@ -144,89 +204,152 @@ Consumer renders "Cancel" button. On click, consumer sets `reorderMode = false`.
 />
 ```
 
-### With Selection
+`rows` is the complete dataset. No pagination. Sorting and filtering (if any columns are `sortable`/`filterable`) happen locally.
+
+### Loader mode
 
 ```html
 <NtpTable
   :columns="columns"
-  :rows="rows"
+  v-model:rows="rows"
+  :load-rows="loadRows"
+  row-key="id"
+/>
+```
+
+```ts
+async function loadRows(params: LoadRowsParams): Promise<PaginatedResult<TableRow>> {
+  const query = new URLSearchParams({
+    page: String(params.page),
+    pageSize: String(params.pageSize),
+    ...(params.sort && { sort: params.sort.key, order: params.sort.order }),
+    ...flattenFilters(params.filters),
+  })
+  const res = await fetch(`/api/sections/?${query}`)
+  return res.json()
+}
+```
+
+`loadRows` is called on mount and whenever `page`, `pageSize`, sort, or filters change. The response replaces `rows`.
+
+### With selection
+
+```html
+<NtpTable
+  :columns="columns"
+  v-model:rows="rows"
+  v-model:selected-keys="selectedIds"
+  :load-rows="loadRows"
   row-key="id"
   selectable
-  v-model:selected-keys="selectedIds"
 />
 ```
 
-### With Sorting
+Selection persists across page changes. In partial mode, a warning tooltip appears next to the header checkbox: *"'Select all' affects visible rows only."*
+
+### With sortable columns
+
+```html
+<NtpTable
+  :columns="sortableColumns"
+  v-model:rows="rows"
+  :load-rows="loadRows"
+  v-model:sort="sort"
+  row-key="id"
+/>
+```
+
+```ts
+const sortableColumns: TableColumn[] = [
+  { key: 'title', label: 'Title', sortable: true },
+  { key: 'createdAt', label: 'Created', type: 'date', sortable: true },
+]
+```
+
+Clicking a sortable header cycles `null → asc → desc → null`. In complete/fixed mode, the sort happens locally. In partial mode, a fetch fires.
+
+### With complex columns
+
+See [Column definition → The two-sided pattern](#the-two-sided-pattern) for the full example.
+
+Minimal fixed-mode example:
+
+```html
+<NtpTable
+  :columns="complexColumns"
+  :rows="rows"
+  row-key="id"
+/>
+```
+
+```ts
+const complexColumns: TableColumn[] = [
+  { key: 'title', label: 'Title' },
+  {
+    key: 'status',
+    label: 'Status',
+    displayMapper: (cell) => cell.label,
+  },
+]
+```
+
+```ts
+const rows = [
+  { id: 1, title: 'Mechanics', status: { value: 'ACTIVE', label: 'Active' } },
+  // ...
+]
+```
+
+### Deep-linking page and sort
 
 ```html
 <NtpTable
   :columns="columns"
-  :rows="rows"
+  v-model:rows="rows"
+  v-model:page="page"
+  v-model:sort="sort"
+  :load-rows="loadRows"
   row-key="id"
-  :sort="sortState"
-  @sort="onSort"
 />
 ```
 
-### With Custom Cell Rendering
-
-```html
-<NtpTable :columns="columns" :rows="rows" row-key="id">
-  <template #cell="{ column, row, value }">
-    <NtpChip
-      v-if="column.key === 'status'"
-      :label="value"
-      :color="statusColor(value)"
-    />
-    <span v-else>{{ value }}</span>
-  </template>
-</NtpTable>
+```ts
+// From URL query, e.g. in a router hook:
+const page = ref(Number(route.query.page) || 1)
+const sort = ref<SortState | null>(
+  route.query.sort
+    ? { key: String(route.query.sort), order: (route.query.order as 'asc' | 'desc') || 'asc' }
+    : null,
+)
 ```
 
-### With Column Filters
+The `v-model:page` and `v-model:sort` bindings are optional escape hatches. Consumers who don't need deep-linking don't bind them — the table manages them internally.
 
-```html
-<NtpTable :columns="columns" :rows="rows" row-key="id">
-  <template #filter="{ column, close }">
-    <NtpTextInput
-      v-if="column.key === 'title'"
-      v-model="filters.title"
-      label="Filter title"
-      @update:model-value="onFilterChange"
-    />
-    <NtpSelect
-      v-else-if="column.key === 'status'"
-      v-model="filters.status"
-      :load-options="loadStatuses"
-      label="Filter status"
-    />
-  </template>
-</NtpTable>
-```
-
-### With Reorder
+### Error handling
 
 ```html
 <NtpTable
   :columns="columns"
-  :rows="rows"
+  v-model:rows="rows"
+  :load-rows="loadRows"
   row-key="id"
-  :reorder-mode="reorderMode"
-  @lock-order="onLockOrder"
+  @load-error="onLoadError"
 />
-
-<NtpButton v-if="reorderMode" @click="reorderMode = false">
-  Cancel
-</NtpButton>
-<NtpButton v-if="reorderMode" @click="onLockOrder">
-  Save order
-</NtpButton>
 ```
+
+```ts
+function onLoadError(error: Error) {
+  // Surface via toast, redirect on 401, etc.
+  showToast(error.message)
+}
+```
+
+`load-error` fires when the loader rejects. The table also sets an internal error state (used by the future error banner in Concern 8). For now, the banner isn't rendered — the notification event is the only surface.
 
 ## Accessibility
 
-- Table has `role="table"` with proper `rowgroup`, `row`, `columnheader`, `cell` roles.
-- Sortable headers are buttons with `aria-sort`.
-- Checkbox column has `aria-label` for header ("Select all") and rows.
-- Drag handles have `aria-label="Reorder"`.
-- Row highlight is visual only — no semantic impact.
+- Table uses `role="table"` with proper `rowgroup`, `row`, `columnheader`, `cell` roles.
+- Sortable headers are `<button>` elements inside `<th>`, supporting keyboard activation.
+- `aria-sort` is set on sortable `<th>` elements (`'none'` when inactive, `'ascending'`/`'descending'` when active).
+- Header checkbox has `aria-label="Select all rows on this page"`; row checkboxes have `aria-label="Select row ${key}"`.
+- Sort indicator arrows are `aria-hidden` (the `aria-sort` on the header conveys the state).

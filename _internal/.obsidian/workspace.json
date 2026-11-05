@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "5201c89ca48ff4a3",
+        "id": "06644854db96c584",
         "type": "tabs",
         "children": [
           {
-            "id": "3a7eb822b4e35f91",
+            "id": "63c3f23763ffdfd7",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "decisions/ADR-007-complex-columns-via-callbacks.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "ADR-007-complex-columns-via-callbacks"
+              "title": "New tab"
             }
           }
         ]
@@ -185,43 +181,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "3a7eb822b4e35f91",
+  "active": "63c3f23763ffdfd7",
   "lastOpenFiles": [
-    "decisions/ADR-007-complex-columns-via-callbacks.md",
-    "decisions/ADR-006-drag-and-drop-reorder-strategy.md",
     "prompt drafts.md",
-    "conventions/dev-tooling.md",
+    "TODO/table-additional-stories.md",
+    "TODO/import-policy-full-migration.md",
+    "TODO/table-aria-sort-record-mapping.md",
+    "TODO/table-one-sided-callbacks-warning.md",
+    "decisions/ADR-007-complex-columns-via-callbacks.md",
+    "conventions/composables.md",
+    "conventions/file-structure.md",
+    "conventions/data-fetching.md",
+    "components/NtpTable.md",
+    "conventions/README.md",
+    "conventions/commit-messages.md",
+    "components/NtpCard/NtpCard.md",
+    "conventions/components/NtpTable.md",
     "conventions/filtering.md",
     "conventions/types.md",
-    "conventions/file-structure.md",
-    "conventions/component-api.md",
-    "README.md",
-    "MD references.md",
-    "Implementation plan.md",
-    "__structure__.md",
-    "components/NtpPagination.md",
-    "components/NtpMultiSelect.md",
-    "components/NtpTable.md",
-    "decisions/ADR-005-testing-strategy.md",
-    "decisions/ADR-004-versioned-package-separate-repository.md",
-    "decisions/ADR-003-separate-documentation.md",
-    "decisions/ADR-002-button-type-hardcoded.md",
-    "decisions/ADR-001-enum-props-over-boolean-flags.md",
-    "conventions/commit-messages.md",
-    "conventions/implementation-patterns.md",
-    "conventions/data-fetching.md",
-    "conventions/composables.md",
     "conventions/styling.md",
-    "conventions/dependencies.md",
+    "conventions/naming.md",
+    "conventions/implementation-patterns.md",
+    "conventions/components",
+    "conventions/generic",
+    "conventions/Untitled.md",
+    "Implementation plan.md",
+    "TODO/label-transition-refinement.md",
+    "TODO/event-listeners.md",
+    "TODO/README.md",
+    "TODO/options-loading.md",
+    "MD references.md",
     "TODO",
-    "conventions/Untitled",
     "conventions",
     "components/NtpRichTextEditor",
     "components/NtpCarousel",
     "lib/latex",
     "lib",
     "components/NtpRichText",
-    "components/NtpDrawer",
-    "components/NtpDialog"
+    "components/NtpDrawer"
   ]
 }

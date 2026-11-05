@@ -122,6 +122,20 @@ filterRequest: (col, filter, params) => ({
 
 No framework-level abstraction for lookup translation. The consumer, who knows the backend, writes the callback.
 
+### The local ≡ server invariant
+
+Local filtering/sorting must produce the same result set as server-side filtering/sorting for the same criterion. If they diverge, the same query produces different results depending on dataset size — a category of bug invisible until the dataset crosses the page-size boundary.
+
+The invariant has three parties. **The backend is the source of truth**; the others adopt it.
+
+| Party | Role | Obligation |
+|---|---|---|
+| **Backend** | Source of truth | Define semantics. Publish them. Consult when new frontend capabilities need backend support. |
+| **Kit** | Adopter | Ensure local fallbacks match the backend's standard semantics. |
+| **Consumer** | Adopter + customizer | Ensure custom callbacks match the backend's semantics for their columns. |
+
+Divergence is a frontend-side bug. The backend is right by definition.
+
 ## Consequences
 
 ### Positive
@@ -149,6 +163,12 @@ When a complex cell (object or array) is encountered on a `sortable` or `filtera
 
 Dev and prod behave identically in terms of results. Only the notification differs.
 
+### One-sided callbacks
+
+A column can provide `sortLocally` without `sortRequest` (or vice versa). This causes complete/partial mode divergence.
+
+The consumer is responsible for providing both when the invariant matters. A future dev-warn will catch this case (`_internal/todo/table-one-sided-callbacks-warning.md`).
+
 ## Not included
 
 Deferred to future versions:
@@ -158,28 +178,12 @@ Deferred to future versions:
 - **Boolean column type.** `ColumnFilter.value` currently excludes booleans. If boolean filters become relevant, extend the union.
 - **Shorthand props (`displayField`, `valueField`).** Add only if a recurring pattern proves the ergonomic gain is real.
 - **`ComplexTableField` named type.** Add only if the kit needs a shared type (e.g., for type guards).
+- **One-sided callbacks dev-warn.** Deferred — noted in `_internal/todo/table-one-sided-callbacks-warning.md`.
 
 ## References
 
 - Stage 1–6 retrofit plan (internal).
-- `_internal/conventions/table.md` (documentation of callback patterns).
+- `_internal/conventions/data-fetching.md` (loader contract, concurrency, callback principles, invariant).
+- `_internal/components/NtpTable.md` (component conventions and implementation notes).
 - Pre-consideration 1: "The kit is a tool for this project, not a general UI framework."
 - `ADR-006`: Drag-and-drop reorder strategy (establishes the pattern of extracting per-concern callbacks).
-
-## Where to place it
-
-**`_internal/adr/ADR-007-complex-columns-via-callbacks.md`**
-
-If the ADR folder doesn't exist yet or uses a different convention (e.g., `docs/adr/`, or a single `ADRs.md` file), adjust accordingly.
-
-## Notes on the draft
-
-1. **Date:** fill in with the actual decision date (today's date).
-
-2. **Status:** "Accepted" if this is the final decision. If you want to formally accept it in a separate review, use "Proposed" and change to "Accepted" later.
-
-3. **References section:** points to Stage plan and conventions doc. Those will exist by the end of Concern 6.5. If not yet written, note them as "to be written" or remove.
-
-4. **The "Backend collaboration" section** is unusually specific for an ADR (mentioning Phase 1, Django lookups). That's intentional — this ADR captures the project-specific decision, which is the whole point of pre-consideration 1. If you'd prefer a more generic ADR, we can strip that section, but I think keeping it makes the ADR useful for future reference.
-
-5. **Length:** this is a long ADR. That's fine for a decision with this much context. If you'd prefer a shorter version, the "Rationale" section could be trimmed to just the top-level claims without the sub-justifications. But the sub-justifications are the institutional memory that makes the ADR valuable when someone (including future-you) asks "why did we do it this way?"
